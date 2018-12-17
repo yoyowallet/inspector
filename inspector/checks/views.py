@@ -1,10 +1,7 @@
-from datetime import datetime as dt
-
-import pytz
-from bootstrap_modal_forms.mixins import PassRequestMixin
+from bootstrap_modal_forms.mixins import PassRequestMixin, DeleteAjaxMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView
 
 from inspector.taskapp.tasks import execute_check
 from .constants import STATUSES
@@ -53,3 +50,13 @@ class CheckRunCreateView(PassRequestMixin, SuccessMessageMixin,
 
 
 checkrun_create_view = CheckRunCreateView.as_view()
+
+
+class CheckDeleteView(DeleteAjaxMixin, DeleteView):
+    model = Datacheck
+    template_name = 'checks/datacheck_delete.html'
+    success_message = 'Success: Check was deleted.'
+    success_url = reverse_lazy('checks:index')
+
+
+check_delete_view = CheckDeleteView.as_view()
