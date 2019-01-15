@@ -54,16 +54,30 @@
 
         {% if request.user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'about' %}">Status</a>
+          <a class="nav-link" href="{% url 'checks_environmentstatus_list' %}">Status</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'checks_checkrun_list' %}">Check runs</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownChecks" role="button" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
             Checks
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{% url 'checks:index'  %}">Checks</a>
-            <a class="dropdown-item" href="#">Check groups</a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownChecks">
+            <a class="dropdown-item" href="{% url 'checks_datacheck_list'  %}">Checks</a>
+            <a class="dropdown-item" href="{% url 'checks_checkgroup_list'  %}">Check groups</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSystems" role="button" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false">
+            Systems
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownSystems">
+            <a class="dropdown-item" href="{% url 'systems_system_list'  %}">Systems</a>
+            <a class="dropdown-item" href="{% url 'systems_environment_list'  %}">Environments</a>
+            <a class="dropdown-item" href="{% url 'systems_instance_list'  %}">Instances</a>
           </div>
         </li>
 

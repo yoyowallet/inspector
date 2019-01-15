@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<table class="table">
+  <tr>
+    <td>ID</td>
+    <td>Link</td>
+    <td>last_start_time</td>
+    <td>last_end_time</td>
+    <td>status</td>
+    <td>result</td>
+  </tr>
+  {% for object in object_list %}
+  <tr>
+    <td>{{object.pk}}</td>
+    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
+    <td>{{ object.last_start_time }}</td>
+    <td>{{ object.last_end_time }}</td>
+    <td>{{ object.status }}</td>
+    <td>{{ object.result }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

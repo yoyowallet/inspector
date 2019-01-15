@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'checks_datacheck_list' %}">Datacheck Listing</a></p>
+<table class="table">
+  <tr>
+    <td>code</td>
+    <td>{{ object.code }}</td>
+  </tr>
+  <tr>
+    <td>description</td>
+    <td>{{ object.description }}</td>
+  </tr>
+  <tr>
+    <td>weight</td>
+    <td>{{ object.weight }}</td>
+  </tr>
+  <tr>
+    <td>left_type</td>
+    <td>{{ object.left_type }}</td>
+  </tr>
+  <tr>
+    <td>left_logic</td>
+    <td>{{ object.left_logic }}</td>
+  </tr>
+  <tr>
+    <td>relation</td>
+    <td>{{ object.relation }}</td>
+  </tr>
+  <tr>
+    <td>right_logic</td>
+    <td>{{ object.right_logic }}</td>
+  </tr>
+  <tr>
+    <td>supports_warning</td>
+    <td>{{ object.supports_warning }}</td>
+  </tr>
+  <tr>
+    <td>warning_relation</td>
+    <td>{{ object.warning_relation }}</td>
+  </tr>
+  <tr>
+    <td>warning_type</td>
+    <td>{{ object.warning_type }}</td>
+  </tr>
+  <tr>
+    <td>warning_logic</td>
+    <td>{{ object.warning_logic }}</td>
+  </tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Datacheck</a>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'checks_checkrun_list' %}">CheckRun Listing</a></p>
+<table class="table">
+  <tr>
+    <td>start_time</td>
+    <td>{{ object.start_time }}</td>
+  </tr>
+  <tr>
+    <td>end_time</td>
+    <td>{{ object.end_time }}</td>
+  </tr>
+  <tr>
+    <td>status</td>
+    <td>{{ object.status }}</td>
+  </tr>
+  <tr>
+    <td>result</td>
+    <td>{{ object.result }}</td>
+  </tr>
+  <tr>
+    <td>left_value</td>
+    <td>{{ object.left_value }}</td>
+  </tr>
+  <tr>
+    <td>right_value</td>
+    <td>{{ object.right_value }}</td>
+  </tr>
+  <tr>
+    <td>warning_value</td>
+    <td>{{ object.warning_value }}</td>
+  </tr>
+  <tr>
+    <td>error_message</td>
+    <td>{{ object.error_message }}</td>
+  </tr>
+  <tr>
+    <td>created_at</td>
+    <td>{{ object.created_at }}</td>
+  </tr>
+</table>
+
+{% endblock %}

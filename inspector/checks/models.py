@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
-from inspector.systems.models import Enviroment, System
+from inspector.systems.models import Environment, System
 from .constants import RELATIONS, STATUSES, RESULTS, CHECK_TYPES
 
 
@@ -11,6 +12,18 @@ class CheckGroup(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('checks_checkgroup_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('checks_checkgroup_update', args=(self.pk,))
 
 
 class Datacheck(models.Model):
@@ -37,7 +50,7 @@ class Datacheck(models.Model):
 
 class CheckRun(models.Model):
     datacheck = models.ForeignKey(Datacheck, on_delete=models.CASCADE)
-    environment = models.ForeignKey(Enviroment, on_delete=models.CASCADE)
+    environment = models.ForeignKey(Environment, on_delete=models.CASCADE)
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
     status = models.CharField(max_length=20, choices=STATUSES)
@@ -49,10 +62,19 @@ class CheckRun(models.Model):
     error_message = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('checks_checkrun_detail', args=(self.pk,))
+
 
 class EnvironmentStatus(models.Model):
     datacheck = models.ForeignKey(Datacheck, on_delete=models.CASCADE)
-    environment = models.ForeignKey(Enviroment, on_delete=models.CASCADE)
+    environment = models.ForeignKey(Environment, on_delete=models.CASCADE)
     last_start_time = models.DateTimeField()
     last_end_time = models.DateTimeField()
     status = models.CharField(max_length=20, choices=STATUSES)

@@ -1,12 +1,12 @@
 from bootstrap_modal_forms.mixins import PassRequestMixin, DeleteAjaxMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
 from inspector.taskapp.tasks import execute_check
 from .constants import STATUSES
-from .forms import CreateCheckRunForm
-from .models import Datacheck
+from .forms import CreateCheckRunForm, CheckGroupForm, DatacheckForm
+from .models import Datacheck, CheckGroup, CheckRun, EnvironmentStatus
 
 
 class CheckListView(ListView):
@@ -22,6 +22,7 @@ class CheckDetailView(DetailView):
     model = Datacheck
     slug_field = "code"
     slug_url_kwarg = "code"
+    template_name = 'checks/datacheck_detail.html'
 
 
 check_detail_view = CheckDetailView.as_view()
@@ -60,3 +61,38 @@ class CheckDeleteView(DeleteAjaxMixin, DeleteView):
 
 
 check_delete_view = CheckDeleteView.as_view()
+
+
+class CheckGroupListView(ListView):
+    model = CheckGroup
+
+
+class CheckGroupCreateView(CreateView):
+    model = CheckGroup
+    form_class = CheckGroupForm
+
+
+class CheckGroupDetailView(DetailView):
+    model = CheckGroup
+
+
+class CheckGroupUpdateView(UpdateView):
+    model = CheckGroup
+    form_class = CheckGroupForm
+
+
+class CheckRunListView(ListView):
+    model = CheckRun
+
+
+class CheckRunDetailView(DetailView):
+    model = CheckRun
+
+
+class DatacheckCreateView(CreateView):
+    model = Datacheck
+    form_class = DatacheckForm
+
+
+class EnvironmentStatusListView(ListView):
+    model = EnvironmentStatus

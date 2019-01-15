@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                 ('status', models.CharField(choices=[('NEW', 'New'), ('RUNNING', 'Running'), ('FINISHED', 'Finished'), ('ERROR', 'Error')], max_length=20)),
                 ('result', models.CharField(choices=[('SUCCESS', 'Success'), ('WARNING', 'Warning'), ('FINISHED', 'Finished'), ('ERROR', 'Error')], max_length=20)),
                 ('datacheck', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='checks.Datacheck')),
-                ('environment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='systems.Enviroment')),
+                ('environment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='systems.Environment')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -75,7 +75,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='checkrun',
             name='environment',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='systems.Enviroment'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='systems.Environment'),
         ),
         migrations.AddField(
             model_name='checkrun',

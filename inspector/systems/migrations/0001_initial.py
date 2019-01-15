@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Enviroment',
+            name='Environment',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=50, null=True, unique=True)),
@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('database_or_schema', models.CharField(max_length=100)),
                 ('user', models.CharField(max_length=100)),
                 ('password', models.CharField(max_length=100)),
-                ('environment', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='systems.Enviroment')),
+                ('environment', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='systems.Environment')),
             ],
         ),
         migrations.CreateModel(

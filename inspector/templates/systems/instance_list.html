@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'systems_instance_list' %}">Instance Listing</a></p>
+<table class="table">
+  <tr>
+    <td>ID</td><td>Link</td>
+    <td>host</td>
+    <td>port</td>
+    <td>database_or_schema</td>
+    <td>login</td>
+  </tr>
+  {% for object in object_list %}
+  <tr>
+    <td>{{object.pk}}</td>
+    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
+    <td>{{ object.host }}</td>
+    <td>{{ object.port }}</td>
+    <td>{{ object.database_or_schema }}</td>
+    <td>{{ object.login }}</td>
+  </tr>
+  {% endfor %}
+</table><a class="btn btn-primary" href="{% url 'systems_instance_create' %}">Create new Instance</a>
+{% endblock %}

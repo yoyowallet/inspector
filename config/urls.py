@@ -21,7 +21,8 @@ urlpatterns = [
     ),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-    path("checks/", include("inspector.checks.urls")),
+    path("", include("inspector.checks.urls")),
+    path("", include("inspector.systems.urls")),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )
