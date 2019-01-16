@@ -1,18 +1,37 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'systems_environment_list' %}">Environment Listing</a></p>
-<table class="table">
-  <tr>
-    <td>ID</td><td>Link</td>
-    <td>name</td>
-  </tr>
-  {% for object in object_list %}
-  <tr>
-    <td>{{object.pk}}</td>
-    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
-    <td>{{ object.name }}</td>
-  </tr>
-  {% endfor %}
-</table><a class="btn btn-primary" href="{% url 'systems_environment_create' %}">Create new Enviroment</a>
+  <table class="table">
+    <thead>
+    <tr>
+      <th><p class="text-left">Environment</p></th>
+      <th style="width: 12.5%">
+        <p class="text-right">
+          <a class="btn btn-primary btn-sm" href="{% url 'systems_environment_create' %}">New</a></th>
+      </p>
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+      <tr>
+        <td>
+          <p class="text-left">{{ object.name }}</p>
+        </td>
+        <td>
+          <p class="text-right" data-toggle="tooltip">
+            <a href="{{ object.get_absolute_url }}" title="View">
+              <button class="btn btn-outline-primary btn-sm">
+                <span class="fas fa-eye fa-sm"></span></button>
+            </a>
+            <a href="{{ object.get_update_url }}" title="Edit">
+              <button class="btn btn-outline-primary btn-sm">
+                <span class="fas fa-pencil-alt fa-sm"></span></button>
+            </a>
+          </p>
+
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

@@ -8,10 +8,12 @@ DEBUG = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='8ly8jh2sfA5r48iAuUJ4evDkQFMapIwJ3LHEKGQrnJwyzjJCccJgSmP5VbydiUgS')
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
+extra_hosts = env('ALLOWED_HOSTS', default=None)
 ALLOWED_HOSTS = [
     "localhost",
     "0.0.0.0",
     "127.0.0.1",
+    extra_hosts
 ]
 
 # CACHES
@@ -55,6 +57,7 @@ DEBUG_TOOLBAR_CONFIG = {
 INTERNAL_IPS = ['127.0.0.1', '10.0.2.2']
 if env('USE_DOCKER') == 'yes':
     import socket
+
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
     INTERNAL_IPS += [ip[:-1] + '1' for ip in ips]
 
