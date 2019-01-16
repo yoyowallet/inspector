@@ -35,3 +35,8 @@ $red: #b94a48;
   border-color: $dark-pink;
   color: $red;
 }
+
+
+td > p, th > p {
+  margin-bottom: 0;
+}

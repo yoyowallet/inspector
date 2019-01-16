@@ -1,4 +1,3 @@
-from crispy_forms.helper import FormHelper
 from django import forms
 
 from .models import Environment, Instance, System
@@ -19,7 +18,7 @@ class EnvironmentForm(forms.ModelForm):
 class InstanceForm(forms.ModelForm):
     class Meta:
         model = Instance
-        fields = ['host', 'port', 'database_or_schema', 'login', 'password', 'system', 'environment']
+        fields = ['system', 'environment', 'host', 'port', 'database_or_schema', 'login', 'password']
         widgets = {
             'password': forms.PasswordInput()
         }

@@ -1,24 +1,28 @@
 {% extends "base.html" %}
 {% load static %}
+{% load buttons %}
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'systems_instance_list' %}">Instance Listing</a></p>
 <table class="table">
+  <thead>
   <tr>
-    <td>ID</td><td>Link</td>
-    <td>host</td>
-    <td>port</td>
-    <td>database_or_schema</td>
-    <td>login</td>
+    <th>System</th>
+    <th>Environment</th>
+    <th>Host</th>
+    <th>{% button_new 'systems_instance_create' %}</th>
   </tr>
+  </thead>
   {% for object in object_list %}
   <tr>
-    <td>{{object.pk}}</td>
-    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
+    <td>{{ object.system }}</td>
+    <td>{{ object.environment }}</td>
     <td>{{ object.host }}</td>
-    <td>{{ object.port }}</td>
-    <td>{{ object.database_or_schema }}</td>
-    <td>{{ object.login }}</td>
+    <td>
+      <p class="text-right">
+        {% button_hoverdetail 'systems/instance_hoverdetail' object %}
+        {% button_edit object %}
+      </p>
+    </td>
   </tr>
   {% endfor %}
-</table><a class="btn btn-primary" href="{% url 'systems_instance_create' %}">Create new Instance</a>
+</table>
 {% endblock %}

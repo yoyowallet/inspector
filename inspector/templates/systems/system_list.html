@@ -1,28 +1,30 @@
 {% extends "base.html" %}
 {% load static %}
+{% load buttons %}
 {% block content %}
-  <table class="table">
-    <thead>
-    <tr>
-      <th>Link</th>
-      <th>System
-      <th/>
-      <th>Application</th>
-      <th style="width: 12.5%">
-        <p class="text-right">
-          <a class="btn btn-primary btn-sm" href="{% url 'systems_system_create' %}">New</a>
-      </th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for object in object_list %}
-      <tr>
-        <td><a href="{{ object.get_absolute_url }}">{{ object }}</a></td>
-        <td>{{ object.name }}</td>
-        <td>{{ object.get_application_display }}</td>
-      </tr>
-    {% endfor %}
-    </tbody>
+<table class="table table-borderless table-striped">
+  <thead>
+  <tr>
+    <th>System</th>
+    <th>Application</th>
+    <th style="width: 12.5%">
+      {% button_new 'systems_system_create' %}
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for object in object_list %}
+  <tr>
+    <td>{{ object.name }}</td>
+    <td>{{ object.get_application_display }}</td>
+    <td>
+      <p class="text-right">
+        {% button_edit object %}
+      </p>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
 
-  </table>
+</table>
 {% endblock %}

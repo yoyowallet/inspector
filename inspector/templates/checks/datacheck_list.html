@@ -1,74 +1,51 @@
 {% extends "base.html" %}
 {% load static i18n %}
+{% load buttons %}
 {% block title %}Members{% endblock %}
 
 {% block content %}
-<div class="container">
-  <div class="col-md-12">
-    <h4>Checks</h4>
-    <div class="table-responsive">
+<table id="checks" class="table table-borderless table-striped">
+  <thead>
+  <th><input type="checkbox" id="checkall"/></th>
+  <th>Code</th>
+  <th>Description</th>
+  <th>Group</th>
+  <th>System</th>
+  <th>Weight</th>
+  <th>{% button_new 'checks_datacheck_create' %}</th>
+  </thead>
+  <tbody>
+  {% for check in datacheck_list %}
+  <tr>
+    <td><input type="checkbox" class="checkthis"/></td>
+    <td>{{ check.code }}</td>
+    <td>{{ check.description }}</td>
+    <td>{{ check.group }}</td>
+    <td>{{ check.left_system }}</td>
+    <td>{{ check.weight }}</td>
+    <td>
+      <p class="text-right">
+        <button class="btn btn-outline-primary btn-sm check-details" data-title="Details"
+                data-target="#checksModal"
+                data-url="{% url 'check_detail' check.code %}">
+          <span class="fas fa-info-circle fa-sm"></span></button>
+        <button class="btn btn-outline-success btn-sm create-check-run" data-title="Run"
+                data-target="#checksModal"
+                data-url="{% url 'checkrun_create' check.id %}">
+          <span class="fas fa-play fa-sm"></span></button>
+        <button class="btn btn-outline-primary btn-sm" data-title="Edit" data-toggle="modal" data-target="#edit">
+          <span class="fas fa-pencil-alt fa-sm"></span></button>
+        <button type="button" class="delete-check btn btn-sm btn-outline-danger"
+                data-url="{% url 'check_delete' check.pk %}">
+          <span class="fa fa-trash"></span>
+        </button>
+      </p>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
 
-      <table id="checks" class="table table-bordred table-striped">
-        <thead>
-        <th><input type="checkbox" id="checkall"/></th>
-        <th>Code</th>
-        <th>Description</th>
-        <th>Group</th>
-        <th>System</th>
-        <th>Weight</th>
-        <th>Details</th>
-        <th>Run</th>
-        <th>Edit</th>
-        <th>Delete</th>
-        </thead>
-        <tbody>
-        {% for check in datacheck_list %}
-        <tr>
-          <td><input type="checkbox" class="checkthis"/></td>
-          <td>{{ check.code }}</td>
-          <td>{{ check.description }}</td>
-          <td>{{ check.group }}</td>
-          <td>{{ check.left_system }}</td>
-          <td>{{ check.weight }}</td>
-          <td>
-            <p data-placement="top" data-toggle="tooltip" title="Details">
-              <button class="btn btn-outline-primary btn-sm check-details" data-title="Details"
-                      data-target="#checksModal"
-                      data-url="{% url 'check_detail' check.code %}">
-                <span class="fas fa-info-circle fa-sm"></span></button>
-            </p>
-          </td>
-          <td>
-            <p data-placement="top" data-toggle="tooltip" title="Run">
-              <button class="btn btn-outline-success btn-sm create-check-run" data-title="Run"
-                      data-target="#checksModal"
-                      data-url="{% url 'checkrun_create' check.id %}">
-                <span class="fas fa-play fa-sm"></span></button>
-            </p>
-          </td>
-          <td>
-            <p data-placement="top" data-toggle="tooltip" title="Edit">
-              <button class="btn btn-outline-primary btn-sm" data-title="Edit" data-toggle="modal" data-target="#edit">
-                <span class="fas fa-pencil-alt fa-sm"></span></button>
-            </p>
-          </td>
-          <td>
-            <p data-placement="top" data-toggle="tooltip" title="Delete">
-              <button type="button" class="delete-check btn btn-sm btn-outline-danger"
-                      data-url="{% url 'check_delete' check.pk %}">
-                <span class="fa fa-trash"></span>
-              </button>
-            </p>
-          </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-      <a class="btn btn-primary" href="{% url 'checks_datacheck_create' %}">Create new Datacheck</a>
-    </div>
-  </div>
-</div>
-</div>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="checksModal">
   <div class="modal-dialog" role="document">

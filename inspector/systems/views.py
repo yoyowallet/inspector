@@ -1,6 +1,8 @@
+from django.urls import reverse
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
-from .models import System, Environment, Instance
+
 from .forms import SystemForm, EnvironmentForm, InstanceForm
+from .models import System, Environment, Instance
 
 
 class SystemListView(ListView):
@@ -11,14 +13,16 @@ class SystemCreateView(CreateView):
     model = System
     form_class = SystemForm
 
-
-class SystemDetailView(DetailView):
-    model = System
+    def get_success_url(self):
+        return reverse('systems_system_list')
 
 
 class SystemUpdateView(UpdateView):
     model = System
     form_class = SystemForm
+
+    def get_success_url(self):
+        return reverse('systems_system_list')
 
 
 class EnvironmentListView(ListView):
@@ -29,14 +33,16 @@ class EnvironmentCreateView(CreateView):
     model = Environment
     form_class = EnvironmentForm
 
-
-class EnvironmentDetailView(DetailView):
-    model = Environment
+    def get_success_url(self):
+        return reverse('systems_environment_list')
 
 
 class EnvironmentUpdateView(UpdateView):
     model = Environment
     form_class = EnvironmentForm
+
+    def get_success_url(self):
+        return reverse('systems_environment_list')
 
 
 class InstanceListView(ListView):

@@ -18,9 +18,6 @@ class System(models.Model):
     def __unicode__(self):
         return u'%s' % self.pk
 
-    def get_absolute_url(self):
-        return reverse('systems_system_detail', args=(self.pk,))
-
     def get_update_url(self):
         return reverse('systems_system_update', args=(self.pk,))
 

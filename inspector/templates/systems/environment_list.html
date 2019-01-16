@@ -1,37 +1,29 @@
 {% extends "base.html" %}
 {% load static %}
+{% load buttons %}
 {% block content %}
-  <table class="table">
-    <thead>
-    <tr>
-      <th><p class="text-left">Environment</p></th>
-      <th style="width: 12.5%">
-        <p class="text-right">
-          <a class="btn btn-primary btn-sm" href="{% url 'systems_environment_create' %}">New</a></th>
+<table class="table table-borderless table-striped">
+  <thead class="border-bottom">
+  <tr>
+    <th><p class="text-left">Environment</p></th>
+    <th style="width: 12.5%">
+      {% button_new 'systems_environment_create' %}
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for object in object_list %}
+  <tr>
+    <td>
+      <p class="text-left">{{ object.name }}</p>
+    </td>
+    <td>
+      <p class="text-right">
+        {% button_edit object %}
       </p>
-
-    </tr>
-    </thead>
-    <tbody>
-    {% for object in object_list %}
-      <tr>
-        <td>
-          <p class="text-left">{{ object.name }}</p>
-        </td>
-        <td>
-          <p class="text-right" data-toggle="tooltip">
-            <a href="{{ object.get_absolute_url }}" title="View">
-              <button class="btn btn-outline-primary btn-sm">
-                <span class="fas fa-eye fa-sm"></span></button>
-            </a>
-            <a href="{{ object.get_update_url }}" title="Edit">
-              <button class="btn btn-outline-primary btn-sm">
-                <span class="fas fa-pencil-alt fa-sm"></span></button>
-            </a>
-          </p>
-
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

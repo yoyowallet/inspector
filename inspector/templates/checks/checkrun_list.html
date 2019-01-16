@@ -1,32 +1,56 @@
 {% extends "base.html" %}
 {% load static %}
+{% load buttons %}
 {% block content %}
-<table class="table">
+<table class="table table-borderless table-striped">
+
+  <thead class="border-bottom">
   <tr>
-    <td>ID</td>
-    <td>Link</td>
-    <td>start_time</td>
-    <td>end_time</td>
-    <td>status</td>
-    <td>result</td>
-    <td>left_value</td>
-    <td>right_value</td>
-    <td>warning_value</td>
-    <td>created_at</td>
+    <th><p class="text-center"><i class="fas fa-list" title="Check code"i></i></p></th>
+    <th><p class="text-center"><i class="fas fa-desktop" title="Environment"i></i></p></th>
+    <th><p class="text-center"><i class="far fa-square" ></i><i class="fas fa-angle-double-right" ></i></p></th>
+    <th><p class="text-center"><i class="fas fa-angle-double-right" ></i><i class="fas fa-square" ></i></p></th>
+    <th><p class="text-center"><i class="far fa-clock" title="Status"i></i></p></th>
+    <th><p class="text-center"><i class="fas fa-question" title="Result"></i></p></th>
+    <th><p class="text-center"><i class="fas fa-user-cog" title="User"></i></p></th>
+    <th></th>
   </tr>
+  </thead>
+  <tbody>
   {% for object in object_list %}
+
   <tr>
-    <td>{{object.pk}}</td>
-    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
-    <td>{{ object.start_time }}</td>
-    <td>{{ object.end_time }}</td>
-    <td>{{ object.status }}</td>
-    <td>{{ object.result }}</td>
-    <td>{{ object.left_value }}</td>
-    <td>{{ object.right_value }}</td>
-    <td>{{ object.warning_value }}</td>
-    <td>{{ object.created_at }}</td>
+    <td>{{ object.datacheck.code }}</td>
+    <td>{{ object.environment.name }}</td>
+    <td>{{ object.start_time| default_if_none:"" }}</td>
+    <td>{{ object.end_time|default_if_none:"" }}</td>
+    <td><p class="text-center">
+      {% if object.status == 'ERROR' %}
+      <i class="fas fa-exclamation" title="Error" style="color:red"></i>
+      {% elif object.status == 'FINISHED' %}
+      <i class="fas fa-square" title="Finished"></i>
+      {% elif object.status == 'RUNNING' %}
+      <i class="far fa-square" title="Running"></i>
+      {% endif %}
+    </p>
+    </td>
+    <td><p class="text-center">
+      {% if object.result == 'FAILED' %}
+      <i class="fas fa-times" style="color:red"></i>
+      {% elif object.result == 'SUCCESS' %}
+      <i class="fas fa-check" style="color:green"></i>
+      {% elif object.result == 'SUCCESS' %}
+      WARNING
+      {% endif %}
+      </p>
+    </td>
+    <td><p class="text-center">
+      {{ object.user.username }}
+    </p>
+    </td>
+    <td>{% button_hoverdetail 'checks/checkrun_hoverdetail' object %}</td>
   </tr>
   {% endfor %}
+  </tbody>
 </table>
 {% endblock %}
