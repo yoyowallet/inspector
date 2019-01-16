@@ -19,9 +19,9 @@ class CheckGroupForm(forms.ModelForm):
 class DatacheckForm(forms.ModelForm):
     class Meta:
         model = Datacheck
-        fields = ['code', 'description', 'weight', 'left_type', 'left_logic', 'relation', 'right_logic',
-                  'supports_warning', 'warning_relation', 'warning_type', 'warning_logic', 'group', 'left_system',
-                  'right_system']
+        fields = ['code', 'description', 'weight', 'left_system', 'left_type', 'left_logic', 'relation', 'right_system',
+                  'right_type', 'right_logic',
+                  'supports_warning', 'warning_relation', 'warning_type', 'warning_logic', 'group']
 
 
 class CheckRunForm(forms.ModelForm):

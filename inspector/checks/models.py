@@ -47,6 +47,18 @@ class Datacheck(models.Model):
     def __str__(self):
         return self.code
 
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('checks_datacheck_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('checks_datacheck_update', args=(self.pk,))
+
 
 class CheckRun(models.Model):
     datacheck = models.ForeignKey(Datacheck, on_delete=models.CASCADE)
@@ -54,7 +66,7 @@ class CheckRun(models.Model):
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
     status = models.CharField(max_length=20, choices=STATUSES)
-    result = models.CharField(max_length=20, choices=RESULTS)
+    result = models.CharField(max_length=20, choices=RESULTS, null=True)
     left_value = models.CharField(max_length=255, null=True, blank=True)
     right_value = models.CharField(max_length=255, null=True, blank=True)
     warning_value = models.CharField(max_length=255, null=True, blank=True)

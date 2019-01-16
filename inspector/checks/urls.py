@@ -36,10 +36,11 @@ urlpatterns += (
 
 urlpatterns += (
     path("checks/datacheck/", view=check_list_view, name="checks_datacheck_list"),
-    path("checks/datacheck/detail/<str:code>/", view=check_detail_view, name="check_detail"),
+    path("checks/datacheck/detail/<int:pk>/", view=check_detail_view, name="checks_datacheck_detail"),
     path("checks/datacheck/delete/<int:pk>", check_delete_view, name="check_delete"),
     path("checkrun/create/<int:check_id>/", checkrun_create_view, name="checkrun_create"),
     path('checks/datacheck/create/', views.DatacheckCreateView.as_view(), name='checks_datacheck_create'),
+    path('checks/datacheck/update/<int:pk>/', views.DatacheckUpdateView.as_view(), name='checks_checkgroup_update'),
 )
 
 urlpatterns += (

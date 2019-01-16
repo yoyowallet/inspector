@@ -130,7 +130,7 @@ class CheckComparator:
     def __init__(self, datacheck: Datacheck):
         self.datacheck = datacheck
 
-    def compare(self, left, right, warning_check: bool = False) -> bool:
+    def compare(self, left, right, warning_check: bool = False):
 
         if warning_check:
             relation = self.datacheck.warning_relation

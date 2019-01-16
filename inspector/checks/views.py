@@ -33,7 +33,7 @@ class CheckRunCreateView(PassRequestMixin, SuccessMessageMixin,
     template_name = 'checks/checkrun_create.html'
     form_class = CreateCheckRunForm
     success_message = 'Success: Check was triggered.'
-    success_url = reverse_lazy('checks:index')
+    success_url = reverse_lazy('checks_datacheck_list')
 
     def form_valid(self, form):
         form.instance.datacheck_id = self.kwargs['check_id']
@@ -90,6 +90,11 @@ class CheckRunDetailView(DetailView):
 
 
 class DatacheckCreateView(CreateView):
+    model = Datacheck
+    form_class = DatacheckForm
+
+
+class DatacheckUpdateView(UpdateView):
     model = Datacheck
     form_class = DatacheckForm
 

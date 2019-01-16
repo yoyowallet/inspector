@@ -16,6 +16,10 @@ td > p, th > p {
   margin-bottom: 0;
 }
 
-.popover{
+.popover {
   max-width: 95%;
+}
+
+.table td, .table th {
+  padding: .5rem;
 }

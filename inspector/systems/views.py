@@ -53,6 +53,9 @@ class InstanceCreateView(CreateView):
     model = Instance
     form_class = InstanceForm
 
+    def get_success_url(self):
+        return reverse('systems_instance_list')
+
 
 class InstanceDetailView(DetailView):
     model = Instance
