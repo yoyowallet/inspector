@@ -1,20 +1,25 @@
 {% extends "base.html" %}
 {% load static %}
+{% load buttons %}
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'checks_checkgroup_list' %}">CheckGroup Listing</a></p>
-<table class="table">
-  <tr>
-    <td>ID</td><td>Link</td>
-    <td>name</td>
-    <td>description</td>
-  </tr>
-  {% for object in object_list %}
-  <tr>
-    <td>{{object.pk}}</td>
-    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
-    <td>{{ object.name }}</td>
-    <td>{{ object.description }}</td>
-  </tr>
-  {% endfor %}
-</table><a class="btn btn-primary" href="{% url 'checks_checkgroup_create' %}">Create new CheckGroup</a>
+  <table class="table table-borderless table-striped">
+    <thead>
+    <tr>
+      <th><i class="far fa-object-ungroup" title="Group"></i></th>
+      <th><i class="fas fa-align-justify" title="Description"></i></th>
+      <th>{% button_new 'checks_checkgroup_create' %}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+      <tr>
+        <td>{{ object.name }}</td>
+        <td>{{ object.description }}</td>
+        <td><p class="text-right">
+          {% button_edit object %}
+        </p></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

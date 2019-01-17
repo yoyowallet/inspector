@@ -23,3 +23,11 @@ td > p, th > p {
 .table td, .table th {
   padding: .5rem;
 }
+
+body {
+  font-size: 0.9rem;
+}
+
+nav {
+  font-size: 1rem;
+}

@@ -139,7 +139,7 @@ class CheckComparator:
 
         if relation == RELATIONS.eq:
             res = RESULTS.SUCCESS if left == right else False
-        if relation == RELATIONS.ne:
+        elif relation == RELATIONS.ne:
             res = RESULTS.SUCCESS if left != right else False
         elif relation == RELATIONS.gt:
             res = RESULTS.SUCCESS if left > right else False

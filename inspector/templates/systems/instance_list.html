@@ -5,17 +5,17 @@
 <table class="table">
   <thead>
   <tr>
-    <th>System</th>
-    <th>Environment</th>
-    <th>Host</th>
+    <th><i class="fas fa-desktop" title="System"></i></th>
+    <th><p class="text-center"><i class="fas fa-globe-africa" title="Environment"></i></p></th>
+    <th><p class="text-center"><i class="fas fa-network-wired" title="Host"></i></p></th>
     <th>{% button_new 'systems_instance_create' %}</th>
   </tr>
   </thead>
   {% for object in object_list %}
   <tr>
     <td>{{ object.system }}</td>
-    <td>{{ object.environment }}</td>
-    <td>{{ object.host }}</td>
+    <td><p class="text-center">{{ object.environment }}</p></td>
+    <td><p class="text-center">{{ object.host }}</p></td>
     <td>
       <p class="text-right">
         {% button_hoverdetail 'systems/instance_hoverdetail' object %}

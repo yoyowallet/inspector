@@ -6,8 +6,8 @@
 
   <thead class="border-bottom">
   <tr>
-    <th><p class="text-center"><i class="fas fa-list" title="Check code"></i></p></th>
-    <th><p class="text-center"><i class="fas fa-desktop" title="Environment"></i></p></th>
+    <th><i class="fas fa-list" title="Check code"></i></th>
+    <th><p class="text-center"><i class="fas fa-globe-africa" title="Environment"></i></p></th>
     <th><p class="text-center"><i class="far fa-square" title="Start"></i>
       <i class="fas fa-angle-double-right" ></i></p></th>
     <th><p class="text-center"><i class="fas fa-angle-double-right" ></i>
@@ -23,9 +23,9 @@
 
   <tr>
     <td>{{ object.datacheck.code }}</td>
-    <td>{{ object.environment.name }}</td>
-    <td>{{ object.start_time| default_if_none:"" }}</td>
-    <td>{{ object.end_time|default_if_none:"" }}</td>
+    <td><p class="text-center">{{ object.environment.name }}</p></td>
+    <td><p class="text-center">{{ object.start_time| default_if_none:"" }}</p></td>
+    <td><p class="text-center">{{ object.end_time|default_if_none:"" }}</p></td>
     <td><p class="text-center">
       {% if object.status == 'ERROR' %}
       <i class="fas fa-exclamation" title="Error" style="color:red"></i>

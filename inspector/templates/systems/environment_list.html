@@ -2,28 +2,28 @@
 {% load static %}
 {% load buttons %}
 {% block content %}
-<table class="table table-borderless table-striped">
-  <thead class="border-bottom">
-  <tr>
-    <th><p class="text-left">Environment</p></th>
-    <th style="width: 12.5%">
-      {% button_new 'systems_environment_create' %}
-    </th>
-  </tr>
-  </thead>
-  <tbody>
-  {% for object in object_list %}
-  <tr>
-    <td>
-      <p class="text-left">{{ object.name }}</p>
-    </td>
-    <td>
-      <p class="text-right">
-        {% button_edit object %}
-      </p>
-    </td>
-  </tr>
-  {% endfor %}
-  </tbody>
-</table>
+  <table class="table table-borderless table-striped">
+    <thead>
+    <tr>
+      <th><p class="text-left"><i class="fas fa-globe-africa" title="Environment"></i></p></th>
+      <th style="width: 12.5%">
+        {% button_new 'systems_environment_create' %}
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+      <tr>
+        <td>
+          <p class="text-left">{{ object.name }}</p>
+        </td>
+        <td>
+          <p class="text-right">
+            {% button_edit object %}
+          </p>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

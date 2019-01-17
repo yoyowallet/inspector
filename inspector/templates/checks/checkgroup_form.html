@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load buttons %}
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'checks_checkgroup_list' %}">CheckGroup Listing</a></p>
-<form method="post">
-{% csrf_token %}
-{{form|crispy}}
-<button class="btn btn-primary" type="submit">Submit</button>
-</form>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    {% button_submit %}
+  </form>
 {% endblock %}

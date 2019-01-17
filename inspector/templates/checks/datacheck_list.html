@@ -4,86 +4,86 @@
 {% block title %}Members{% endblock %}
 
 {% block content %}
-<table id="checks" class="table table-borderless table-striped">
-  <thead>
-  <th><input type="checkbox" id="checkall"/></th>
-  <th>Code</th>
-  <th>Description</th>
-  <th>Group</th>
-  <th>System</th>
-  <th>Weight</th>
-  <th>{% button_new 'checks_datacheck_create' %}</th>
-  </thead>
-  <tbody>
-  {% for check in datacheck_list %}
-  <tr>
-    <td><input type="checkbox" class="checkthis"/></td>
-    <td>{{ check.code }}</td>
-    <td>{{ check.description }}</td>
-    <td>{{ check.group }}</td>
-    <td>{{ check.left_system }}</td>
-    <td>{{ check.weight }}</td>
-    <td>
-      <p class="text-right">
-        <button class="btn btn-outline-primary btn-sm check-details" data-title="Details"
-                data-target="#checksModal"
-                data-url="{% url 'checks_datacheck_detail' check.id %}">
-          <span class="fas fa-info-circle fa-sm"></span></button>
-        <button class="btn btn-outline-success btn-sm create-check-run" data-title="Run"
-                data-target="#checksModal"
-                data-url="{% url 'checkrun_create' check.id %}">
-          <span class="fas fa-play fa-sm"></span></button>
-        <button class="btn btn-outline-primary btn-sm" data-title="Edit" data-toggle="modal" data-target="#edit">
-          <span class="fas fa-pencil-alt fa-sm"></span></button>
-        <button type="button" class="delete-check btn btn-sm btn-outline-danger"
-                data-url="{% url 'check_delete' check.pk %}">
-          <span class="fa fa-trash"></span>
-        </button>
-      </p>
-    </td>
-  </tr>
-  {% endfor %}
-  </tbody>
-</table>
+  <table id="checks" class="table table-borderless table-striped">
+    <thead>
+    <th><input type="checkbox" id="checkall"/></th>
+    <th><i class="fas fa-list" title="Check code"></i></th>
+    <th><p class="text-center"><i class="far fa-object-ungroup" title="Group"></i></p></th>
+    <th><p class="text-center"><i class="fas fa-desktop" title="System"></i></p></th>
+    <th><p class="text-center"><i class="fas fa-balance-scale" title="Weight"></i></p></th>
+    <th>{% button_new 'checks_datacheck_create' %}</th>
+    </thead>
+    <tbody>
+    {% for check in datacheck_list %}
+      <tr>
+        <td><input type="checkbox" class="checkthis"/></td>
+        <td>{{ check.code }}</td>
+        <td><p class="text-center">{{ check.group| default_if_none:"" }}</p></td>
+        <td><p class="text-center">{{ check.left_system }}</p></td>
+        <td><p class="text-center">{{ check.weight }}</p></td>
+        <td>
+          <p class="text-right">
+            {% button_hoverdetail 'checks/datacheck_hoverdetail' check %}
+            <button class="btn btn-outline-secondary btn-sm check-details" data-title="Details"
+                    data-target="#checksModal"
+                    data-url="{% url 'checks_datacheck_detail' check.id %}">
+              <span class="fas fa-info-circle fa-sm"></span></button>
+            {% button_edit check %}
+            <button class="btn btn-outline-success btn-sm create-check-run" data-title="Run"
+                    data-target="#checksModal"
+                    data-url="{% url 'checkrun_create' check.id %}">
+              <span class="fas fa-play fa-sm"></span></button>
+            <button type="button" class="delete-check btn btn-sm btn-outline-danger"
+                    data-url="{% url 'check_delete' check.pk %}"
+                    data-name="{{ check.code }}">
+              <span class="fa fa-trash"></span>
+
+            </button>
+          </p>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 
 
-<div class="modal fade" tabindex="-1" role="dialog" id="checksModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
+  <div class="modal fade" tabindex="-1" role="dialog" id="checksModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      </div>
     </div>
   </div>
-</div>
 
 {% endblock content %}
 
 {% block javascript %}
-{{ block.super }}
+  {{ block.super }}
 
-<script type="text/javascript">
-  $(document).ready(function () {
-    $(".create-check-run").each(function () {
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".create-check-run").each(function () {
+          $(this).modalForm({
+            formURL: $(this).data('url'),
+            modalID: "#checksModal"
+          });
+        }
+      )
+
+      $(".delete-check").each(function () {
         $(this).modalForm({
           formURL: $(this).data('url'),
           modalID: "#checksModal"
         });
-      }
-    )
+      });
 
-    $(".delete-check").each(function () {
-      $(this).modalForm({
-        formURL: $(this).data('url'),
-        modalID: "#checksModal"
+      $(".check-details").each(function () {
+        $(this).modalForm({
+          formURL: $(this).data('url'),
+          modalID: "#checksModal"
+        });
       });
     });
-
-    $(".check-details").each(function () {
-      $(this).modalForm({
-        formURL: $(this).data('url'),
-        modalID: "#checksModal"
-      });
-    });
-  });
-</script>
+  </script>
 
 {% endblock javascript %}
 

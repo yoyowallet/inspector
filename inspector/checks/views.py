@@ -1,6 +1,6 @@
 from bootstrap_modal_forms.mixins import PassRequestMixin, DeleteAjaxMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
 from inspector.taskapp.tasks import execute_check
@@ -71,14 +71,16 @@ class CheckGroupCreateView(CreateView):
     model = CheckGroup
     form_class = CheckGroupForm
 
-
-class CheckGroupDetailView(DetailView):
-    model = CheckGroup
+    def get_success_url(self):
+        return reverse('checks_checkgroup_list')
 
 
 class CheckGroupUpdateView(UpdateView):
     model = CheckGroup
     form_class = CheckGroupForm
+
+    def get_success_url(self):
+        return reverse('checks_checkgroup_list')
 
 
 class CheckRunListView(ListView):
