@@ -25,6 +25,12 @@ class CheckGroup(models.Model):
     def get_update_url(self):
         return reverse('checks_checkgroup_update', args=(self.pk,))
 
+    def get_delete_url(self):
+        return reverse('checks_checkgroup_delete', args=(self.pk,))
+
+    def get_name(self):
+        return self.name
+
 
 class Datacheck(models.Model):
     code = models.CharField(max_length=20, unique=True)
@@ -58,6 +64,12 @@ class Datacheck(models.Model):
 
     def get_update_url(self):
         return reverse('checks_datacheck_update', args=(self.pk,))
+
+    def get_delete_url(self):
+        return reverse('checks_datacheck_delete', args=(self.pk,))
+
+    def get_name(self):
+        return self.code
 
 
 class CheckRun(models.Model):

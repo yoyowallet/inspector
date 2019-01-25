@@ -32,3 +32,12 @@ def button_hoverdetail(context, template_name, instance):
 @register.simple_tag
 def button_submit():
     return mark_safe("""<button class="btn btn-primary btn-sm" type="submit">Submit</button>""")
+
+
+@register.inclusion_tag('components/button_delete.html')
+def button_delete(instance):
+    return {
+        'url': instance.get_delete_url(),
+        'delete_class': f'{instance.__class__.__name__.lower()}-delete',
+        'name': instance.get_name()
+    }

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load bootstrap_pagination %}
 {% load buttons %}
 {% block content %}
 <table class="table table-borderless table-striped">
@@ -9,8 +10,8 @@
     <th><i class="fas fa-list" title="Check code"></i></th>
     <th><p class="text-center"><i class="fas fa-globe-africa" title="Environment"></i></p></th>
     <th><p class="text-center"><i class="far fa-square" title="Start"></i>
-      <i class="fas fa-angle-double-right" ></i></p></th>
-    <th><p class="text-center"><i class="fas fa-angle-double-right" ></i>
+      <i class="fas fa-angle-double-right"></i></p></th>
+    <th><p class="text-center"><i class="fas fa-angle-double-right"></i>
       <i class="fas fa-square" title="End"></i></p></th>
     <th><p class="text-center"><i class="far fa-clock" title="Status"></i></p></th>
     <th><p class="text-center"><i class="fas fa-question" title="Result"></i></p></th>
@@ -24,7 +25,7 @@
   <tr>
     <td>{{ object.datacheck.code }}</td>
     <td><p class="text-center">{{ object.environment.name }}</p></td>
-    <td><p class="text-center">{{ object.start_time| default_if_none:"" }}</p></td>
+    <td><p class="text-center">{{ object.start_time|default_if_none:"" }}</p></td>
     <td><p class="text-center">{{ object.end_time|default_if_none:"" }}</p></td>
     <td><p class="text-center">
       {% if object.status == 'ERROR' %}
@@ -44,7 +45,7 @@
       {% elif object.result == 'SUCCESS' %}
       WARNING
       {% endif %}
-      </p>
+    </p>
     </td>
     <td><p class="text-center">
       {{ object.user.username }}
@@ -55,4 +56,7 @@
   {% endfor %}
   </tbody>
 </table>
+
+{% bootstrap_paginate page_obj %}
+
 {% endblock %}

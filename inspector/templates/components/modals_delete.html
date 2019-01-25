@@ -2,19 +2,20 @@
   {% csrf_token %}
 
   <div class="modal-header">
-    <h3 class="modal-title">Delete Check</h3>
+    <h5 class="modal-title">Delete</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
 
   <div class="modal-body">
-    <p>Are you sure you want to delete check
-      <strong>{{ check.code }}</strong>?</p>
+    <p>Are you sure you want to delete
+      <strong>{{ object.get_name }}</strong>
+      <span class="tab-space"> </span>?</p>
   </div>
 
   <div class="modal-footer">
-    <button type="submit" class="btn btn-danger">Delete</button>
+    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
   </div>
 
 </form>

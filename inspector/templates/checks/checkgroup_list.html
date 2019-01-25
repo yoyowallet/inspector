@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load buttons %}
+{% load modals %}
 {% block content %}
   <table class="table table-borderless table-striped">
     <thead>
@@ -17,9 +18,20 @@
         <td>{{ object.description }}</td>
         <td><p class="text-right">
           {% button_edit object %}
+          {% button_delete object %}
         </p></td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
+
+{% modals_modal 'checkgroup' %}
+
 {% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+
+{% modals_delete_js 'checkgroup' %}
+
+{% endblock javascript %}

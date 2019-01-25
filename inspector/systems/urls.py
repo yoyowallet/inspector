@@ -19,6 +19,7 @@ urlpatterns += (
     path('systems/system/', views.SystemListView.as_view(), name='systems_system_list'),
     path('systems/system/create/', views.SystemCreateView.as_view(), name='systems_system_create'),
     path('systems/system/update/<int:pk>/', views.SystemUpdateView.as_view(), name='systems_system_update'),
+    path('systems/system/delete/<int:pk>', views.SystemDeleteView.as_view(), name="systems_system_delete"),
 )
 
 urlpatterns += (

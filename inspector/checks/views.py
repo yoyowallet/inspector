@@ -53,14 +53,14 @@ class CheckRunCreateView(PassRequestMixin, SuccessMessageMixin,
 checkrun_create_view = CheckRunCreateView.as_view()
 
 
-class CheckDeleteView(DeleteAjaxMixin, DeleteView):
+class DatacheckDeleteView(DeleteAjaxMixin, DeleteView):
     model = Datacheck
-    template_name = 'checks/datacheck_delete.html'
+    template_name = 'components/modals_delete.html'
     success_message = 'Success: Check was deleted.'
-    success_url = reverse_lazy('checks:index')
+    success_url = reverse_lazy('checks_datacheck_list')
 
 
-check_delete_view = CheckDeleteView.as_view()
+check_delete_view = DatacheckDeleteView.as_view()
 
 
 class CheckGroupListView(ListView):
@@ -85,6 +85,13 @@ class CheckGroupUpdateView(UpdateView):
 
 class CheckRunListView(ListView):
     model = CheckRun
+    paginate_by = 50
+
+    def get_paginate_by(self, queryset):
+        """
+        Paginate by specified value in querystring, or use default class property value.
+        """
+        return self.request.GET.get('paginate_by', self.paginate_by)
 
 
 class CheckRunDetailView(DetailView):
@@ -103,3 +110,10 @@ class DatacheckUpdateView(UpdateView):
 
 class EnvironmentStatusListView(ListView):
     model = EnvironmentStatus
+
+
+class CheckGroupDeleteView(DeleteAjaxMixin, DeleteView):
+    model = CheckGroup
+    template_name = 'components/modals_delete.html'
+    success_message = 'Success: Check group was deleted.'
+    success_url = reverse_lazy('checks_checkgroup_list')

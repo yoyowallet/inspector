@@ -23,6 +23,7 @@ urlpatterns += (
     path('checks/checkgroup/', views.CheckGroupListView.as_view(), name='checks_checkgroup_list'),
     path('checks/checkgroup/create/', views.CheckGroupCreateView.as_view(), name='checks_checkgroup_create'),
     path('checks/checkgroup/update/<int:pk>/', views.CheckGroupUpdateView.as_view(), name='checks_checkgroup_update'),
+    path('checks/checkgroup/delete/<int:pk>', views.CheckGroupDeleteView.as_view(), name='checks_checkgroup_delete'),
 )
 
 urlpatterns += (
@@ -36,7 +37,7 @@ urlpatterns += (
 urlpatterns += (
     path("checks/datacheck/", view=check_list_view, name="checks_datacheck_list"),
     path("checks/datacheck/detail/<int:pk>/", view=check_detail_view, name="checks_datacheck_detail"),
-    path("checks/datacheck/delete/<int:pk>", check_delete_view, name="check_delete"),
+    path("checks/datacheck/delete/<int:pk>", check_delete_view, name="checks_datacheck_delete"),
     path("checkrun/create/<int:check_id>/", checkrun_create_view, name="checkrun_create"),
     path('checks/datacheck/create/', views.DatacheckCreateView.as_view(), name='checks_datacheck_create'),
     path('checks/datacheck/update/<int:pk>/', views.DatacheckUpdateView.as_view(), name='checks_datacheck_update'),

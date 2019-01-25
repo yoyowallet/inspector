@@ -21,6 +21,12 @@ class System(models.Model):
     def get_update_url(self):
         return reverse('systems_system_update', args=(self.pk,))
 
+    def get_delete_url(self):
+        return reverse('systems_system_delete', args=(self.pk,))
+
+    def get_name(self):
+        return self.name
+
 
 class Environment(models.Model):
     name = models.CharField(max_length=50, unique=True, null=True)

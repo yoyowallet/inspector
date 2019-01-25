@@ -1,5 +1,6 @@
-from django.urls import reverse
-from django.views.generic import DetailView, ListView, UpdateView, CreateView
+from bootstrap_modal_forms.mixins import DeleteAjaxMixin
+from django.urls import reverse, reverse_lazy
+from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
 
 from .forms import SystemForm, EnvironmentForm, InstanceForm
 from .models import System, Environment, Instance
@@ -64,3 +65,10 @@ class InstanceDetailView(DetailView):
 class InstanceUpdateView(UpdateView):
     model = Instance
     form_class = InstanceForm
+
+
+class SystemDeleteView(DeleteAjaxMixin, DeleteView):
+    model = System
+    template_name = 'components/modals_delete.html'
+    success_message = 'Success: System was deleted.'
+    success_url = reverse_lazy('systems_system_list')
