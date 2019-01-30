@@ -37,6 +37,8 @@ urlpatterns += (
 urlpatterns += (
     path("checks/datacheck/", view=check_list_view, name="checks_datacheck_list"),
     path("checks/datacheck/detail/<int:pk>/", view=check_detail_view, name="checks_datacheck_detail"),
+    path("checks/datacheck/info/<int:pk>/", view=views.DatacheckInfoView.as_view(),
+         name="checks_datacheck_info"),
     path("checks/datacheck/delete/<int:pk>", check_delete_view, name="checks_datacheck_delete"),
     path("checkrun/create/<int:check_id>/", checkrun_create_view, name="checkrun_create"),
     path('checks/datacheck/create/', views.DatacheckCreateView.as_view(), name='checks_datacheck_create'),

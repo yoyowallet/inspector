@@ -27,7 +27,7 @@
         {% button_hoverdetail 'checks/datacheck_hoverdetail' object %}
         <button class="btn btn-outline-secondary btn-sm check-details" data-title="Details"
                 data-target="#checksModal"
-                data-url="{% url 'checks_datacheck_detail' object.id %}">
+                data-url="{% url 'checks_datacheck_info' object.id %}">
           <span class="fas fa-info-circle fa-sm"></span></button>
         {% button_edit object %}
         <button class="btn btn-outline-success btn-sm create-check-run" data-title="Run"

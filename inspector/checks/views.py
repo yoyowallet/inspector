@@ -18,14 +18,12 @@ class CheckListView(ListView):
 check_list_view = CheckListView.as_view()
 
 
-class CheckDetailView(DetailView):
+class DatacheckDetailView(DetailView):
     model = Datacheck
-    slug_field = "code"
-    slug_url_kwarg = "code"
     template_name = 'checks/datacheck_detail.html'
 
 
-check_detail_view = CheckDetailView.as_view()
+check_detail_view = DatacheckDetailView.as_view()
 
 
 class CheckRunCreateView(PassRequestMixin, SuccessMessageMixin,
@@ -75,6 +73,7 @@ class CheckGroupCreateView(CreateView):
         return reverse('checks_checkgroup_list')
 
 
+
 class CheckGroupUpdateView(UpdateView):
     model = CheckGroup
     form_class = CheckGroupForm
@@ -92,6 +91,9 @@ class CheckRunListView(ListView):
         Paginate by specified value in querystring, or use default class property value.
         """
         return self.request.GET.get('paginate_by', self.paginate_by)
+
+    def get_queryset(self):
+        return CheckRun.objects.select_related()
 
 
 class CheckRunDetailView(DetailView):
@@ -117,3 +119,8 @@ class CheckGroupDeleteView(DeleteAjaxMixin, DeleteView):
     template_name = 'components/modals_delete.html'
     success_message = 'Success: Check group was deleted.'
     success_url = reverse_lazy('checks_checkgroup_list')
+
+
+class DatacheckInfoView(DetailView):
+    model = Datacheck
+    template_name = 'checks/datacheck_info.html'

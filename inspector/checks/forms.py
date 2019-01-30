@@ -1,4 +1,6 @@
 from bootstrap_modal_forms.mixins import PopRequestMixin, CreateUpdateAjaxMixin
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from django import forms
 
 from .models import CheckGroup, Datacheck, CheckRun, EnvironmentStatus
@@ -11,9 +13,15 @@ class CreateCheckRunForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm
 
 
 class CheckGroupForm(forms.ModelForm):
+    helper = FormHelper()
+    helper.add_input(Submit('submit', 'Submit', css_class="btn-sm"))
+
     class Meta:
         model = CheckGroup
         fields = ['name', 'description']
+        widgets = {
+            'description': forms.Textarea({'cols': 40, 'rows': 3})
+        }
 
 
 class DatacheckForm(forms.ModelForm):
