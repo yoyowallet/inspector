@@ -4,8 +4,6 @@
 {% load buttons %}
 {% block content %}
   <form method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    {% button_submit %}
+    {% crispy form %}
   </form>
 {% endblock %}

@@ -3,9 +3,7 @@
 {% load crispy_forms_tags %}
 {% load buttons %}
 {% block content %}
-<form method="post">
-  {% csrf_token %}
-  {{form|crispy}}
-  {% button_submit %}
-</form>
+  <form method="post">
+    {% crispy form %}
+  </form>
 {% endblock %}
