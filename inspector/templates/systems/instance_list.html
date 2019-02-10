@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load buttons %}
+{% load modals %}
 {% block content %}
   <table class="table table-borderless table-striped">
     <thead>
@@ -20,9 +21,19 @@
           <p class="text-right">
             {% button_hoverdetail 'systems/instance_hoverdetail' object %}
             {% button_edit object %}
+            {% button_delete object %}
           </p>
         </td>
       </tr>
     {% endfor %}
   </table>
+  {% modals_modal 'instance' %}
+
+{% endblock %}
+
+{% block javascript %}
+
+  {{ block.super }}
+  {% modals_delete_js 'instance' %}
+
 {% endblock %}

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load buttons %}
+{% load modals %}
 {% block content %}
   <table class="table table-borderless table-striped">
     <thead>
@@ -20,10 +21,20 @@
         <td>
           <p class="text-right">
             {% button_edit object %}
+            {% button_delete object %}
           </p>
         </td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
+  {% modals_modal 'environment' %}
+
+{% endblock %}
+
+{% block javascript %}
+
+  {{ block.super }}
+  {% modals_delete_js 'environment' %}
+
 {% endblock %}

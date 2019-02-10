@@ -64,7 +64,11 @@ class CheckProcessor:
 
         instance = self.get_instance(system=system)
         executor = self.get_executor_for_instance(instance=instance, check_type=check_type)
-        executor.test_connection()
+        try:
+            executor.test_connection()
+        except Exception as exc:
+            raise CheckExecutorException(exc)
+
         return executor
 
     def get_instance(self, system: System) -> Instance:

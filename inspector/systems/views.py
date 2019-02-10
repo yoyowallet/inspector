@@ -49,6 +49,9 @@ class EnvironmentUpdateView(UpdateView):
 class InstanceListView(ListView):
     model = Instance
 
+    def get_queryset(self):
+        return Instance.objects.select_related()
+
 
 class InstanceCreateView(CreateView):
     model = Instance
@@ -72,3 +75,17 @@ class SystemDeleteView(DeleteAjaxMixin, DeleteView):
     template_name = 'components/modals_delete.html'
     success_message = 'Success: System was deleted.'
     success_url = reverse_lazy('systems_system_list')
+
+
+class EnvironmentDeleteView(DeleteAjaxMixin, DeleteView):
+    model = Environment
+    template_name = 'components/modals_delete.html'
+    success_message = 'Success: Environment was deleted.'
+    success_url = reverse_lazy('systems_environment_list')
+
+
+class InstanceDeleteView(DeleteAjaxMixin, DeleteView):
+    model = Instance
+    template_name = 'components/modals_delete.html'
+    success_message = 'Success: Instance was deleted.'
+    success_url = reverse_lazy('systems_instance_list')

@@ -46,6 +46,12 @@ class Environment(models.Model):
     def get_update_url(self):
         return reverse('systems_environment_update', args=(self.pk,))
 
+    def get_delete_url(self):
+        return reverse('systems_environment_delete', args=(self.pk,))
+
+    def get_name(self):
+        return self.name
+
 
 class Instance(models.Model):
     system = models.ForeignKey(System, on_delete=models.PROTECT)
@@ -68,3 +74,9 @@ class Instance(models.Model):
 
     def get_update_url(self):
         return reverse('systems_instance_update', args=(self.pk,))
+
+    def get_delete_url(self):
+        return reverse('systems_instance_delete', args=(self.pk,))
+
+    def get_name(self):
+        return f'{self.system.name} / {self.environment.name} '

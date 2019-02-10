@@ -73,7 +73,6 @@ class CheckGroupCreateView(CreateView):
         return reverse('checks_checkgroup_list')
 
 
-
 class CheckGroupUpdateView(UpdateView):
     model = CheckGroup
     form_class = CheckGroupForm
