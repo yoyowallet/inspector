@@ -7,7 +7,7 @@ register = Library()
 
 @register.inclusion_tag('components/button_edit.html')
 def button_edit(instance):
-    return {'url': instance.get_update_url()}
+    return {'url': instance.get_url('update')}
 
 
 @register.inclusion_tag('components/button_new.html')
@@ -17,7 +17,7 @@ def button_new(url_name):
 
 @register.inclusion_tag('components/button_detail.html')
 def button_detail(instance):
-    return {'url': instance.get_absolute_url()}
+    return {'url': instance.get_url('detail')}
 
 
 @register.simple_tag(takes_context=True)
@@ -37,7 +37,16 @@ def button_submit():
 @register.inclusion_tag('components/button_delete.html')
 def button_delete(instance):
     return {
-        'url': instance.get_delete_url(),
+        'url': instance.get_url('delete'),
         'delete_class': f'{instance.__class__.__name__.lower()}-delete',
+        'name': instance.get_name()
+    }
+
+
+@register.inclusion_tag('components/button_run.html')
+def button_run(instance):
+    return {
+        'url': instance.get_url('run'),
+        'run_class': f'{instance.__class__.__name__.lower()}-run',
         'name': instance.get_name()
     }

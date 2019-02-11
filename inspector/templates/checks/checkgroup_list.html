@@ -17,6 +17,7 @@
         <td>{{ object.name }}</td>
         <td>{{ object.description }}</td>
         <td><p class="text-right">
+          {% button_run object %}
           {% button_edit object %}
           {% button_delete object %}
         </p></td>
@@ -32,6 +33,7 @@
 {% block javascript %}
 {{ block.super }}
 
+{% modals_run_js 'checkgroup' %}
 {% modals_delete_js 'checkgroup' %}
 
 {% endblock javascript %}

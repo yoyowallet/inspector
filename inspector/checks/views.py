@@ -1,11 +1,11 @@
 from bootstrap_modal_forms.mixins import PassRequestMixin, DeleteAjaxMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, FormView
 
 from inspector.taskapp.tasks import execute_check
 from .constants import STATUSES
-from .forms import CreateCheckRunForm, CheckGroupForm, DatacheckForm
+from .forms import DatacheckRunForm, CheckGroupForm, DatacheckForm, CheckGroupRunForm
 from .models import Datacheck, CheckGroup, CheckRun, EnvironmentStatus
 
 
@@ -26,15 +26,15 @@ class DatacheckDetailView(DetailView):
 check_detail_view = DatacheckDetailView.as_view()
 
 
-class CheckRunCreateView(PassRequestMixin, SuccessMessageMixin,
-                         CreateView):
-    template_name = 'checks/checkrun_create.html'
-    form_class = CreateCheckRunForm
+class DatacheckRunView(PassRequestMixin, SuccessMessageMixin,
+                       CreateView):
+    template_name = 'components/modals_run.html'
+    form_class = DatacheckRunForm
     success_message = 'Success: Check was triggered.'
     success_url = reverse_lazy('checks_datacheck_list')
 
     def form_valid(self, form):
-        form.instance.datacheck_id = self.kwargs['check_id']
+        form.instance.datacheck_id = self.kwargs['pk']
         form.instance.user = self.request.user
         form.instance.status = STATUSES.NEW
         # TODO - check if system is available in environment
@@ -48,7 +48,21 @@ class CheckRunCreateView(PassRequestMixin, SuccessMessageMixin,
         return super().get_success_url()
 
 
-checkrun_create_view = CheckRunCreateView.as_view()
+datacheck_run_view = DatacheckRunView.as_view()
+
+
+class CheckGroupRunView(PassRequestMixin, SuccessMessageMixin, FormView):
+    template_name = 'components/modals_run.html'
+    form_class = CheckGroupRunForm
+    success_message = 'Success: Check group was triggered.'
+    success_url = reverse_lazy('checks_checkgroup_list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.status = STATUSES.NEW
+        # TODO - trigger all tasks in the group
+
+        return super().form_valid(form)
 
 
 class DatacheckDeleteView(DeleteAjaxMixin, DeleteView):

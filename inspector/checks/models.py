@@ -19,14 +19,8 @@ class CheckGroup(models.Model):
     def __unicode__(self):
         return u'%s' % self.pk
 
-    def get_absolute_url(self):
-        return reverse('checks_checkgroup_detail', args=(self.pk,))
-
-    def get_update_url(self):
-        return reverse('checks_checkgroup_update', args=(self.pk,))
-
-    def get_delete_url(self):
-        return reverse('checks_checkgroup_delete', args=(self.pk,))
+    def get_url(self, action):
+        return reverse(f'checks_checkgroup_{action}', args=(self.pk,))
 
     def get_name(self):
         return self.name
@@ -59,14 +53,8 @@ class Datacheck(models.Model):
     def __unicode__(self):
         return u'%s' % self.pk
 
-    def get_absolute_url(self):
-        return reverse('checks_datacheck_detail', args=(self.pk,))
-
-    def get_update_url(self):
-        return reverse('checks_datacheck_update', args=(self.pk,))
-
-    def get_delete_url(self):
-        return reverse('checks_datacheck_delete', args=(self.pk,))
+    def get_url(self, action):
+        return reverse(f'checks_datacheck_{action}', args=(self.pk,))
 
     def get_name(self):
         return self.code
@@ -92,8 +80,8 @@ class CheckRun(models.Model):
     def __unicode__(self):
         return u'%s' % self.pk
 
-    def get_absolute_url(self):
-        return reverse('checks_checkrun_detail', args=(self.pk,))
+    def get_url(self, action):
+        return reverse(f'checks_checkrun_{action}', args=(self.pk,))
 
 
 class EnvironmentStatus(models.Model):

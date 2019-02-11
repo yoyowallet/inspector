@@ -7,7 +7,13 @@ from django import forms
 from .models import CheckGroup, Datacheck, CheckRun, EnvironmentStatus
 
 
-class CreateCheckRunForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+class DatacheckRunForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
+    class Meta:
+        model = CheckRun
+        fields = ['environment']
+
+
+class CheckGroupRunForm(PopRequestMixin, forms.ModelForm):
     class Meta:
         model = CheckRun
         fields = ['environment']

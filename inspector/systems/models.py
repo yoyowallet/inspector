@@ -18,11 +18,8 @@ class System(models.Model):
     def __unicode__(self):
         return u'%s' % self.pk
 
-    def get_update_url(self):
-        return reverse('systems_system_update', args=(self.pk,))
-
-    def get_delete_url(self):
-        return reverse('systems_system_delete', args=(self.pk,))
+    def get_url(self, action):
+        return reverse(f'systems_system_{action}', args=(self.pk,))
 
     def get_name(self):
         return self.name
@@ -40,14 +37,8 @@ class Environment(models.Model):
     def __unicode__(self):
         return u'%s' % self.pk
 
-    def get_absolute_url(self):
-        return reverse('systems_environment_detail', args=(self.pk,))
-
-    def get_update_url(self):
-        return reverse('systems_environment_update', args=(self.pk,))
-
-    def get_delete_url(self):
-        return reverse('systems_environment_delete', args=(self.pk,))
+    def get_url(self, action):
+        return reverse(f'systems_environment_{action}', args=(self.pk,))
 
     def get_name(self):
         return self.name
@@ -69,14 +60,8 @@ class Instance(models.Model):
     def __unicode__(self):
         return u'%s' % self.pk
 
-    def get_absolute_url(self):
-        return reverse('systems_instance_detail', args=(self.pk,))
-
-    def get_update_url(self):
-        return reverse('systems_instance_update', args=(self.pk,))
-
-    def get_delete_url(self):
-        return reverse('systems_instance_delete', args=(self.pk,))
+    def get_url(self, action):
+        return reverse(f'systems_instance_{action}', args=(self.pk,))
 
     def get_name(self):
         return f'{self.system.name} / {self.environment.name} '
