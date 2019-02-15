@@ -3,9 +3,13 @@
 {% load crispy_forms_tags %}
 {% load buttons %}
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    {{form|crispy}}
-    {% button_submit %}
-</form>
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <article class="card-body">
+          {% crispy form %}
+        </article>
+      </div>
+    </div>
+  </div>
 {% endblock %}

@@ -59,3 +59,8 @@ class EnvironmentStatusSerializer(serializers.ModelSerializer):
             'status',
             'result',
         )
+
+
+class CheckRunCreateSerializer(serializers.Serializer):
+    check_code = serializers.CharField(max_length=20, required=True, allow_blank=False)
+    environment = serializers.CharField(max_length=50, required=True, allow_blank=False)

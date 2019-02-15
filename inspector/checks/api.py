@@ -1,7 +1,11 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, authentication, status
+from rest_framework.generics import CreateAPIView
+from rest_framework.response import Response
 
+from inspector.taskapp.tasks import execute_check
 from . import models
 from . import serializers
+from .service import CheckRunService
 
 
 class CheckGroupViewSet(viewsets.ModelViewSet):
@@ -34,3 +38,26 @@ class EnvironmentStatusViewSet(viewsets.ModelViewSet):
     queryset = models.EnvironmentStatus.objects.all()
     serializer_class = serializers.EnvironmentStatusSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class RunCheck(CreateAPIView):
+    authentication_classes = (authentication.TokenAuthentication,
+                              authentication.SessionAuthentication)
+    permission_classes = (permissions.IsAdminUser,)
+    serializer_class = serializers.CheckRunCreateSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            checkrun_id = CheckRunService.create_check_run(
+                serializer['check_code'].value,
+                serializer['environment'].value,
+                request.user)
+        except (models.Datacheck.DoesNotExist,
+                models.Environment.DoesNotExist) as exc:
+            return Response(str(exc), status=400)
+
+        execute_check.delay(checkrun_id)
+
+        return Response({'checkrun_id': checkrun_id}, status=status.HTTP_200_OK)

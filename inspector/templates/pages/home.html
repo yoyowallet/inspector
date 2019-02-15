@@ -1,1 +1,24 @@
 {% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <div class="jumbotron">
+    <h1 class="display-4 text-center">Welcome to Inspector</h1>
+    <p class="lead text-center">Open source data testing, monitoring and quality tool</p>
+    <div class="text-center">
+      <img src="{% static 'images/logo.svg' %}" height="150px"/>
+    </div>
+    <hr class="my-4">
+    <p class="text-center">Inspector helps with automating data testing and ongoing monitoring of data quality</p>
+    <div class="text-center">
+      {% if request.user.is_authenticated %}
+        <a class="btn btn-primary btn-lg" href="{% url 'checks_environmentstatus_list' %}" role="button">
+          Status
+        </a>
+      {% else %}
+        <a class="btn btn-primary btn-lg" href="{% url 'account_login' %}" role="button">
+          Login to begin
+        </a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

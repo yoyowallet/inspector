@@ -1,4 +1,4 @@
-{% load static i18n compress%}<!DOCTYPE html>
+{% load static i18n compress %}<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -17,20 +17,22 @@
 
   {% block css %}
 
-  <!-- Latest compiled and minified Bootstrap 4.1.1 CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
-        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 
-  <!-- Your stuff: Third-party CSS libraries go here -->
-  {% compress css %}
-  <!-- This file stores project-specific CSS -->
 
-  <link href="{% static 'css/project.css' %}" rel="stylesheet">
 
-  {% endcompress %}
+    <!-- Your stuff: Third-party CSS libraries go here -->
+    {% compress css %}
+      <!-- This file stores project-specific CSS -->
+
+      <link href="{% static 'css/project.css' %}" rel="stylesheet">
+
+    {% endcompress %}
   {% endblock %}
 
 </head>
@@ -44,8 +46,9 @@
             aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="{% url 'home' %}">Inspector</a>
-
+    <a class="navbar-brand" href="{% url 'home' %}">
+    <img src="{% static 'images/inspector.svg' %}" height="30px"/>
+    </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
@@ -53,60 +56,52 @@
         </li>
 
         {% if request.user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'checks_environmentstatus_list' %}">Status</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'checks_checkrun_list' %}">Check runs</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownChecks" role="button" data-toggle="dropdown"
-             aria-haspopup="true" aria-expanded="false">
-            Checks
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownChecks">
-            <a class="dropdown-item" href="{% url 'checks_datacheck_list'  %}">Checks</a>
-            <a class="dropdown-item" href="{% url 'checks_checkgroup_list'  %}">Check groups</a>
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSystems" role="button" data-toggle="dropdown"
-             aria-haspopup="true" aria-expanded="false">
-            Systems
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownSystems">
-            <a class="dropdown-item" href="{% url 'systems_system_list'  %}">Systems</a>
-            <a class="dropdown-item" href="{% url 'systems_environment_list'  %}">Environments</a>
-            <a class="dropdown-item" href="{% url 'systems_instance_list'  %}">Instances</a>
-          </div>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'checks_environmentstatus_list' %}">Status</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'checks_checkrun_list' %}">Check runs</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownChecks" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+              Checks
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownChecks">
+              <a class="dropdown-item" href="{% url 'checks_datacheck_list' %}">Checks</a>
+              <a class="dropdown-item" href="{% url 'checks_checkgroup_list' %}">Check groups</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSystems" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+              Systems
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownSystems">
+              <a class="dropdown-item" href="{% url 'systems_system_list' %}">Systems</a>
+              <a class="dropdown-item" href="{% url 'systems_environment_list' %}">Environments</a>
+              <a class="dropdown-item" href="{% url 'systems_instance_list' %}">Instances</a>
+            </div>
+          </li>
 
         {% endif %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'about' %}">About</a>
-        </li>
-
 
       </ul>
       <ul class="navbar-nav text-right">
         {% if request.user.is_authenticated %}
-        <li class="nav-item">
-          {# URL provided by django-allauth/account/urls.py #}
-          <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
-        </li>
-        <li class="nav-item">
-          {# URL provided by django-allauth/account/urls.py #}
-          <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
-        </li>
+          <li class="nav-item">
+            {# URL provided by django-allauth/account/urls.py #}
+            <a class="nav-link" href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
+          </li>
+          <li class="nav-item">
+            {# URL provided by django-allauth/account/urls.py #}
+            <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
+          </li>
         {% else %}
-        <li class="nav-item">
-          {# URL provided by django-allauth/account/urls.py #}
-          <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
-        </li>
-        <li class="nav-item">
-          {# URL provided by django-allauth/account/urls.py #}
-          <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
-        </li>
+          <li class="nav-item">
+            {# URL provided by django-allauth/account/urls.py #}
+            <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+          </li>
         {% endif %}
       </ul>
     </div>
@@ -117,43 +112,45 @@
 <div class="container">
 
   {% if messages %}
-  {% for message in messages %}
-  <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
-  {% endfor %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+    {% endfor %}
   {% endif %}
 
   {% block content %}
-  <p>Use this document as a way to quick start any new project.</p>
+    <p>Use this document as a way to quick start any new project.</p>
   {% endblock content %}
 
 </div> <!-- /container -->
 
 {% block modal %}{% endblock modal %}
 
+
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 {% block javascript %}
 
-<!-- Required by Bootstrap v4.1.1 -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-        crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+          integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+          crossorigin="anonymous"></script>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+          crossorigin="anonymous"></script>
 
 
-<!-- Your stuff: Third-party javascript libraries go here -->
-<script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+  <!-- Your stuff: Third-party javascript libraries go here -->
+  <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
 
-<!-- place project specific Javascript in this file -->
-{% compress js %}
-<script src="{% static 'js/project.js' %}"></script>
-{% endcompress %}
+  <!-- place project specific Javascript in this file -->
+  {% compress js %}
+    <script src="{% static 'js/project.js' %}"></script>
+  {% endcompress %}
 
 {% endblock javascript %}
 </body>

@@ -5,6 +5,7 @@ from crispy_forms.layout import Submit, Layout, Row, Column
 from django import forms
 
 from .models import CheckGroup, Datacheck, CheckRun, EnvironmentStatus
+from ..base.constants import SUBMIT_CSS_CLASSES
 
 
 class DatacheckRunForm(PopRequestMixin, CreateUpdateAjaxMixin, forms.ModelForm):
@@ -21,7 +22,7 @@ class CheckGroupRunForm(PopRequestMixin, forms.ModelForm):
 
 class CheckGroupForm(forms.ModelForm):
     helper = FormHelper()
-    helper.add_input(Submit('submit', 'Submit', css_class="btn-sm"))
+    helper.add_input(Submit('submit', 'Submit', css_class=SUBMIT_CSS_CLASSES))
 
     class Meta:
         model = CheckGroup

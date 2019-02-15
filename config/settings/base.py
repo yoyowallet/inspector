@@ -67,11 +67,13 @@ THIRD_PARTY_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_framework',
+    'rest_framework.authtoken',
     'bootstrap_modal_forms',
     'encrypted_model_fields',
     'bootstrap_pagination'
 ]
 LOCAL_APPS = [
+    'inspector.base.apps.BaseConfig',
     'inspector.users.apps.UsersAppConfig',
     'inspector.checks.apps.ChecksConfig',
     'inspector.systems.apps.SystemsConfig'
