@@ -63,5 +63,8 @@ class Instance(models.Model):
     def get_url(self, action):
         return reverse(f'systems_instance_{action}', args=(self.pk,))
 
+    def get_absolute_url(self):
+        self.get_url('update')
+
     def get_name(self):
         return f'{self.system.name} / {self.environment.name} '

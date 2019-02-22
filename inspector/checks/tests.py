@@ -1,17 +1,27 @@
 import unittest
-from django.urls import reverse
-from django.test import Client
-from .models import CheckGroup, Datacheck, CheckRun, EnvironmentStatus
-from django.contrib.auth.models import User
+from random import shuffle
+
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.contenttypes.models import ContentType
+from django.test import Client
+from django.urls import reverse
+
+from .constants import CHECK_TYPES, RELATIONS
+from .models import CheckGroup, Datacheck, CheckRun, EnvironmentStatus
+from ..systems.tests import create_system, create_environment
+
+RANDOMS = list(range(10000))
+shuffle(RANDOMS)
 
 
 def create_django_contrib_auth_models_user(**kwargs):
     defaults = {}
-    defaults["username"] = "username"
-    defaults["email"] = "username@tempurl.com"
+    user_no = RANDOMS.pop()
+    defaults["username"] = "user-{}".format(user_no)
+    defaults["email"] = "user-{}@tempurl.com".format(user_no)
     defaults.update(**kwargs)
+    User = get_user_model()
     return User.objects.create(**defaults)
 
 
@@ -30,7 +40,7 @@ def create_django_contrib_contenttypes_models_contenttype(**kwargs):
 
 def create_checkgroup(**kwargs):
     defaults = {}
-    defaults["name"] = "name"
+    defaults["name"] = "checkgroup-{}".format(RANDOMS.pop())
     defaults["description"] = "description"
     defaults.update(**kwargs)
     return CheckGroup.objects.create(**defaults)
@@ -38,16 +48,17 @@ def create_checkgroup(**kwargs):
 
 def create_datacheck(**kwargs):
     defaults = {}
-    defaults["code"] = "code"
+    defaults["code"] = "datacheck-{}".format(RANDOMS.pop())
     defaults["description"] = "description"
-    defaults["weight"] = "weight"
-    defaults["left_type"] = "left_type"
+    defaults["weight"] = 1
+    defaults["left_type"] = CHECK_TYPES.SQL_QUERY
     defaults["left_logic"] = "left_logic"
-    defaults["relation"] = "relation"
+    defaults["relation"] = RELATIONS.eq
+    defaults["right_type"] = CHECK_TYPES.SQL_QUERY
     defaults["right_logic"] = "right_logic"
-    defaults["supports_warning"] = "supports_warning"
-    defaults["warning_relation"] = "warning_relation"
-    defaults["warning_type"] = "warning_type"
+    defaults["supports_warning"] = False
+    defaults["warning_relation"] = None
+    defaults["warning_type"] = None
     defaults["warning_logic"] = "warning_logic"
     defaults.update(**kwargs)
     if "group" not in defaults:
@@ -61,8 +72,6 @@ def create_datacheck(**kwargs):
 
 def create_checkrun(**kwargs):
     defaults = {}
-    defaults["start_time"] = "start_time"
-    defaults["end_time"] = "end_time"
     defaults["status"] = "status"
     defaults["result"] = "result"
     defaults["left_value"] = "left_value"
@@ -75,14 +84,12 @@ def create_checkrun(**kwargs):
     if "environment" not in defaults:
         defaults["environment"] = create_environment()
     if "user" not in defaults:
-        defaults["user"] = create_settings_auth_user_model()
+        defaults["user"] = create_django_contrib_auth_models_user()
     return CheckRun.objects.create(**defaults)
 
 
 def create_environmentstatus(**kwargs):
     defaults = {}
-    defaults["last_start_time"] = "last_start_time"
-    defaults["last_end_time"] = "last_end_time"
     defaults["status"] = "status"
     defaults["result"] = "result"
     defaults.update(**kwargs)
@@ -91,7 +98,7 @@ def create_environmentstatus(**kwargs):
     if "environment" not in defaults:
         defaults["environment"] = create_environment()
     if "user" not in defaults:
-        defaults["user"] = create_settings_auth_user_model()
+        defaults["user"] = create_django_contrib_auth_models_user()
     return EnvironmentStatus.objects.create(**defaults)
 
 
@@ -99,6 +106,7 @@ class CheckGroupViewTest(unittest.TestCase):
     '''
     Tests for CheckGroup
     '''
+
     def setUp(self):
         self.client = Client()
 
@@ -110,25 +118,19 @@ class CheckGroupViewTest(unittest.TestCase):
     def test_create_checkgroup(self):
         url = reverse('checks_checkgroup_create')
         data = {
-            "name": "name",
+            "name": "checkgroup-{}".format(RANDOMS.pop()),
             "description": "description",
         }
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 302)
 
-    def test_detail_checkgroup(self):
-        checkgroup = create_checkgroup()
-        url = reverse('checks_checkgroup_detail', args=[checkgroup.pk,])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
     def test_update_checkgroup(self):
         checkgroup = create_checkgroup()
         data = {
-            "name": "name",
+            "name": "checkgroup-{}".format(RANDOMS.pop()),
             "description": "description",
         }
-        url = reverse('checks_checkgroup_update', args=[checkgroup.pk,])
+        url = reverse('checks_checkgroup_update', args=[checkgroup.pk, ])
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
 
@@ -137,6 +139,7 @@ class DatacheckViewTest(unittest.TestCase):
     '''
     Tests for Datacheck
     '''
+
     def setUp(self):
         self.client = Client()
 
@@ -150,25 +153,25 @@ class DatacheckViewTest(unittest.TestCase):
         data = {
             "code": "code",
             "description": "description",
-            "weight": "weight",
-            "left_type": "left_type",
+            "weight": 1,
+            "left_type": CHECK_TYPES.SQL_QUERY,
             "left_logic": "left_logic",
-            "relation": "relation",
+            "relation": RELATIONS.eq,
             "right_logic": "right_logic",
-            "supports_warning": "supports_warning",
-            "warning_relation": "warning_relation",
-            "warning_type": "warning_type",
-            "warning_logic": "warning_logic",
+            "supports_warning": False,
+            "warning_relation": None,
+            "warning_type": None,
+            "warning_logic": None,
             "group": create_checkgroup().pk,
             "left_system": create_system().pk,
             "right_system": create_system().pk,
         }
         response = self.client.post(url, data=data)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_detail_datacheck(self):
         datacheck = create_datacheck()
-        url = reverse('checks_datacheck_detail', args=[datacheck.pk,])
+        url = reverse('checks_datacheck_detail', args=[datacheck.pk, ])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -177,28 +180,29 @@ class DatacheckViewTest(unittest.TestCase):
         data = {
             "code": "code",
             "description": "description",
-            "weight": "weight",
+            "weight": 1,
             "left_type": "left_type",
             "left_logic": "left_logic",
-            "relation": "relation",
+            "relation": RELATIONS.eq,
             "right_logic": "right_logic",
-            "supports_warning": "supports_warning",
-            "warning_relation": "warning_relation",
-            "warning_type": "warning_type",
-            "warning_logic": "warning_logic",
+            "supports_warning": False,
+            "warning_relation": None,
+            "warning_type": None,
+            "warning_logic": None,
             "group": create_checkgroup().pk,
             "left_system": create_system().pk,
             "right_system": create_system().pk,
         }
-        url = reverse('checks_datacheck_update', args=[datacheck.pk,])
+        url = reverse('checks_datacheck_update', args=[datacheck.pk, ])
         response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
 
 class CheckRunViewTest(unittest.TestCase):
     '''
     Tests for CheckRun
     '''
+
     def setUp(self):
         self.client = Client()
 
@@ -220,22 +224,20 @@ class CheckRunViewTest(unittest.TestCase):
             "error_message": "error_message",
             "datacheck": create_datacheck().pk,
             "environment": create_environment().pk,
-            "user": create_settings_auth_user_model().pk,
+            "user": create_django_contrib_auth_models_user().pk,
         }
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 302)
 
     def test_detail_checkrun(self):
         checkrun = create_checkrun()
-        url = reverse('checks_checkrun_detail', args=[checkrun.pk,])
+        url = reverse('checks_checkrun_detail', args=[checkrun.pk, ])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_update_checkrun(self):
         checkrun = create_checkrun()
         data = {
-            "start_time": "start_time",
-            "end_time": "end_time",
             "status": "status",
             "result": "result",
             "left_value": "left_value",
@@ -244,9 +246,9 @@ class CheckRunViewTest(unittest.TestCase):
             "error_message": "error_message",
             "datacheck": create_datacheck().pk,
             "environment": create_environment().pk,
-            "user": create_settings_auth_user_model().pk,
+            "user": create_django_contrib_auth_models_user().pk,
         }
-        url = reverse('checks_checkrun_update', args=[checkrun.pk,])
+        url = reverse('checks_checkrun_update', args=[checkrun.pk, ])
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
 
@@ -255,6 +257,7 @@ class EnvironmentStatusViewTest(unittest.TestCase):
     '''
     Tests for EnvironmentStatus
     '''
+
     def setUp(self):
         self.client = Client()
 
@@ -266,34 +269,30 @@ class EnvironmentStatusViewTest(unittest.TestCase):
     def test_create_environmentstatus(self):
         url = reverse('checks_environmentstatus_create')
         data = {
-            "last_start_time": "last_start_time",
-            "last_end_time": "last_end_time",
             "status": "status",
             "result": "result",
             "datacheck": create_datacheck().pk,
             "environment": create_environment().pk,
-            "user": create_settings_auth_user_model().pk,
+            "user": create_django_contrib_auth_models_user().pk,
         }
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 302)
 
     def test_detail_environmentstatus(self):
         environmentstatus = create_environmentstatus()
-        url = reverse('checks_environmentstatus_detail', args=[environmentstatus.pk,])
+        url = reverse('checks_environmentstatus_detail', args=[environmentstatus.pk, ])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_update_environmentstatus(self):
         environmentstatus = create_environmentstatus()
         data = {
-            "last_start_time": "last_start_time",
-            "last_end_time": "last_end_time",
             "status": "status",
             "result": "result",
             "datacheck": create_datacheck().pk,
             "environment": create_environment().pk,
-            "user": create_settings_auth_user_model().pk,
+            "user": create_django_contrib_auth_models_user().pk,
         }
-        url = reverse('checks_environmentstatus_update', args=[environmentstatus.pk,])
+        url = reverse('checks_environmentstatus_update', args=[environmentstatus.pk, ])
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
