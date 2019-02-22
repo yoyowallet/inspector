@@ -7,6 +7,7 @@ from inspector.taskapp.tasks import execute_check
 from .constants import STATUSES
 from .forms import DatacheckRunForm, CheckGroupForm, DatacheckForm, CheckGroupRunForm
 from .models import Datacheck, CheckGroup, CheckRun, EnvironmentStatus
+from .service import CheckRunService
 
 
 class CheckListView(ListView):
@@ -42,9 +43,8 @@ class DatacheckRunView(PassRequestMixin, SuccessMessageMixin,
         return super().form_valid(form)
 
     def get_success_url(self):
-        check_run_id = self.object.id
-        if check_run_id is not None:
-            execute_check.delay(check_run_id)
+        if not self.request.is_ajax():
+            execute_check.delay(self.object.id)
         return super().get_success_url()
 
 
@@ -58,9 +58,11 @@ class CheckGroupRunView(PassRequestMixin, SuccessMessageMixin, FormView):
     success_url = reverse_lazy('checks_checkgroup_list')
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        form.instance.status = STATUSES.NEW
-        # TODO - trigger all tasks in the group
+        if not self.request.is_ajax():
+            CheckRunService.run_check_group(
+                self.kwargs['pk'],
+                form.instance.environment,
+                self.request.user)
 
         return super().form_valid(form)
 
@@ -121,6 +123,9 @@ class DatacheckCreateView(CreateView):
 class DatacheckUpdateView(UpdateView):
     model = Datacheck
     form_class = DatacheckForm
+
+    def get_success_url(self):
+        return reverse('checks_datacheck_list')
 
 
 class EnvironmentStatusListView(ListView):

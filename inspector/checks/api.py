@@ -2,7 +2,6 @@ from rest_framework import viewsets, permissions, authentication, status
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
-from inspector.taskapp.tasks import execute_check
 from . import models
 from . import serializers
 from .service import CheckRunService
@@ -50,7 +49,7 @@ class RunCheck(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
-            checkrun_id = CheckRunService.create_check_run(
+            checkrun_id = CheckRunService.create_check_run_api(
                 serializer['check_code'].value,
                 serializer['environment'].value,
                 request.user)
@@ -58,6 +57,26 @@ class RunCheck(CreateAPIView):
                 models.Environment.DoesNotExist) as exc:
             return Response(str(exc), status=400)
 
-        execute_check.delay(checkrun_id)
-
         return Response({'checkrun_id': checkrun_id}, status=status.HTTP_200_OK)
+
+
+class RunCheckGroup(CreateAPIView):
+    authentication_classes = (authentication.TokenAuthentication,
+                              authentication.SessionAuthentication)
+    permission_classes = (permissions.IsAdminUser,)
+    serializer_class = serializers.CheckGroupRunCreateSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            CheckRunService.run_check_group_api(
+                serializer['checkgroup_name'].value,
+                serializer['environment'].value,
+                request.user)
+        except (models.CheckGroup.DoesNotExist,
+                models.Environment.DoesNotExist) as exc:
+            return Response(str(exc), status=400)
+
+        return Response({serializer['checkgroup_name'].value: 'success'},
+                        status=status.HTTP_200_OK)

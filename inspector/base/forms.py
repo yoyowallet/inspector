@@ -1,7 +1,9 @@
 from allauth.account.forms import LoginForm, SignupForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Row, Column, Field, HTML
+
 from .constants import SUBMIT_CSS_CLASSES
+
 
 class InspectorLoginForm(LoginForm):
     helper = FormHelper()
@@ -31,4 +33,3 @@ class InspectorSignupForm(SignupForm):
     helper = FormHelper()
     helper.form_show_labels = False
     helper.add_input(Submit('submit', 'Sign Up', css_class=SUBMIT_CSS_CLASSES))
-

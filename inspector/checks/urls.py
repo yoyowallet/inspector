@@ -16,7 +16,8 @@ router.register(r'checkgroup', api.CheckGroupViewSet)
 urlpatterns = (
     # urls for Django Rest Framework API
     path('api/v1/', include(router.urls)),
-    path('api/v1/runcheck/', api.RunCheck.as_view())
+    path('api/v1/runcheck/', api.RunCheck.as_view()),
+    path('api/v1/runcheckgroup/', api.RunCheckGroup.as_view())
 )
 
 urlpatterns += (
