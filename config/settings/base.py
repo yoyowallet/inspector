@@ -70,7 +70,8 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',
     'bootstrap_modal_forms',
     'encrypted_model_fields',
-    'bootstrap_pagination'
+    'bootstrap_pagination',
+    'django_filters'
 ]
 LOCAL_APPS = [
     'inspector.base.apps.BaseConfig',

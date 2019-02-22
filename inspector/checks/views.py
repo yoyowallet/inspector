@@ -2,9 +2,11 @@ from bootstrap_modal_forms.mixins import PassRequestMixin, DeleteAjaxMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, FormView
+from django_filters.views import BaseFilterView
 
 from inspector.taskapp.tasks import execute_check
 from .constants import STATUSES
+from .filters import CheckRunFilter
 from .forms import DatacheckRunForm, CheckGroupForm, DatacheckForm, CheckGroupRunForm
 from .models import Datacheck, CheckGroup, CheckRun, EnvironmentStatus
 from .service import CheckRunService
@@ -97,9 +99,10 @@ class CheckGroupUpdateView(UpdateView):
         return reverse('checks_checkgroup_list')
 
 
-class CheckRunListView(ListView):
+class CheckRunListView(BaseFilterView, ListView):
     model = CheckRun
     paginate_by = 50
+    filterset_class = CheckRunFilter
 
     def get_paginate_by(self, queryset):
         """
@@ -108,7 +111,10 @@ class CheckRunListView(ListView):
         return self.request.GET.get('paginate_by', self.paginate_by)
 
     def get_queryset(self):
-        return CheckRun.objects.select_related()
+        qs = CheckRun.objects.select_related()
+        qs_filtered_list = CheckRunFilter(self.request.GET, queryset=qs)
+
+        return qs_filtered_list.qs
 
 
 class CheckRunDetailView(DetailView):

@@ -2,6 +2,7 @@
 {% load static %}
 {% load bootstrap_pagination %}
 {% load buttons %}
+{% load crispy_forms_tags %}
 {% block content %}
 <table class="table table-borderless table-striped">
 
@@ -56,6 +57,12 @@
   {% endfor %}
   </tbody>
 </table>
+
+  <form action="" method="get">
+    {{ filter.form }}
+    <input type="submit" />
+  </form>
+  {%  crispy filter.form %}
 
 {% bootstrap_paginate page_obj %}
 
