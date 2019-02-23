@@ -104,3 +104,25 @@ class EnvironmentStatusForm(forms.ModelForm):
     class Meta:
         model = EnvironmentStatus
         fields = ['last_start_time', 'last_end_time', 'status', 'result', 'datacheck', 'environment', 'user']
+
+
+class CheckRunFilterForm(forms.ModelForm):
+
+    helper = FormHelper()
+    helper.form_method = 'GET'
+    helper.layout = Layout(
+        Row(
+            Column('datacheck', css_class='form-group col-md-4 mb-0'),
+            Column('environment', css_class='form-group col-md-2 mb-0'),
+            Column('status', css_class='form-group col-md-2 mb-0'),
+            Column('result', css_class='form-group col-md-2 mb-0'),
+            Column('user', css_class='form-group col-md-2 mb-0'),
+            Submit('submit', 'Submit', css_class=SUBMIT_CSS_CLASSES),
+            css_class='form-row'
+        )
+    )
+
+
+    class Meta:
+        model = CheckRun
+        fields = ['datacheck', 'environment', 'user', 'status', 'result']
