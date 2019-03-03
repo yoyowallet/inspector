@@ -1,0 +1,7 @@
+.*
+!.coveragerc
+!.pylintrc
+celerybeat*
+
+*.iml
+docker-compose*

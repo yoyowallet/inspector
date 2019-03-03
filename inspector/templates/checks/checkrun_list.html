@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap_pagination %}
+{% load buttons %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div class="card">
+    <h7 class="card-header">
+      <a class="collapsed d-block" data-toggle="collapse" href="#search-collapsed" aria-expanded="true"
+         aria-controls="search-collapsed" id="search-heading">
+        <i class="fa fa-chevron-down pull-right"></i>
+        Search
+      </a>
+    </h7>
+    <div id="search-collapsed" class="collapse" aria-labelledby="search-heading">
+      <div class="card-body">
+        {% crispy filter.form %}
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-borderless table-striped">
+
+    <thead class="border-bottom">
+    <tr>
+      <th><i class="fas fa-list" title="Check code"></i></th>
+      <th><p class="text-center"><i class="fas fa-globe-africa" title="Environment"></i></p></th>
+      <th><p class="text-center"><i class="far fa-square" title="Start"></i>
+        <i class="fas fa-angle-double-right"></i></p></th>
+      <th><p class="text-center"><i class="fas fa-angle-double-right"></i>
+        <i class="fas fa-square" title="End"></i></p></th>
+      <th><p class="text-center"><i class="far fa-clock" title="Status"></i></p></th>
+      <th><p class="text-center"><i class="fas fa-question" title="Result"></i></p></th>
+      <th><p class="text-center"><i class="fas fa-user-cog" title="User"></i></p></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+
+      <tr>
+        <td>{{ object.datacheck.code }}</td>
+        <td><p class="text-center">{{ object.environment.name }}</p></td>
+        <td><p class="text-center">{{ object.start_time|default_if_none:"" }}</p></td>
+        <td><p class="text-center">{{ object.end_time|default_if_none:"" }}</p></td>
+        <td><p class="text-center">
+          {% if object.status == 'ERROR' %}
+            <i class="fas fa-exclamation" title="Error" style="color:red"></i>
+          {% elif object.status == 'FINISHED' %}
+            <i class="fas fa-square" title="Finished"></i>
+          {% elif object.status == 'RUNNING' %}
+            <i class="far fa-square" title="Running"></i>
+          {% endif %}
+        </p>
+        </td>
+        <td><p class="text-center">
+          {% if object.result == 'FAILED' %}
+            <i class="fas fa-times" style="color:red"></i>
+          {% elif object.result == 'SUCCESS' %}
+            <i class="fas fa-check" style="color:green"></i>
+          {% elif object.result == 'SUCCESS' %}
+            WARNING
+          {% endif %}
+        </p>
+        </td>
+        <td><p class="text-center">
+          {{ object.user.username }}
+        </p>
+        </td>
+        <td>{% button_hoverdetail 'checks/checkrun_hoverdetail' object %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+
+  {% bootstrap_paginate page_obj %}
+
+{% endblock %}
+
+

@@ -1,0 +1,34 @@
+version: '3'
+
+
+services:
+  inspector: &inspector
+    build:
+      context: .
+      dockerfile: compose/master/inspector/Dockerfile
+    image: yoyowallet/inspector:master
+    env_file:
+      - .envs/.inspector/.django
+      - .envs/.inspector/.postgres
+    ports:
+      - "5000:5000"
+    command: /start
+
+  celeryworker:
+    <<: *inspector
+    image: yoyowallet/inspector:master
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *inspector
+    image: yoyowallet/inspector:master
+    ports: []
+    command: /start-celerybeat
+
+  flower:
+    <<: *inspector
+    image: yoyowallet/inspector:master
+    ports:
+      - "5555:5555"
+    command: /start-flower

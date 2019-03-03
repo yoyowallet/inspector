@@ -1,0 +1,33 @@
+/* These styles are generated from project.scss. */
+
+.alert-debug {
+  color: black;
+  background-color: white;
+  border-color: #d6e9c6;
+}
+
+.alert-error {
+  color: #b94a48;
+  background-color: #f2dede;
+  border-color: #eed3d7;
+}
+
+td > p, th > p {
+  margin-bottom: 0;
+}
+
+.popover {
+  max-width: 95%;
+}
+
+.table td, .table th {
+  padding: .5rem;
+}
+
+body {
+  font-size: 0.9rem;
+}
+
+nav {
+  font-size: 1rem;
+}

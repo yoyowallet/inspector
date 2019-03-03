@@ -1,0 +1,23 @@
+<table class="table table-borderless table-striped">
+  <tr>
+    <td><p class="font-weight-bold">Left value</p></td>
+    <td>{{ object.left_value|default_if_none:"" }}</td>
+  </tr>
+  <tr>
+    <td><p class="font-weight-bold">Right value</p></td>
+    <td>{{ object.right_value|default_if_none:"" }}</td>
+  </tr>
+  <tr>
+    <td><p class="font-weight-bold">Warning value</p></td>
+    <td>{{ object.warning_value|default_if_none:"" }}</td>
+  </tr>
+  <tr>
+    <td><p class="font-weight-bold">Error</p></td>
+    <td>{{ object.error_message|default_if_none:"" }}</td>
+  </tr>
+  <tr>
+    <td><p class="font-weight-bold">Created</p></td>
+    <td>{{ object.created_at }}</td>
+  </tr>
+
+</table>

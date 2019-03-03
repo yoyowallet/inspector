@@ -1,0 +1,16 @@
+DJANGO_SETTINGS_MODULE=config.settings.local
+
+FIELD_ENCRYPTION_KEY=UdC18SCAo5Ebj9eOBULtjl8EhsOiEA_NcmFTVlY_DvY=
+
+# Redis
+# ------------------------------------------------------------------------------
+REDIS_URL=redis://redis:6379/0
+
+# Celery
+# ------------------------------------------------------------------------------
+
+# Flower
+CELERY_FLOWER_USER=inspector
+CELERY_FLOWER_PASSWORD=inspector
+
+USE_DOCKER=yes

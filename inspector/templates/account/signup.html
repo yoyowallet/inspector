@@ -1,0 +1,16 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block inner %}
+  <div class="card">
+    <article class="card-body">
+      <h4 class="card-title mb-4 mt-1">{% trans "Sign Up" %}</h4>
+      {% crispy form %}
+    </article>
+  </div>
+{% endblock %}
+

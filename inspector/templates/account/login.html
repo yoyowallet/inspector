@@ -1,0 +1,37 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+{% load crispy_forms_tags %}
+
+
+
+{% block inner %}
+
+  {% get_providers as socialaccount_providers %}
+
+  <div class="card">
+    <article class="card-body">
+      <a href="{{ signup_url }}" class="float-right btn btn-outline-primary btn-sm">Sign up</a>
+      <h4 class="card-title mb-4 mt-1">{% trans "Sign In" %}</h4>
+      {% if socialaccount_providers %}
+        <p>{% blocktrans with site.name as site_name %}Please sign in with one
+          of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
+          for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+
+        <div class="socialaccount_ballot">
+          <ul class="socialaccount_providers">
+            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+          </ul>
+          <div class="login-or">{% trans 'or' %}</div>
+        </div>
+
+        {% include "socialaccount/snippets/login_extra.html" %}
+
+      {% endif %}
+      <hr/>
+      {% crispy form %}
+    </article>
+  </div>
+{% endblock %}
+

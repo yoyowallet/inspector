@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  inspector: &inspector
+    build:
+      context: .
+      dockerfile: compose/develop/inspector/Dockerfile
+    image: yoyowallet/inspector:develop
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+    env_file:
+      - .envs/.develop/.django
+      - .envs/.develop/.postgres
+    ports:
+      - "8000:8000"
+    command: /start
+
+  postgres:
+    image: postgres:11
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - .envs/.develop/.postgres
+
+  redis:
+    image: redis:5
+
+  celeryworker:
+    <<: *inspector
+    image: yoyowallet/inspector:develop
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *inspector
+    image: yoyowallet/inspector:develop
+    depends_on:
+      - redis
+      - postgres
+    ports: []
+    command: /start-celerybeat
+
+  flower:
+    <<: *inspector
+    image: yoyowallet/inspector:develop
+    ports:
+      - "5555:5555"
+    command: /start-flower
+
+volumes:
+  pgdata: {}

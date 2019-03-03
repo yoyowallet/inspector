@@ -1,0 +1,159 @@
+{% load static i18n compress %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>{% block title %}Inspector{% endblock title %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <![endif]-->
+
+  <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}">
+
+  {% block css %}
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+
+
+
+    <!-- Your stuff: Third-party CSS libraries go here -->
+    {% compress css %}
+      <!-- This file stores project-specific CSS -->
+
+      <link href="{% static 'css/project.css' %}" rel="stylesheet">
+
+    {% endcompress %}
+  {% endblock %}
+
+</head>
+
+<body>
+
+<div class="mb-1">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="{% url 'home' %}">
+    <img src="{% static 'images/inspector.svg' %}" height="30px"/>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'home' %}">Home<span class="sr-only">(current)</span></a>
+        </li>
+
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'checks_environmentstatus_list' %}">Status</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'checks_checkrun_list' %}">Check runs</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownChecks" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+              Checks
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownChecks">
+              <a class="dropdown-item" href="{% url 'checks_datacheck_list' %}">Checks</a>
+              <a class="dropdown-item" href="{% url 'checks_checkgroup_list' %}">Check groups</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSystems" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+              Systems
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownSystems">
+              <a class="dropdown-item" href="{% url 'systems_system_list' %}">Systems</a>
+              <a class="dropdown-item" href="{% url 'systems_environment_list' %}">Environments</a>
+              <a class="dropdown-item" href="{% url 'systems_instance_list' %}">Instances</a>
+            </div>
+          </li>
+
+        {% endif %}
+
+      </ul>
+      <ul class="navbar-nav text-right">
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            {# URL provided by django-allauth/account/urls.py #}
+            <a class="nav-link" href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
+          </li>
+          <li class="nav-item">
+            {# URL provided by django-allauth/account/urls.py #}
+            <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            {# URL provided by django-allauth/account/urls.py #}
+            <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+</div>
+
+<div class="container">
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  {% block content %}
+    <p>Use this document as a way to quick start any new project.</p>
+  {% endblock content %}
+
+</div> <!-- /container -->
+
+{% block modal %}{% endblock modal %}
+
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{% block javascript %}
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+          integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+          crossorigin="anonymous"></script>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+          crossorigin="anonymous"></script>
+
+
+  <!-- Your stuff: Third-party javascript libraries go here -->
+  <script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+  <!-- place project specific Javascript in this file -->
+  {% compress js %}
+    <script src="{% static 'js/project.js' %}"></script>
+  {% endcompress %}
+
+{% endblock javascript %}
+</body>
+</html>
+ 

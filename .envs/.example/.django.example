@@ -1,0 +1,37 @@
+# Django
+# ------------------------------------------------------------------------------
+
+DJANGO_SETTINGS_MODULE=config.settings.production
+
+# Change DJANGO_ADMIN_URL to some_random_string
+
+DJANGO_ADMIN_URL=
+
+# HTTP & HTTPS
+# If you run your app over HTTP without HTTPS proxy in front,
+# uncomment the lines
+# ------------------------------------------------------------------------------
+
+# DJANGO_SESSION_COOKIE_SECURE=False
+# DJANGO_SECURE_SSL_REDIRECT=False
+# DJANGO_CSRF_COOKIE_SECURE=False
+
+# Fernet key for database password encryption
+# https://pypi.org/project/django-encrypted-model-fields/
+# ------------------------------------------------------------------------------
+
+FIELD_ENCRYPTION_KEY=
+
+# Redis
+# ------------------------------------------------------------------------------
+
+REDIS_URL=
+
+# Celery
+# ------------------------------------------------------------------------------
+
+# Flower
+
+CELERY_FLOWER_USER=
+CELERY_FLOWER_PASSWORD=
+

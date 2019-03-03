@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% load buttons %}
+{% load modals %}
+{% block content %}
+  <table class="table table-borderless table-striped">
+    <thead>
+    <tr>
+      <th><i class="far fa-object-ungroup" title="Group"></i></th>
+      <th><i class="fas fa-align-justify" title="Description"></i></th>
+      <th>{% button_new 'checks_checkgroup_create' %}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+      <tr>
+        <td>{{ object.name }}</td>
+        <td>{{ object.description }}</td>
+        <td><p class="text-right">
+          {% button_run object %}
+          {% button_edit object %}
+          {% button_delete object %}
+        </p></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+{% modals_modal 'checkgroup' %}
+
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+
+{% modals_run_js 'checkgroup' %}
+{% modals_delete_js 'checkgroup' %}
+
+{% endblock javascript %}
