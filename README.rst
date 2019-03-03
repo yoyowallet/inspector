@@ -9,6 +9,13 @@ Inspector
      :target: http://www.apache.org/licenses/LICENSE-2.0.txt
      :alt: License
 
+Born out of the experience that ETL pipelines never get enough testing,
+Inspector was built to help with:
+
+* managing and execution of check queries when testing ETL processes
+* periodic data integrity verification in production environments
+* confirming that testing has actually been done ;)
+
 Documentation
 -------------
 
