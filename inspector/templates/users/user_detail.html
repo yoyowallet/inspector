@@ -1,36 +1,29 @@
-{% extends "base.html" %}
+{% extends "account/base.html" %}
 {% load static %}
 
 {% block title %}User: {{ object.username }}{% endblock %}
 
-{% block content %}
-<div class="container">
+{% block inner %}
 
-  <div class="row">
-    <div class="col-sm-12">
-
-      <h2>{{ object.username }}</h2>
-      {% if object.name %}
-        <p>{{ object.name }}</p>
+  <div class="card">
+    <article class="card-body">
+      <h4 class="card-title mb-4 mt-1">{{ object.username }}</h4>
+      <hr/>
+      {% if object == request.user %}
+        {% if object.name %}
+          <p class="text-center">{{ object.name }}</p>
+        {% endif %}
+        <div class="list-group">
+          <a href="{% url 'users:update' %}"
+             class="list-group-item list-group-item-action text-center">My details</a>
+          <a href="{% url 'account_email' %}"
+             class="list-group-item list-group-item-action text-center">Emails</a>
+        </div>
       {% endif %}
-    </div>
+    </article>
   </div>
 
-{% if object == request.user %}
-<!-- Action buttons -->
-<div class="row">
 
-  <div class="col-sm-12">
-    <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
-    <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
-    <!-- Your Stuff: Custom user template urls -->
   </div>
-
-</div>
-<!-- End Action buttons -->
-{% endif %}
-
-
-</div>
-{% endblock content %}
+{% endblock inner %}
 
