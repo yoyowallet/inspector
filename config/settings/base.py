@@ -71,7 +71,8 @@ THIRD_PARTY_APPS = [
     'bootstrap_modal_forms',
     'encrypted_model_fields',
     'bootstrap_pagination',
-    'django_filters'
+    'django_filters',
+    'health_check'
 ]
 LOCAL_APPS = [
     'inspector.base.apps.BaseConfig',
@@ -80,8 +81,11 @@ LOCAL_APPS = [
     'inspector.systems.apps.SystemsConfig'
     # Your stuff: custom apps go here
 ]
+
+EXTRA_APPS = env.list('DJANGO_EXTRA_APPS', default=[])
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + EXTRA_APPS
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------

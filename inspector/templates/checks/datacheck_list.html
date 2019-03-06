@@ -7,8 +7,8 @@
 {% block content %}
 <table id="checks" class="table table-borderless table-striped">
   <thead>
-  <th><input type="checkbox" id="checkall"/></th>
-  <th><i class="fas fa-list" title="Check code"></i></th>
+  <th><p class="text-center"><input type="checkbox" id="checkall"/></p></th>
+  <th><p class="text-left"><i class="fas fa-list" title="Check code"></i></p></th>
   <th><p class="text-center"><i class="far fa-object-ungroup" title="Group"></i></p></th>
   <th><p class="text-center"><i class="fas fa-desktop" title="System"></i></p></th>
   <th><p class="text-center"><i class="fas fa-balance-scale" title="Weight"></i></p></th>
@@ -17,7 +17,7 @@
   <tbody>
   {% for object in datacheck_list %}
   <tr>
-    <td><input type="checkbox" class="checkthis"/></td>
+    <td><p class="text-center"><input type="checkbox" class="checkthis"/></p></td>
     <td>{{ object.code }}</td>
     <td><p class="text-center">{{ object.group| default_if_none:"" }}</p></td>
     <td><p class="text-center">{{ object.left_system }}</p></td>

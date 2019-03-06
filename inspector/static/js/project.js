@@ -1,5 +1,3 @@
-/* Project specific Javascript goes here. */
-
 $(".pop").popover({trigger: "manual", html: true, animation: false, sanitize: false})
     .on("mouseenter", function () {
         var _this = this;
