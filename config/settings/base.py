@@ -285,4 +285,4 @@ STATICFILES_FINDERS += ['compressor.finders.CompressorFinder']
 # ------------------------------------------------------------------------------
 FIELD_ENCRYPTION_KEY = env.str('FIELD_ENCRYPTION_KEY')
 
-DATETIME_FORMAT = 'Y-m-d H:m:s'
+DATETIME_FORMAT = 'Y-m-d H:i:s'

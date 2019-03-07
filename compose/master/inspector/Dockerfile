@@ -35,4 +35,6 @@ USER django
 
 WORKDIR /app
 
+ENV DJANGO_SETTINGS_MODULE config.settings.production
+
 ENTRYPOINT ["/entrypoint"]
