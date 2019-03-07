@@ -1,4 +1,5 @@
 from bootstrap_modal_forms.mixins import PassRequestMixin, DeleteAjaxMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, FormView
@@ -12,7 +13,8 @@ from .models import Datacheck, CheckGroup, CheckRun, EnvironmentStatus
 from .service import CheckRunService
 
 
-class CheckListView(ListView):
+class CheckListView(PermissionRequiredMixin, ListView):
+    permission_required = 'checks.view_datacheck'
     model = Datacheck
     slug_field = "code"
     slug_url_kwarg = "code"
@@ -21,7 +23,8 @@ class CheckListView(ListView):
 check_list_view = CheckListView.as_view()
 
 
-class DatacheckDetailView(DetailView):
+class DatacheckDetailView(PermissionRequiredMixin, DetailView):
+    permission_required = 'checks.view_datacheck'
     model = Datacheck
     template_name = 'checks/datacheck_detail.html'
 
@@ -29,8 +32,9 @@ class DatacheckDetailView(DetailView):
 check_detail_view = DatacheckDetailView.as_view()
 
 
-class DatacheckRunView(PassRequestMixin, SuccessMessageMixin,
-                       CreateView):
+class DatacheckRunView(PermissionRequiredMixin, PassRequestMixin,
+                       SuccessMessageMixin, CreateView):
+    permission_required = 'checks.add_checkrun'
     template_name = 'components/modals_run.html'
     form_class = DatacheckRunForm
     success_message = 'Success: Check was triggered.'
@@ -53,7 +57,8 @@ class DatacheckRunView(PassRequestMixin, SuccessMessageMixin,
 datacheck_run_view = DatacheckRunView.as_view()
 
 
-class CheckGroupRunView(PassRequestMixin, SuccessMessageMixin, FormView):
+class CheckGroupRunView(PermissionRequiredMixin, PassRequestMixin, SuccessMessageMixin, FormView):
+    permission_required = 'checks.add_checkrun'
     template_name = 'components/modals_run.html'
     form_class = CheckGroupRunForm
     success_message = 'Success: Check group was triggered.'
@@ -69,7 +74,8 @@ class CheckGroupRunView(PassRequestMixin, SuccessMessageMixin, FormView):
         return super().form_valid(form)
 
 
-class DatacheckDeleteView(DeleteAjaxMixin, DeleteView):
+class DatacheckDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
+    permission_required = 'checks.delete_datacheck'
     model = Datacheck
     template_name = 'components/modals_delete.html'
     success_message = 'Success: Check was deleted.'
@@ -79,19 +85,13 @@ class DatacheckDeleteView(DeleteAjaxMixin, DeleteView):
 check_delete_view = DatacheckDeleteView.as_view()
 
 
-class CheckGroupListView(ListView):
+class CheckGroupListView(PermissionRequiredMixin, ListView):
+    permission_required = 'checks.view_checkgroup'
     model = CheckGroup
 
 
-class CheckGroupCreateView(CreateView):
-    model = CheckGroup
-    form_class = CheckGroupForm
-
-    def get_success_url(self):
-        return reverse('checks_checkgroup_list')
-
-
-class CheckGroupUpdateView(UpdateView):
+class CheckGroupCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = 'checks.add_checkgroup'
     model = CheckGroup
     form_class = CheckGroupForm
 
@@ -99,7 +99,17 @@ class CheckGroupUpdateView(UpdateView):
         return reverse('checks_checkgroup_list')
 
 
-class CheckRunListView(BaseFilterView, ListView):
+class CheckGroupUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = 'checks.change_checkgroup'
+    model = CheckGroup
+    form_class = CheckGroupForm
+
+    def get_success_url(self):
+        return reverse('checks_checkgroup_list')
+
+
+class CheckRunListView(PermissionRequiredMixin, BaseFilterView, ListView):
+    permission_required = 'checks.view_checkrun'
     model = CheckRun
     paginate_by = 50
     filterset_class = CheckRunFilter
@@ -117,11 +127,13 @@ class CheckRunListView(BaseFilterView, ListView):
         return qs_filtered_list.qs
 
 
-class CheckRunDetailView(DetailView):
+class CheckRunDetailView(PermissionRequiredMixin, DetailView):
+    permission_required = 'checks.view_checkrun'
     model = CheckRun
 
 
-class DatacheckCreateView(CreateView):
+class DatacheckCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = 'checks.add_datacheck'
     model = Datacheck
     form_class = DatacheckForm
 
@@ -129,7 +141,8 @@ class DatacheckCreateView(CreateView):
         return reverse('checks_datacheck_list')
 
 
-class DatacheckUpdateView(UpdateView):
+class DatacheckUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = 'checks.change_datacheck'
     model = Datacheck
     form_class = DatacheckForm
 
@@ -137,17 +150,20 @@ class DatacheckUpdateView(UpdateView):
         return reverse('checks_datacheck_list')
 
 
-class EnvironmentStatusListView(ListView):
+class EnvironmentStatusListView(PermissionRequiredMixin, ListView):
+    permission_required = 'checks.view_environment_status'
     model = EnvironmentStatus
 
 
-class CheckGroupDeleteView(DeleteAjaxMixin, DeleteView):
+class CheckGroupDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
+    permission_required = 'checks.delete_checkgroup'
     model = CheckGroup
     template_name = 'components/modals_delete.html'
     success_message = 'Success: Check group was deleted.'
     success_url = reverse_lazy('checks_checkgroup_list')
 
 
-class DatacheckInfoView(DetailView):
+class DatacheckInfoView(PermissionRequiredMixin, DetailView):
+    permission_required = 'checks.view_datacheck'
     model = Datacheck
     template_name = 'checks/datacheck_info.html'

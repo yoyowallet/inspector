@@ -9,6 +9,7 @@ from django.urls import reverse
 
 from .constants import APPLICATIONS
 from .models import System, Environment, Instance
+from ..base.tests import TestUser
 
 RANDOMS = list(range(10000))
 shuffle(RANDOMS)
@@ -72,13 +73,20 @@ class SystemViewTest(unittest.TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.test_user = TestUser()
+        self.client.login(username='test', password='test')
+
+    def tearDown(self):
+        self.test_user.delete()
 
     def test_list_system(self):
+        self.test_user.add_permission(System, 'view_system')
         url = reverse('systems_system_list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_create_system(self):
+        self.test_user.add_permission(System, 'add_system')
         url = reverse('systems_system_create')
         data = {
             "name": "name",
@@ -88,6 +96,7 @@ class SystemViewTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_update_system(self):
+        self.test_user.add_permission(System, 'change_system')
         system = create_system()
         data = {
             "name": "name",
@@ -105,13 +114,20 @@ class EnvironmentViewTest(unittest.TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.test_user = TestUser()
+        self.client.login(username='test', password='test')
+
+    def tearDown(self):
+        self.test_user.delete()
 
     def test_list_environment(self):
+        self.test_user.add_permission(Environment, 'view_environment')
         url = reverse('systems_environment_list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_create_environment(self):
+        self.test_user.add_permission(Environment, 'add_environment')
         url = reverse('systems_environment_create')
         data = {
             "name": "environment-{}".format(RANDOMS.pop()),
@@ -119,8 +135,8 @@ class EnvironmentViewTest(unittest.TestCase):
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 302)
 
-
     def test_update_environment(self):
+        self.test_user.add_permission(Environment, 'change_environment')
         environment = create_environment()
         data = {
             "name": "environment-{}".format(RANDOMS.pop()),
@@ -137,13 +153,20 @@ class InstanceViewTest(unittest.TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.test_user = TestUser()
+        self.client.login(username='test', password='test')
+
+    def tearDown(self):
+        self.test_user.delete()
 
     def test_list_instance(self):
+        self.test_user.add_permission(Instance, 'view_instance')
         url = reverse('systems_instance_list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_create_instance(self):
+        self.test_user.add_permission(Instance, 'add_instance')
         url = reverse('systems_instance_create')
         data = {
             "host": "host",
@@ -158,12 +181,14 @@ class InstanceViewTest(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_detail_instance(self):
+        self.test_user.add_permission(Instance, 'view_instance')
         instance = create_instance()
         url = reverse('systems_instance_detail', args=[instance.pk, ])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_update_instance(self):
+        self.test_user.add_permission(Instance, 'change_instance')
         instance = create_instance()
         data = {
             "host": "host",

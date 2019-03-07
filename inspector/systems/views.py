@@ -1,4 +1,5 @@
 from bootstrap_modal_forms.mixins import DeleteAjaxMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
 
@@ -6,19 +7,13 @@ from .forms import SystemForm, EnvironmentForm, InstanceForm
 from .models import System, Environment, Instance
 
 
-class SystemListView(ListView):
+class SystemListView(PermissionRequiredMixin, ListView):
+    permission_required = 'systems.view_system'
     model = System
 
 
-class SystemCreateView(CreateView):
-    model = System
-    form_class = SystemForm
-
-    def get_success_url(self):
-        return reverse('systems_system_list')
-
-
-class SystemUpdateView(UpdateView):
+class SystemCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = 'systems.add_system'
     model = System
     form_class = SystemForm
 
@@ -26,11 +21,22 @@ class SystemUpdateView(UpdateView):
         return reverse('systems_system_list')
 
 
-class EnvironmentListView(ListView):
+class SystemUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = 'systems.change_system'
+    model = System
+    form_class = SystemForm
+
+    def get_success_url(self):
+        return reverse('systems_system_list')
+
+
+class EnvironmentListView(PermissionRequiredMixin, ListView):
+    permission_required = 'systems.view_environment'
     model = Environment
 
 
-class EnvironmentCreateView(CreateView):
+class EnvironmentCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = 'systems.add_environment'
     model = Environment
     form_class = EnvironmentForm
 
@@ -38,7 +44,8 @@ class EnvironmentCreateView(CreateView):
         return reverse('systems_environment_list')
 
 
-class EnvironmentUpdateView(UpdateView):
+class EnvironmentUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = 'systems.change_environment'
     model = Environment
     form_class = EnvironmentForm
 
@@ -46,14 +53,16 @@ class EnvironmentUpdateView(UpdateView):
         return reverse('systems_environment_list')
 
 
-class InstanceListView(ListView):
+class InstanceListView(PermissionRequiredMixin, ListView):
+    permission_required = 'systems.view_instance'
     model = Instance
 
     def get_queryset(self):
         return Instance.objects.select_related()
 
 
-class InstanceCreateView(CreateView):
+class InstanceCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = 'systems.add_instance'
     model = Instance
     form_class = InstanceForm
 
@@ -61,30 +70,36 @@ class InstanceCreateView(CreateView):
         return reverse('systems_instance_list')
 
 
-class InstanceDetailView(DetailView):
+class InstanceDetailView(PermissionRequiredMixin, DetailView):
+    permission_required = 'systems.view_instance'
     model = Instance
 
 
-class InstanceUpdateView(UpdateView):
+class InstanceUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = 'systems.change_instance'
+
     model = Instance
     form_class = InstanceForm
 
 
-class SystemDeleteView(DeleteAjaxMixin, DeleteView):
+class SystemDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
+    permission_required = 'systems.delete_system'
     model = System
     template_name = 'components/modals_delete.html'
     success_message = 'Success: System was deleted.'
     success_url = reverse_lazy('systems_system_list')
 
 
-class EnvironmentDeleteView(DeleteAjaxMixin, DeleteView):
+class EnvironmentDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
+    permission_required = 'systems.delete_environment'
     model = Environment
     template_name = 'components/modals_delete.html'
     success_message = 'Success: Environment was deleted.'
     success_url = reverse_lazy('systems_environment_list')
 
 
-class InstanceDeleteView(DeleteAjaxMixin, DeleteView):
+class InstanceDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
+    permission_required = 'systems.delete_instance'
     model = Instance
     template_name = 'components/modals_delete.html'
     success_message = 'Success: Instance was deleted.'

@@ -9,6 +9,7 @@ from django.urls import reverse
 
 from .constants import CHECK_TYPES, RELATIONS
 from .models import CheckGroup, Datacheck, CheckRun, EnvironmentStatus
+from ..base.tests import TestUser
 from ..systems.tests import create_system, create_environment
 
 RANDOMS = list(range(10000))
@@ -109,13 +110,20 @@ class CheckGroupViewTest(unittest.TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.test_user = TestUser()
+        self.client.login(username='test', password='test')
+
+    def tearDown(self):
+        self.test_user.delete()
 
     def test_list_checkgroup(self):
+        self.test_user.add_permission(CheckGroup, 'view_checkgroup')
         url = reverse('checks_checkgroup_list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_create_checkgroup(self):
+        self.test_user.add_permission(CheckGroup, 'add_checkgroup')
         url = reverse('checks_checkgroup_create')
         data = {
             "name": "checkgroup-{}".format(RANDOMS.pop()),
@@ -125,6 +133,7 @@ class CheckGroupViewTest(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_update_checkgroup(self):
+        self.test_user.add_permission(CheckGroup, 'change_checkgroup')
         checkgroup = create_checkgroup()
         data = {
             "name": "checkgroup-{}".format(RANDOMS.pop()),
@@ -142,13 +151,20 @@ class DatacheckViewTest(unittest.TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.test_user = TestUser()
+        self.client.login(username='test', password='test')
+
+    def tearDown(self):
+        self.test_user.delete()
 
     def test_list_datacheck(self):
+        self.test_user.add_permission(Datacheck, 'view_datacheck')
         url = reverse('checks_datacheck_list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_create_datacheck(self):
+        self.test_user.add_permission(Datacheck, 'add_datacheck')
         url = reverse('checks_datacheck_create')
         data = {
             "code": "code",
@@ -170,12 +186,14 @@ class DatacheckViewTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_detail_datacheck(self):
+        self.test_user.add_permission(Datacheck, 'view_datacheck')
         datacheck = create_datacheck()
         url = reverse('checks_datacheck_detail', args=[datacheck.pk, ])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_update_datacheck(self):
+        self.test_user.add_permission(Datacheck, 'change_datacheck')
         datacheck = create_datacheck()
         data = {
             "code": "code",
@@ -205,13 +223,21 @@ class CheckRunViewTest(unittest.TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.test_user = TestUser()
+        self.client.login(username='test', password='test')
+
+    def tearDown(self):
+        self.test_user.delete()
 
     def test_list_checkrun(self):
+        self.test_user.add_permission(CheckRun, 'view_checkrun')
+
         url = reverse('checks_checkrun_list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_create_checkrun(self):
+        self.test_user.add_permission(CheckRun, 'add_checkrun')
         url = reverse('checks_checkrun_create')
         data = {
             "start_time": "start_time",
@@ -230,6 +256,7 @@ class CheckRunViewTest(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_detail_checkrun(self):
+        self.test_user.add_permission(CheckRun, 'view_checkrun')
         checkrun = create_checkrun()
         url = reverse('checks_checkrun_detail', args=[checkrun.pk, ])
         response = self.client.get(url)
