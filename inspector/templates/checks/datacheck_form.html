@@ -2,8 +2,36 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% load buttons %}
+{% load djangocodemirror_tags %}
 {% block content %}
+
   <form method="post">
     {% crispy form %}
   </form>
+
+  {% codemirror_field_css_assets form.left_logic %}
+  {% codemirror_field_js_assets form.left_logic %}
+  {% codemirror_field_css_assets form.right_logic %}
+  {% codemirror_field_js_assets form.right_logic %}
+  {% codemirror_field_css_assets form.warning_logic %}
+  {% codemirror_field_js_assets form.warning_logic %}
+
+  <script>
+    var left_logic_codemirror = CodeMirror.fromTextArea(
+      document.getElementById("id_left_logic"),
+      {{ form.left_logic|codemirror_parameters }}
+    );
+    var right_logic_codemirror = CodeMirror.fromTextArea(
+      document.getElementById("id_right_logic"),
+      {{ form.right_logic|codemirror_parameters }}
+    );
+    var warning_logic_codemirror = CodeMirror.fromTextArea(
+      document.getElementById("id_warning_logic"),
+      {{ form.warning_logic|codemirror_parameters }}
+    );
+  </script>
+
 {% endblock %}
+
+
+

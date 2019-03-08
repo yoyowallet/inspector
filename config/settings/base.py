@@ -1,8 +1,8 @@
 """
 Base settings to build other settings files upon.
 """
-
 import environ
+from djangocodemirror.settings import *
 
 ROOT_DIR = environ.Path(__file__) - 3  # (inspector/config/settings/base.py - 3 = inspector/)
 APPS_DIR = ROOT_DIR.path('inspector')
@@ -72,7 +72,8 @@ THIRD_PARTY_APPS = [
     'encrypted_model_fields',
     'bootstrap_pagination',
     'django_filters',
-    'health_check'
+    'health_check',
+    'djangocodemirror'
 ]
 LOCAL_APPS = [
     'inspector.base.apps.BaseConfig',
@@ -286,3 +287,25 @@ STATICFILES_FINDERS += ['compressor.finders.CompressorFinder']
 FIELD_ENCRYPTION_KEY = env.str('FIELD_ENCRYPTION_KEY')
 
 DATETIME_FORMAT = 'Y-m-d H:i:s'
+
+# Codemirror
+
+CODEMIRROR_MODES['sql'] = "CodeMirror/mode/sql/sql.js"
+
+CODEMIRROR_SETTINGS['inspector'] = \
+    {
+        'mode': 'sql',
+        'modes': ['sql', 'python'],
+        'matchBrackets': True,
+        'lineNumbers': False,
+        'extraKeys': {"Ctrl-Space": "autocomplete"},
+        'addons': [
+            "CodeMirror/addon/edit/matchbrackets.js",
+            "CodeMirror/addon/hint/show-hint.js",
+            "CodeMirror/addon/hint/sql-hint.js",
+        ],
+        'extra_css': [
+            "CodeMirror/addon/hint/show-hint.css"
+        ],
+        'gutters': ["CodeMirror-lines"]
+    }

@@ -3,6 +3,7 @@ from crispy_forms.bootstrap import TabHolder, Tab
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Row, Column
 from django import forms
+from djangocodemirror.widgets import CodeMirrorWidget
 
 from .models import CheckGroup, Datacheck, CheckRun, EnvironmentStatus
 from ..base.constants import SUBMIT_CSS_CLASSES
@@ -37,9 +38,9 @@ class DatacheckForm(forms.ModelForm):
     helper.layout = Layout(
         Row(
             Column('code', css_class='form-group col-md-5 mb-0'),
-            Column('', css_class='col-md-2'),
+            Column(None, css_class='col-md-2'),
             Column('group', css_class='form-group col-md-2 mb-0'),
-            Column('', css_class='col-md-2'),
+            Column(None, css_class='col-md-2'),
             Column('weight', css_class='form-group col-md-1 mb-0'),
             css_class='form-row'
         ),
@@ -87,9 +88,9 @@ class DatacheckForm(forms.ModelForm):
                   'supports_warning', 'warning_relation', 'warning_type', 'warning_logic', 'group']
         widgets = {
             'description': forms.Textarea({'cols': 40, 'rows': 3}),
-            'left_logic': forms.Textarea({'cols': 40, 'rows': 6}),
-            'right_logic': forms.Textarea({'cols': 40, 'rows': 6}),
-            'warning_logic': forms.Textarea({'cols': 40, 'rows': 6})
+            'left_logic': CodeMirrorWidget(config_name='inspector'),
+            'right_logic': CodeMirrorWidget(config_name='inspector'),
+            'warning_logic': CodeMirrorWidget(config_name='inspector')
         }
 
 
@@ -107,7 +108,6 @@ class EnvironmentStatusForm(forms.ModelForm):
 
 
 class CheckRunFilterForm(forms.ModelForm):
-
     helper = FormHelper()
     helper.form_method = 'GET'
     helper.layout = Layout(
@@ -121,7 +121,6 @@ class CheckRunFilterForm(forms.ModelForm):
             css_class='form-row'
         )
     )
-
 
     class Meta:
         model = CheckRun
