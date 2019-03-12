@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+
+      - run:
+        name: build image
+        command: docker build -t yoyowallet/inspector:$CIRCLE_BRANCH -f compose/master/inspector/Dockerfile .
+
+      - run:
+        name: push image
+        command: docker push yoyowallet/inspector:$CIRCLE_BRANCH
