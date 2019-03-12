@@ -144,7 +144,7 @@ class CheckProcessor:
                 user=self.checkrun.user
             )
 
-        environment_status.status = result
+        environment_status.result = result
         if status:
             environment_status.last_start_time = self.checkrun.start_time
             environment_status.last_end_time = end_time

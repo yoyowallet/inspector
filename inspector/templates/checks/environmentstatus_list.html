@@ -1,23 +1,49 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<table class="table">
+  <table class="table table-borderless table-striped">
+    <thead class="border-bottom">
   <tr>
-    <td>ID</td>
-    <td>Link</td>
-    <td>last_start_time</td>
-    <td>last_end_time</td>
-    <td>status</td>
-    <td>result</td>
+    <th><p class="text-left"><i class="fas fa-list" title="Check code"></i></p></th>
+    <th><p class="text-center"><i class="fas fa-globe-africa" title="Environment"></i></p></th>
+    <th><p class="text-center"><i class="far fa-square" title="Last start"></i>
+      <i class="fas fa-angle-double-right"></i></p></th>
+    <th><p class="text-center"><i class="fas fa-angle-double-right"></i>
+      <i class="fas fa-square" title="Last end"></i></p></th>
+    <th><p class="text-center"><i class="far fa-clock" title="Status"></i></p></th>
+    <th><p class="text-center"><i class="fas fa-question" title="Result"></i></p></th>
+    <th><p class="text-center"><i class="fas fa-user-cog" title="User"></i></p></th>
   </tr>
+    </thead>
   {% for object in object_list %}
   <tr>
-    <td>{{object.pk}}</td>
-    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
-    <td>{{ object.last_start_time }}</td>
-    <td>{{ object.last_end_time }}</td>
-    <td>{{ object.status }}</td>
-    <td>{{ object.result }}</td>
+    <td>{{ object.datacheck.code }}</td>
+    <td><p class="text-center">{{ object.environment.name }}</p></td>
+    <td><p class="text-center">{{ object.last_start_time |default_if_none:""}}</p></td>
+    <td><p class="text-center">{{ object.last_end_time |default_if_none:""}}</p></td>
+    <td><p class="text-center">
+      {% if object.status == 'ERROR' %}
+        <i class="fas fa-exclamation" title="Error" style="color:red"></i>
+      {% elif object.status == 'FINISHED' %}
+        <i class="fas fa-square" title="Finished"></i>
+      {% elif object.status == 'RUNNING' %}
+        <i class="far fa-square" title="Running"></i>
+      {% endif %}
+    </p>
+    </td>
+    <td><p class="text-center">
+      {% if object.result == 'FAILED' %}
+        <i class="fas fa-times" style="color:red"></i>
+      {% elif object.result == 'SUCCESS' %}
+        <i class="fas fa-check" style="color:green"></i>
+      {% elif object.result == 'SUCCESS' %}
+        WARNING
+      {% endif %}
+    </p>
+    </td>
+    <td><p class="text-center">
+      {{ object.user.username }}
+    </p>
   </tr>
   {% endfor %}
 </table>

@@ -262,23 +262,6 @@ class CheckRunViewTest(unittest.TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-    def test_update_checkrun(self):
-        checkrun = create_checkrun()
-        data = {
-            "status": "status",
-            "result": "result",
-            "left_value": "left_value",
-            "right_value": "right_value",
-            "warning_value": "warning_value",
-            "error_message": "error_message",
-            "datacheck": create_datacheck().pk,
-            "environment": create_environment().pk,
-            "user": create_django_contrib_auth_models_user().pk,
-        }
-        url = reverse('checks_checkrun_update', args=[checkrun.pk, ])
-        response = self.client.post(url, data)
-        self.assertEqual(response.status_code, 302)
-
 
 class EnvironmentStatusViewTest(unittest.TestCase):
     '''
@@ -291,35 +274,4 @@ class EnvironmentStatusViewTest(unittest.TestCase):
     def test_list_environmentstatus(self):
         url = reverse('checks_environmentstatus_list')
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_create_environmentstatus(self):
-        url = reverse('checks_environmentstatus_create')
-        data = {
-            "status": "status",
-            "result": "result",
-            "datacheck": create_datacheck().pk,
-            "environment": create_environment().pk,
-            "user": create_django_contrib_auth_models_user().pk,
-        }
-        response = self.client.post(url, data=data)
-        self.assertEqual(response.status_code, 302)
-
-    def test_detail_environmentstatus(self):
-        environmentstatus = create_environmentstatus()
-        url = reverse('checks_environmentstatus_detail', args=[environmentstatus.pk, ])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_update_environmentstatus(self):
-        environmentstatus = create_environmentstatus()
-        data = {
-            "status": "status",
-            "result": "result",
-            "datacheck": create_datacheck().pk,
-            "environment": create_environment().pk,
-            "user": create_django_contrib_auth_models_user().pk,
-        }
-        url = reverse('checks_environmentstatus_update', args=[environmentstatus.pk, ])
-        response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)

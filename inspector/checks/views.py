@@ -154,6 +154,11 @@ class EnvironmentStatusListView(PermissionRequiredMixin, ListView):
     permission_required = 'checks.view_environment_status'
     model = EnvironmentStatus
 
+    def get_queryset(self):
+        qs = EnvironmentStatus.objects.select_related()
+
+        return qs
+
 
 class CheckGroupDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
     permission_required = 'checks.delete_checkgroup'
