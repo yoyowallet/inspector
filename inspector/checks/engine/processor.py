@@ -8,7 +8,7 @@ from .exceptions import CheckExecutorException, InstanceNotFound
 from .executors import CheckExecutor, CONFIG
 from .executors.python_executor import PythonExecutor
 from ..constants import STATUSES, RELATIONS, RESULTS
-from ..models import CheckRun, Datacheck
+from ..models import CheckRun, Datacheck, EnvironmentStatus
 from ...systems.models import Instance, System
 
 logger = logging.getLogger(__name__)
@@ -90,6 +90,7 @@ class CheckProcessor:
     def execute_checks(self):
 
         status = True
+        result = None
         errors = list()
 
         try:
@@ -118,15 +119,41 @@ class CheckProcessor:
                     errors.append(str(exc))
                     status = False
 
+        end_time = dt.now(pytz.utc)
+
         if status:
             self.checkrun.status = STATUSES.FINISHED
             self.checkrun.result = result
-            self.checkrun.end_time = dt.now(pytz.utc)
+            self.checkrun.end_time = end_time
         else:
             self.checkrun.error_message = '\n'.join(errors)
             self.checkrun.status = STATUSES.ERROR
 
         self.checkrun.save()
+
+        try:
+            environment_status: EnvironmentStatus = EnvironmentStatus.objects.get(
+                environment=self.checkrun.environment,
+                datacheck=self.checkrun.datacheck
+            )
+            environment_status.user = self.checkrun.user
+        except EnvironmentStatus.DoesNotExist:
+            environment_status: EnvironmentStatus = EnvironmentStatus(
+                environment=self.checkrun.environment,
+                datacheck=self.checkrun.datacheck,
+                user=self.checkrun.user
+            )
+
+        environment_status.status = result
+        if status:
+            environment_status.last_start_time = self.checkrun.start_time
+            environment_status.last_end_time = end_time
+            environment_status.status = STATUSES.FINISHED
+        else:
+            environment_status.last_start_time = None
+            environment_status.last_end_time = None
+            environment_status.status = STATUSES.ERROR
+        environment_status.save()
 
 
 class CheckComparator:

@@ -87,8 +87,8 @@ class CheckRun(models.Model):
 class EnvironmentStatus(models.Model):
     datacheck = models.ForeignKey(Datacheck, on_delete=models.CASCADE)
     environment = models.ForeignKey(Environment, on_delete=models.CASCADE)
-    last_start_time = models.DateTimeField()
-    last_end_time = models.DateTimeField()
+    last_start_time = models.DateTimeField(null=True)
+    last_end_time = models.DateTimeField(null=True)
     status = models.CharField(max_length=20, choices=STATUSES)
-    result = models.CharField(max_length=20, choices=RESULTS)
+    result = models.CharField(max_length=20, choices=RESULTS, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.PROTECT)

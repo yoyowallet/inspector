@@ -21,10 +21,12 @@
       document.getElementById("id_left_logic"),
       {{ form.left_logic|codemirror_parameters }}
     );
+    document.getElementById("id_left_logic").required = false;
     var right_logic_codemirror = CodeMirror.fromTextArea(
       document.getElementById("id_right_logic"),
       {{ form.right_logic|codemirror_parameters }}
     );
+    document.getElementById("id_right_logic").required = false;
     var warning_logic_codemirror = CodeMirror.fromTextArea(
       document.getElementById("id_warning_logic"),
       {{ form.warning_logic|codemirror_parameters }}
