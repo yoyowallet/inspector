@@ -5,59 +5,69 @@
 {% block title %}Checks{% endblock %}
 
 {% block content %}
-<table id="checks" class="table table-borderless table-striped">
-  <thead>
-  <th><p class="text-center"><input type="checkbox" id="checkall"/></p></th>
-  <th><p class="text-left"><i class="fas fa-list" title="Check code"></i></p></th>
-  <th><p class="text-center"><i class="far fa-object-ungroup" title="Group"></i></p></th>
-  <th><p class="text-center"><i class="fas fa-desktop" title="System"></i></p></th>
-  <th><p class="text-center"><i class="fas fa-balance-scale" title="Weight"></i></p></th>
-  <th>{% button_new 'checks_datacheck_create' %}</th>
-  </thead>
-  <tbody>
-  {% for object in datacheck_list %}
-  <tr>
-    <td><p class="text-center"><input type="checkbox" class="checkthis"/></p></td>
-    <td>{{ object.code }}</td>
-    <td><p class="text-center">{{ object.group| default_if_none:"" }}</p></td>
-    <td><p class="text-center">{{ object.left_system }}</p></td>
-    <td><p class="text-center">{{ object.weight }}</p></td>
-    <td>
-      <p class="text-right">
-        {% button_hoverdetail 'checks/datacheck_hoverdetail' object %}
-        <button class="btn btn-outline-secondary btn-sm check-details" data-title="Details"
-                data-url="{% url 'checks_datacheck_info' object.id %}">
-          <span class="fas fa-info-circle fa-sm"></span></button>
-        {% button_edit object %}
-        {% button_run object %}
-        {% button_delete object %}
-      </p>
-    </td>
-  </tr>
-  {% endfor %}
-  </tbody>
-</table>
+  <table id="checks" class="table table-borderless table-striped">
+    <thead>
+    <th><p class="text-center"><input type="checkbox" id="checkall"/></p></th>
+    <th><p class="text-left"><i class="fas fa-list" title="Check code"></i></p></th>
+    <th><p class="text-center"><i class="far fa-object-ungroup" title="Group"></i></p></th>
+    <th><p class="text-center"><i class="fas fa-desktop" title="System"></i></p></th>
+    <th><p class="text-center"><i class="fas fa-balance-scale" title="Weight"></i></p></th>
+    <th>
+      {% if perms.checks.add_datacheck %}
+        {% button_new 'checks_datacheck_create' %}
+      {% endif %}
+    </th>
+    </thead>
+    <tbody>
+    {% for object in datacheck_list %}
+      <tr>
+        <td><p class="text-center"><input type="checkbox" class="checkthis"/></p></td>
+        <td>{{ object.code }}</td>
+        <td><p class="text-center">{{ object.group| default_if_none:"" }}</p></td>
+        <td><p class="text-center">{{ object.left_system }}</p></td>
+        <td><p class="text-center">{{ object.weight }}</p></td>
+        <td>
+          <p class="text-right">
+            {% button_hoverdetail 'checks/datacheck_hoverdetail' object %}
+            <button class="btn btn-outline-secondary btn-sm check-details" data-title="Details"
+                    data-url="{% url 'checks_datacheck_info' object.id %}">
+              <span class="fas fa-info-circle fa-sm"></span></button>
+            {% if perms.checks.add_checkrun %}
+              {% button_run object %}
+            {% endif %}
+            {% if perms.checks.change_datacheck %}
+              {% button_edit object %}
+            {% endif %}
+            {% if perms.checks.delete_datacheck %}
+              {% button_delete object %}
+            {% endif %}
+          </p>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 
-{% modals_modal 'datacheck' %}
+  {% modals_modal 'datacheck' %}
 
 {% endblock content %}
 
 {% block javascript %}
-{{ block.super }}
+  {{ block.super }}
 
-<script type="text/javascript">
-  $(document).ready(function () {
-    $(".check-details").each(function () {
-      $(this).modalForm({
-        formURL: $(this).data('url'),
-        modalID: "#datacheck-modal"
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".check-details").each(function () {
+        $(this).modalForm({
+          formURL: $(this).data('url'),
+          modalID: "#datacheck-modal"
+        });
       });
     });
-  });
-</script>
+  </script>
 
-{% modals_run_js 'datacheck' %}
-{% modals_delete_js 'datacheck' %}
+  {% modals_run_js 'datacheck' %}
+  {% modals_delete_js 'datacheck' %}
 
 {% endblock javascript %}
 

@@ -8,7 +8,10 @@
     <tr>
       <th><p class="text-left"><i class="far fa-object-ungroup" title="Group"></i></p></th>
       <th><p class="text-left"><i class="fas fa-align-justify" title="Description"></i></p></th>
-      <th>{% button_new 'checks_checkgroup_create' %}</th>
+      <th> {% if perms.checks.add_checkgroup %}
+        {% button_new 'checks_checkgroup_create' %}
+      {% endif %}
+      </th>
     </tr>
     </thead>
     <tbody>
@@ -17,23 +20,29 @@
         <td>{{ object.name }}</td>
         <td>{{ object.description }}</td>
         <td><p class="text-right">
-          {% button_run object %}
-          {% button_edit object %}
-          {% button_delete object %}
+          {% if perms.checks.add_checkrun %}
+            {% button_run object %}
+          {% endif %}
+          {% if perms.checks.change_checkgroup %}
+            {% button_edit object %}
+          {% endif %}
+          {% if perms.checks.delete_checkgroup %}
+            {% button_delete object %}
+          {% endif %}
         </p></td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
 
-{% modals_modal 'checkgroup' %}
+  {% modals_modal 'checkgroup' %}
 
 {% endblock %}
 
 {% block javascript %}
-{{ block.super }}
+  {{ block.super }}
 
-{% modals_run_js 'checkgroup' %}
-{% modals_delete_js 'checkgroup' %}
+  {% modals_run_js 'checkgroup' %}
+  {% modals_delete_js 'checkgroup' %}
 
 {% endblock javascript %}

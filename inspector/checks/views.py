@@ -38,7 +38,7 @@ class DatacheckRunView(PermissionRequiredMixin, PassRequestMixin,
     template_name = 'components/modals_run.html'
     form_class = DatacheckRunForm
     success_message = 'Success: Check was triggered.'
-    success_url = reverse_lazy('checks_datacheck_list')
+    success_url = reverse_lazy('checks_checkrun_list')
 
     def form_valid(self, form):
         form.instance.datacheck_id = self.kwargs['pk']
@@ -151,7 +151,7 @@ class DatacheckUpdateView(PermissionRequiredMixin, UpdateView):
 
 
 class EnvironmentStatusListView(PermissionRequiredMixin, ListView):
-    permission_required = 'checks.view_environment_status'
+    permission_required = 'checks.view_environmentstatus'
     model = EnvironmentStatus
 
     def get_queryset(self):
