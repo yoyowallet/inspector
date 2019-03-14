@@ -7,13 +7,31 @@ LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel('INFO')
 
 DEFAULTS = {
-    'Checks - view':
+    'Systems - read':
+        {'system': ['view'],
+         'environment': ['view'],
+         'instance': ['view']
+         },
+    'Systems - edit':
+        {'system': ['view', 'add', 'change', 'delete'],
+         'environment': ['view', 'add', 'change', 'delete'],
+         'instance': ['view', 'add', 'change', 'delete']
+         },
+    'Checks - read':
         {'datacheck': ['view'],
          'checkrun': ['view'],
-         'checkgroup': ['view']
+         'checkgroup': ['view'],
+         'environmentstatus': ['view']
+         },
+    'Checks - edit':
+        {'datacheck': ['view', 'add', 'change', 'delete'],
+         'checkrun': ['view', 'add', 'change', 'delete'],
+         'checkgroup': ['view', 'add', 'change', 'delete']
          },
     'Checks - run': {
-        'checkrun': ['add']
+        'datacheck': ['view'],
+        'checkrun': ['view', 'add'],
+        'checkgroup': ['view']
     }
 }
 

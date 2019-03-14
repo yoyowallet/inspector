@@ -3,39 +3,45 @@
 {% load buttons %}
 {% load modals %}
 {% block content %}
-<table class="table table-borderless table-striped">
-  <thead>
-  <tr>
-    <th><p class="text-left"><i class="fas fa-desktop" title="System"></i></p></th>
-    <th><p class="text-left"><i class="far fa-window-maximize" title="Application"></i></p></th>
-    <th style="width: 12.5%">
-      {% button_new 'systems_system_create' %}
-    </th>
-  </tr>
-  </thead>
-  <tbody>
-  {% for object in object_list %}
-  <tr>
-    <td>{{ object.name }}</td>
-    <td>{{ object.get_application_display }}</td>
-    <td>
-      <p class="text-right">
-        {% button_edit object %}
-        {% button_delete object %}
-      </p>
-    </td>
-  </tr>
-  {% endfor %}
-  </tbody>
-</table>
-{% modals_modal 'system' %}
+  <table class="table table-borderless table-striped">
+    <thead>
+    <tr>
+      <th><p class="text-left"><i class="fas fa-desktop" title="System"></i></p></th>
+      <th><p class="text-left"><i class="far fa-window-maximize" title="Application"></i></p></th>
+      <th style="width: 12.5%">
+        {% if perms.systems.add_system %}
+          {% button_new 'systems_system_create' %}
+        {% endif %}
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for object in object_list %}
+      <tr>
+        <td>{{ object.name }}</td>
+        <td>{{ object.get_application_display }}</td>
+        <td>
+          <p class="text-right">
+            {% if perms.systems.change_system %}
+              {% button_edit object %}
+            {% endif %}
+            {% if perms.systems.delete_system %}
+              {% button_delete object %}
+            {% endif %}
+          </p>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% modals_modal 'system' %}
 
 {% endblock %}
 
 {% block javascript %}
 
-{{ block.super }}
-{% modals_delete_js 'system' %}
+  {{ block.super }}
+  {% modals_delete_js 'system' %}
 
 {% endblock %}
 

@@ -47,7 +47,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="{% url 'home' %}">
-    <img src="{% static 'images/inspector.svg' %}" height="30px"/>
+      <img src="{% static 'images/inspector.svg' %}" height="30px"/>
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
@@ -56,20 +56,28 @@
         </li>
 
         {% if request.user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'checks_environmentstatus_list' %}">Status</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'checks_checkrun_list' %}">Check runs</a>
-          </li>
+          {% if perms.checks.view_environmentstatus %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'checks_environmentstatus_list' %}">Status</a>
+            </li>
+          {% endif %}
+          {% if perms.checks.view_checkrun %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'checks_checkrun_list' %}">Check runs</a>
+            </li>
+          {% endif %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownChecks" role="button" data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
               Checks
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownChecks">
-              <a class="dropdown-item" href="{% url 'checks_datacheck_list' %}">Checks</a>
-              <a class="dropdown-item" href="{% url 'checks_checkgroup_list' %}">Check groups</a>
+              {% if perms.checks.view_datacheck %}
+                <a class="dropdown-item" href="{% url 'checks_datacheck_list' %}">Checks</a>
+              {% endif %}
+              {% if perms.checks.view_checkgroup %}
+                <a class="dropdown-item" href="{% url 'checks_checkgroup_list' %}">Check groups</a>
+              {% endif %}
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -78,9 +86,15 @@
               Systems
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownSystems">
-              <a class="dropdown-item" href="{% url 'systems_system_list' %}">Systems</a>
-              <a class="dropdown-item" href="{% url 'systems_environment_list' %}">Environments</a>
-              <a class="dropdown-item" href="{% url 'systems_instance_list' %}">Instances</a>
+              {% if perms.systems.view_system %}
+                <a class="dropdown-item" href="{% url 'systems_system_list' %}">Systems</a>
+              {% endif %}
+              {% if perms.systems.view_environment %}
+                <a class="dropdown-item" href="{% url 'systems_environment_list' %}">Environments</a>
+              {% endif %}
+              {% if perms.systems.view_instance %}
+                <a class="dropdown-item" href="{% url 'systems_instance_list' %}">Instances</a>
+              {% endif %}
             </div>
           </li>
 
@@ -132,8 +146,8 @@
 {% block javascript %}
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"
-    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script>
+          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+          crossorigin="anonymous"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
           integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"

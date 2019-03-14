@@ -8,7 +8,9 @@
     <tr>
       <th><p class="text-left"><i class="fas fa-globe-africa" title="Environment"></i></p></th>
       <th style="width: 12.5%">
-        {% button_new 'systems_environment_create' %}
+        {% if perms.systems.add_environment %}
+          {% button_new 'systems_environment_create' %}
+        {% endif %}
       </th>
     </tr>
     </thead>
@@ -20,8 +22,12 @@
         </td>
         <td>
           <p class="text-right">
-            {% button_edit object %}
-            {% button_delete object %}
+            {% if perms.systems.change_environment %}
+              {% button_edit object %}
+            {% endif %}
+            {% if perms.systems.delete_environment %}
+              {% button_delete object %}
+            {% endif %}
           </p>
         </td>
       </tr>

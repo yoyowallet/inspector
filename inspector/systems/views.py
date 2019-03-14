@@ -81,6 +81,9 @@ class InstanceUpdateView(PermissionRequiredMixin, UpdateView):
     model = Instance
     form_class = InstanceForm
 
+    def get_success_url(self):
+        return reverse('systems_instance_list')
+
 
 class SystemDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
     permission_required = 'systems.delete_system'
