@@ -97,7 +97,7 @@ class CheckProcessor:
             left_value = self.left_executor.execute(self.datacheck.left_logic)
             self.checkrun.left_value = str(left_value)
         except Exception as exc:
-            errors.append(exc.message)
+            errors.append(str(exc))
             status = False
 
         try:
