@@ -59,6 +59,6 @@ class CheckRunService:
             user=user
         )
         check_run.save()
-        execute_check(check_run.id)
+        execute_check.delay(check_run.id)
 
         return check_run.id
