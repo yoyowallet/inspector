@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db import transaction
 
 from inspector.taskapp.tasks import execute_check
 from .constants import STATUSES
@@ -56,9 +57,9 @@ class CheckRunService:
             datacheck=check,
             environment=environment,
             status=STATUSES.NEW,
-            user=user
-        )
-        check_run.save()
-        execute_check.delay(check_run.id)
+            user=user)
+        with transaction.atomic():
+            check_run.save()
+            transaction.on_commit(lambda: execute_check.delay(check_run.id))
 
         return check_run.id
