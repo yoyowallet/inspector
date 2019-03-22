@@ -1,11 +1,27 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block content %}
+  <div class="card">
+    <h7 class="card-header">
+      <a class="collapsed d-block" data-toggle="collapse" href="#search-collapsed" aria-expanded="true"
+         aria-controls="search-collapsed" id="search-heading">
+        <i class="fa fa-chevron-down pull-right"></i>
+        Search
+      </a>
+    </h7>
+    <div id="search-collapsed" class="collapse" aria-labelledby="search-heading">
+      <div class="card-body">
+        {% crispy filter.form %}
+      </div>
+    </div>
+  </div>
+
   <table class="table table-borderless table-striped">
     <thead class="border-bottom">
   <tr>
-    <th><p class="text-left"><i class="fas fa-list" title="Check code"></i></p></th>
-    <th><p class="text-center"><i class="fas fa-globe-africa" title="Environment"></i></p></th>
+    <th><p class="text-left"><i class="fas fa-globe-africa" title="Environment"></i></p></th>
+    <th><p class="text-center"><i class="fas fa-list" title="Check code"></i></p></th>
     <th><p class="text-center"><i class="far fa-square" title="Last start"></i>
       <i class="fas fa-angle-double-right"></i></p></th>
     <th><p class="text-center"><i class="fas fa-angle-double-right"></i>
@@ -17,8 +33,8 @@
     </thead>
   {% for object in object_list %}
   <tr>
-    <td>{{ object.datacheck.code }}</td>
-    <td><p class="text-center">{{ object.environment.name }}</p></td>
+    <td><p class="text-left">{{ object.environment.name }}</p></td>
+    <td><p class="text-center">{{ object.datacheck.code }}</p></td>
     <td><p class="text-center">{{ object.last_start_time |default_if_none:""}}</p></td>
     <td><p class="text-center">{{ object.last_end_time |default_if_none:""}}</p></td>
     <td><p class="text-center">
@@ -36,8 +52,8 @@
         <i class="fas fa-times" style="color:red"></i>
       {% elif object.result == 'SUCCESS' %}
         <i class="fas fa-check" style="color:green"></i>
-      {% elif object.result == 'SUCCESS' %}
-        WARNING
+      {% elif object.result == 'WARNING' %}
+        <i class="fas fa-exclamation-triangle" style="color:yellow"></i>
       {% endif %}
     </p>
     </td>

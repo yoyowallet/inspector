@@ -1,23 +1,36 @@
-<table class="table table-borderless table-striped">
-  <tr>
-    <td><p class="font-weight-bold">Left value</p></td>
-    <td>{{ object.left_value|default_if_none:"" }}</td>
-  </tr>
-  <tr>
-    <td><p class="font-weight-bold">Right value</p></td>
-    <td>{{ object.right_value|default_if_none:"" }}</td>
-  </tr>
-  <tr>
-    <td><p class="font-weight-bold">Warning value</p></td>
-    <td>{{ object.warning_value|default_if_none:"" }}</td>
-  </tr>
-  <tr>
-    <td><p class="font-weight-bold">Error</p></td>
-    <td>{{ object.error_message|default_if_none:"" }}</td>
-  </tr>
-  <tr>
-    <td><p class="font-weight-bold">Created</p></td>
-    <td>{{ object.created_at }}</td>
-  </tr>
+{% if object.left_value %}
+  <table class="table table-borderless table-striped">
+    <thead class="border-bottom">
+    <tr>
+      <th><p class="text-center">Left</p></th>
+      <th><p class="text-center">Relation</p></th>
+      <th><p class="text-center">Right</p></th>
+      {% if object.warning_value %}
+        <th><p class="text-center">Warning</p></th>
+        <th><p class="text-center">Warning relation</p></th>
+      {% endif %}
+    </tr>
+    </thead>
+    <tr>
+      <td><p class="text-center">{{ object.left_value }}</p></td>
+      <td><p class="text-center">{{ object.datacheck.get_relation_display }}</p></td>
+      <td><p class="text-center">{{ object.right_value }}</p></td>
+      {% if object.warning_value %}
+        <td><p class="text-center">{{ object.warning_value }}</p></td>
+        <td><p class="text-center">{{ object.datacheck.get_warning_relation_display }}</p></td>
+      {% endif %}
+    </tr>
+  </table>
 
-</table>
+{% endif %}
+{% if object.error_message %}
+  <p class="text-left" style="max-width: 30rem">
+    <i class="fas fa-exclamation" title="Error" style="color:red"></i>
+    {{ object.error_message }}
+  </p>
+{% endif %}
+
+<p class="text-center">
+  <i class="far fa-clock" title="Created"></i>
+  {{ object.created_at }}
+</p>

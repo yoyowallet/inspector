@@ -7,7 +7,7 @@ from django_filters.views import BaseFilterView
 
 from inspector.taskapp.tasks import execute_check
 from .constants import STATUSES
-from .filters import CheckRunFilter
+from .filters import CheckRunFilter, EnvironmentStatusFilter
 from .forms import DatacheckRunForm, CheckGroupForm, DatacheckForm, CheckGroupRunForm
 from .models import Datacheck, CheckGroup, CheckRun, EnvironmentStatus
 from .service import CheckRunService
@@ -150,14 +150,17 @@ class DatacheckUpdateView(PermissionRequiredMixin, UpdateView):
         return reverse('checks_datacheck_list')
 
 
-class EnvironmentStatusListView(PermissionRequiredMixin, ListView):
+class EnvironmentStatusListView(PermissionRequiredMixin, BaseFilterView, ListView):
     permission_required = 'checks.view_environmentstatus'
     model = EnvironmentStatus
+    filterset_class = EnvironmentStatusFilter
+    ordering = ['environment', 'check_code']
 
     def get_queryset(self):
         qs = EnvironmentStatus.objects.select_related()
+        qs_filtered_list = EnvironmentStatusFilter(self.request.GET, queryset=qs)
 
-        return qs
+        return qs_filtered_list.qs
 
 
 class CheckGroupDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):

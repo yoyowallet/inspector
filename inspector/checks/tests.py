@@ -237,23 +237,15 @@ class CheckRunViewTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_create_checkrun(self):
+
         self.test_user.add_permission(CheckRun, 'add_checkrun')
         url = reverse('checks_checkrun_create')
         data = {
-            "start_time": "start_time",
-            "end_time": "end_time",
-            "status": "status",
-            "result": "result",
-            "left_value": "left_value",
-            "right_value": "right_value",
-            "warning_value": "warning_value",
-            "error_message": "error_message",
-            "datacheck": create_datacheck().pk,
-            "environment": create_environment().pk,
-            "user": create_django_contrib_auth_models_user().pk,
+            "environment": create_environment(),
+            "id": create_datacheck().pk
         }
         response = self.client.post(url, data=data)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_detail_checkrun(self):
         self.test_user.add_permission(CheckRun, 'view_checkrun')
