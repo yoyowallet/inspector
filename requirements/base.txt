@@ -33,3 +33,4 @@ sqlalchemy==1.3.1
 
 # TO-DO make optional in setup.py
 sqlalchemy-redshift==0.7.3
+mysqlclient
