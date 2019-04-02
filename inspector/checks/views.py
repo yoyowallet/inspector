@@ -1,4 +1,4 @@
-from bootstrap_modal_forms.mixins import PassRequestMixin, DeleteAjaxMixin
+from bootstrap_modal_forms.mixins import PassRequestMixin, DeleteMessageMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy, reverse
@@ -74,7 +74,7 @@ class CheckGroupRunView(PermissionRequiredMixin, PassRequestMixin, SuccessMessag
         return super().form_valid(form)
 
 
-class DatacheckDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
+class DatacheckDeleteView(PermissionRequiredMixin, DeleteMessageMixin, DeleteView):
     permission_required = 'checks.delete_datacheck'
     model = Datacheck
     template_name = 'components/modals_delete.html'
@@ -163,7 +163,7 @@ class EnvironmentStatusListView(PermissionRequiredMixin, BaseFilterView, ListVie
         return qs_filtered_list.qs
 
 
-class CheckGroupDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
+class CheckGroupDeleteView(PermissionRequiredMixin, DeleteMessageMixin, DeleteView):
     permission_required = 'checks.delete_checkgroup'
     model = CheckGroup
     template_name = 'components/modals_delete.html'

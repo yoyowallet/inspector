@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from . import models
 from . import serializers
 from .service import CheckRunService
+from ..base.api import AuthPermission
 
 
 class CheckGroupViewSet(viewsets.ModelViewSet):
@@ -12,7 +13,7 @@ class CheckGroupViewSet(viewsets.ModelViewSet):
 
     queryset = models.CheckGroup.objects.all()
     serializer_class = serializers.CheckGroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.DjangoModelPermissions]
 
 
 class DatacheckViewSet(viewsets.ModelViewSet):
@@ -20,7 +21,7 @@ class DatacheckViewSet(viewsets.ModelViewSet):
 
     queryset = models.Datacheck.objects.all()
     serializer_class = serializers.DatacheckSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.DjangoModelPermissions]
 
 
 class CheckRunViewSet(viewsets.ModelViewSet):
@@ -28,7 +29,7 @@ class CheckRunViewSet(viewsets.ModelViewSet):
 
     queryset = models.CheckRun.objects.all()
     serializer_class = serializers.CheckRunSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.DjangoModelPermissions]
 
 
 class EnvironmentStatusViewSet(viewsets.ModelViewSet):
@@ -36,7 +37,11 @@ class EnvironmentStatusViewSet(viewsets.ModelViewSet):
 
     queryset = models.EnvironmentStatus.objects.all()
     serializer_class = serializers.EnvironmentStatusSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.DjangoModelPermissions]
+
+
+class DatacheckRunPermission(AuthPermission):
+    perms = 'checks.add_checkrun'
 
 
 class RunCheck(CreateAPIView):
@@ -45,7 +50,7 @@ class RunCheck(CreateAPIView):
     """
     authentication_classes = (authentication.TokenAuthentication,
                               authentication.SessionAuthentication)
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (DatacheckRunPermission,)
     serializer_class = serializers.CheckRunCreateSerializer
 
     def post(self, request, *args, **kwargs):
@@ -66,7 +71,7 @@ class RunCheck(CreateAPIView):
 class RunCheckGroup(CreateAPIView):
     authentication_classes = (authentication.TokenAuthentication,
                               authentication.SessionAuthentication)
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (DatacheckRunPermission,)
     serializer_class = serializers.CheckGroupRunCreateSerializer
 
     def post(self, request, *args, **kwargs):
