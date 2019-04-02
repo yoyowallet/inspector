@@ -1,4 +1,4 @@
-from bootstrap_modal_forms.mixins import DeleteAjaxMixin
+from bootstrap_modal_forms.mixins import DeleteMessageMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
@@ -85,7 +85,7 @@ class InstanceUpdateView(PermissionRequiredMixin, UpdateView):
         return reverse('systems_instance_list')
 
 
-class SystemDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
+class SystemDeleteView(PermissionRequiredMixin, DeleteMessageMixin, DeleteView):
     permission_required = 'systems.delete_system'
     model = System
     template_name = 'components/modals_delete.html'
@@ -93,7 +93,7 @@ class SystemDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
     success_url = reverse_lazy('systems_system_list')
 
 
-class EnvironmentDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
+class EnvironmentDeleteView(PermissionRequiredMixin, DeleteMessageMixin, DeleteView):
     permission_required = 'systems.delete_environment'
     model = Environment
     template_name = 'components/modals_delete.html'
@@ -101,7 +101,7 @@ class EnvironmentDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView
     success_url = reverse_lazy('systems_environment_list')
 
 
-class InstanceDeleteView(PermissionRequiredMixin, DeleteAjaxMixin, DeleteView):
+class InstanceDeleteView(PermissionRequiredMixin, DeleteMessageMixin, DeleteView):
     permission_required = 'systems.delete_instance'
     model = Instance
     template_name = 'components/modals_delete.html'

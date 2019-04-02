@@ -8,7 +8,7 @@ class SystemViewSet(viewsets.ModelViewSet):
 
     queryset = models.System.objects.all()
     serializer_class = serializers.SystemSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.DjangoModelPermissions]
 
 
 class EnvironmentViewSet(viewsets.ModelViewSet):
@@ -16,7 +16,7 @@ class EnvironmentViewSet(viewsets.ModelViewSet):
 
     queryset = models.Environment.objects.all()
     serializer_class = serializers.EnvironmentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.DjangoModelPermissions]
 
 
 class InstanceViewSet(viewsets.ModelViewSet):
@@ -24,4 +24,4 @@ class InstanceViewSet(viewsets.ModelViewSet):
 
     queryset = models.Instance.objects.all()
     serializer_class = serializers.InstanceSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.DjangoModelPermissions]
