@@ -41,7 +41,7 @@ class EnvironmentStatusViewSet(viewsets.ModelViewSet):
 
 
 class DatacheckRunPermission(AuthPermission):
-    permission = 'checks.add_checkrun'
+    perms = 'checks.add_checkrun'
 
 
 class RunCheck(CreateAPIView):
