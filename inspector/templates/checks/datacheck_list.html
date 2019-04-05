@@ -29,7 +29,7 @@
         <td>
           <p class="text-right">
             {% button_hoverdetail 'checks/datacheck_hoverdetail' object %}
-            <button class="btn btn-outline-secondary btn-sm check-details" data-title="Details"
+            <button class="btn btn-outline-secondary btn-sm check-details btn-table" data-title="Details"
                     data-url="{% url 'checks_datacheck_info' object.id %}">
               <span class="fas fa-info-circle fa-sm"></span></button>
             {% if perms.checks.add_checkrun %}

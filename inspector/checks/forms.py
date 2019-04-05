@@ -1,7 +1,7 @@
 from bootstrap_modal_forms.mixins import PopRequestMixin, CreateUpdateAjaxMixin
-from crispy_forms.bootstrap import TabHolder, Tab
+from crispy_forms.bootstrap import TabHolder, Tab, PrependedText
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Row, Column
+from crispy_forms.layout import Submit, Layout, Row, Column, Field, HTML
 from django import forms
 from djangocodemirror.widgets import CodeMirrorWidget
 
@@ -33,15 +33,30 @@ class CheckGroupForm(forms.ModelForm):
         }
 
 
+def prepended_select_column(field: str, width: int, extra_classes: str = ''):
+    return Column(
+        Field(field,
+              template="components/forms/select_prepend.html"
+              ),
+        css_class=f'form-group col-md-{width} {extra_classes}')
+
+
 class DatacheckForm(forms.ModelForm):
     helper = FormHelper()
     helper.layout = Layout(
         Row(
-            Column('code', css_class='form-group col-md-5 mb-0'),
-            Column(None, css_class='col-md-2'),
-            Column('group', css_class='form-group col-md-2 mb-0'),
-            Column(None, css_class='col-md-2'),
-            Column('weight', css_class='form-group col-md-1 mb-0'),
+            Column(PrependedText(
+                'code', 'Check code',
+                template="components/forms/prepended_appended_text.html"),
+                css_class='form-group col-md-5 mb-0 mt-2'),
+            Column(None, css_class='col-md-1'),
+            prepended_select_column('group', 3, 'mb-0 mt-2'),
+            Column(None, css_class='col-md-1'),
+            Column(
+                PrependedText(
+                    'weight', '<i class="fas fa-balance-scale" title="Weight"></i>',
+                    template="components/forms/prepended_appended_text.html"),
+                css_class='input-group-sm col-md-2 mb-0 mt-2'),
             css_class='form-row'
         ),
         Row(
@@ -52,8 +67,8 @@ class DatacheckForm(forms.ModelForm):
             Tab(
                 'Left',
                 Row(
-                    Column('left_system', css_class='form-group col-md-2 mb-0'),
-                    Column('left_type', css_class='form-group col-md-2 mb-0')
+                    prepended_select_column('left_system', 3, 'm-1'),
+                    prepended_select_column('left_type', 3, 'm-1'),
                 ),
                 Row(
                     Column('left_logic', css_class='form-group col-md-12 mb-0')
@@ -61,9 +76,9 @@ class DatacheckForm(forms.ModelForm):
             ),
             Tab('Right',
                 Row(
-                    Column('relation', css_class='form-group col-md-2 mb-0'),
-                    Column('right_system', css_class='form-group col-md-2 mb-0'),
-                    Column('right_type', css_class='form-group col-md-2 mb-0')
+                    prepended_select_column('relation', 2, 'm-1'),
+                    prepended_select_column('right_system', 3, 'm-1'),
+                    prepended_select_column('right_type', 3, 'm-1'),
                 ),
                 Row(
                     Column('right_logic', css_class='form-group col-md-12 mb-0')
@@ -71,9 +86,9 @@ class DatacheckForm(forms.ModelForm):
                 ),
             Tab('Warning',
                 Row(
-                    Column('supports_warning', css_class='form-group col-md-1 mb-0'),
-                    Column('warning_relation', css_class='form-group col-md-2 mb-0'),
-                    Column('warning_type', css_class='form-group col-md-2 mb-0')
+                    Column('supports_warning', css_class='form-group col-md-1 mb-0 mt-1'),
+                    prepended_select_column('warning_relation', 2, 'm-1'),
+                    prepended_select_column('warning_type', 3, 'm-1')
                 ),
                 Row(
                     Column('warning_logic', css_class='form-group col-md-12 mb-0')
@@ -91,6 +106,24 @@ class DatacheckForm(forms.ModelForm):
             'left_logic': CodeMirrorWidget(config_name='inspector'),
             'right_logic': CodeMirrorWidget(config_name='inspector'),
             'warning_logic': CodeMirrorWidget(config_name='inspector')
+        }
+        system_icon = '<i class="fas fa-desktop" title="System"></i>'
+        logic_icon = '<i class="fas fa-code" title="Logic"></i>'
+        group_icon = '<i class="far fa-object-ungroup" title="Group"></i>'
+        labels = {
+            'left_system': system_icon,
+            'left_type': 'Type',
+            'left_logic': logic_icon,
+            'right_system': system_icon,
+            'right_type': 'Type',
+            'right_logic': logic_icon,
+            'warning_type': 'Type',
+            'warning_relation': 'Relation',
+            'warning_logic': logic_icon,
+            'supports_warning': 'Enabled',
+            'code': False,
+            'weight': False,
+            'group': group_icon
         }
 
 
@@ -112,12 +145,21 @@ class CheckRunFilterForm(forms.ModelForm):
     helper.form_method = 'GET'
     helper.layout = Layout(
         Row(
-            Column('datacheck', css_class='form-group col-md-4 mb-0'),
-            Column('environment', css_class='form-group col-md-2 mb-0'),
-            Column('status', css_class='form-group col-md-2 mb-0'),
-            Column('result', css_class='form-group col-md-2 mb-0'),
-            Column('user', css_class='form-group col-md-2 mb-0'),
-            Submit('submit', 'Submit', css_class=SUBMIT_CSS_CLASSES),
+            prepended_select_column('datacheck', 5, 'mb-1'),
+            prepended_select_column('environment', 3, 'mb-1'),
+            prepended_select_column('status', 2, 'mb-1'),
+            prepended_select_column('result', 2, 'mb-1')
+        ), Row(
+            prepended_select_column('user', 3, 'mb-1'),
+            Column(
+                Submit('submit', 'Search', css_class=SUBMIT_CSS_CLASSES),
+                css_class='form-group col-md-1 mb-1'),
+            Column(
+                HTML("""
+                <a class="btn btn-outline-danger btn-block btn-sm"
+                href={% url "checks_checkrun_list" %}>Reset</a>
+                """),
+                css_class='form-group col-md-1 mb-1'),
             css_class='form-row'
         )
     )
@@ -132,16 +174,23 @@ class EnvironmentStatusFilterForm(forms.ModelForm):
     helper.form_method = 'GET'
     helper.layout = Layout(
         Row(
-            Column('datacheck', css_class='form-group col-md-4 mb-0'),
-            Column('environment', css_class='form-group col-md-2 mb-0'),
-            Column('status', css_class='form-group col-md-2 mb-0'),
-            Column('result', css_class='form-group col-md-2 mb-0'),
-            Column('user', css_class='form-group col-md-2 mb-0'),
-            Submit('submit', 'Submit', css_class=SUBMIT_CSS_CLASSES),
+            prepended_select_column('environment', 2, 'mb-0'),
+            prepended_select_column('datacheck', 4, 'mb-0'),
+            prepended_select_column('status', 2, 'mb-0'),
+            prepended_select_column('result', 2, 'mb-0'),
+            Column(
+                Submit('submit', 'Search', css_class=SUBMIT_CSS_CLASSES),
+                css_class='form-group col-md-1 mb-0'),
+            Column(
+                HTML("""
+                <a class="btn btn-outline-danger btn-block btn-sm"
+                href={% url "checks_environmentstatus_list" %}>Reset</a>
+                """),
+                css_class='form-group col-md-1 mb-0'),
             css_class='form-row'
         )
     )
 
     class Meta:
         model = EnvironmentStatus
-        fields = ['datacheck', 'environment', 'user', 'status', 'result']
+        fields = ['environment', 'datacheck', 'status', 'result']
