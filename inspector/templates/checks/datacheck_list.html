@@ -32,6 +32,11 @@
             <button class="btn btn-outline-secondary btn-sm check-details btn-table" data-title="Details"
                     data-url="{% url 'checks_datacheck_info' object.id %}">
               <span class="fas fa-info-circle fa-sm"></span></button>
+            <a href="{% url 'checks_checkrun_list' %}?datacheck={{ object.id }}" title="Runs">
+              <button class="btn btn-outline-secondary btn-sm btn-table">
+                <span class="far fa-clock fa-sm"></span>
+              </button>
+            </a>
             {% if perms.checks.add_checkrun %}
               {% button_run object %}
             {% endif %}
