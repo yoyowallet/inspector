@@ -8,8 +8,8 @@ jobs:
 
       - run:
           name: build image
-          command: docker build -t yoyowallet/inspector:$CIRCLE_BRANCH -f compose/master/inspector/Dockerfile .
+          command: docker build -t $DOCKER_IMAGE_NAME:$CIRCLE_BRANCH -f compose/master/inspector/Dockerfile .
 
       - run:
           name: push image
-          command: docker push yoyowallet/inspector:$CIRCLE_BRANCH
+          command: docker push $DOCKER_IMAGE_NAME:$CIRCLE_BRANCH

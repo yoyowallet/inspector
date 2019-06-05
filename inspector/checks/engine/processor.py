@@ -109,9 +109,13 @@ class CheckProcessor:
 
         if status:
             comparator = CheckComparator(self.datacheck)
-            result = comparator.compare(left_value, right_value)
+            try:
+                result = comparator.compare(left_value, right_value)
+            except TypeError as exc:
+                errors.append(str(exc))
+                status = False
 
-            if result is None and self.datacheck.supports_warning:
+            if result is None and self.datacheck.supports_warning and status:
                 try:
                     warning_value = self.right_executor.execute(self.datacheck.warning_logic)
                     self.checkrun.warning_value = str(warning_value)

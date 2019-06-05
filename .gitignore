@@ -329,7 +329,7 @@ inspector/media/
 
 
 .ipython/
-.env
+.env*
 .envs/*
 !.envs/.develop/
 !.envs/.example/
