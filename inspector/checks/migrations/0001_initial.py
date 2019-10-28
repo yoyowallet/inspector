@@ -10,87 +10,275 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('systems', '0001_initial'),
+        ("systems", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CheckGroup',
+            name="CheckGroup",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, unique=True)),
-                ('description', models.TextField(blank=True, null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, unique=True)),
+                ("description", models.TextField(blank=True, null=True)),
             ],
-            options={
-                'ordering': ('-pk',),
-            },
+            options={"ordering": ("-pk",)},
         ),
         migrations.CreateModel(
-            name='CheckRun',
+            name="CheckRun",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('start_time', models.DateTimeField(null=True)),
-                ('end_time', models.DateTimeField(null=True)),
-                ('status', models.CharField(choices=[('NEW', 'New'), ('RUNNING', 'Running'), ('FINISHED', 'Finished'), ('ERROR', 'Error')], max_length=20)),
-                ('result', models.CharField(choices=[('SUCCESS', 'Success'), ('WARNING', 'Warning'), ('FAILED', 'Failed')], max_length=20)),
-                ('left_value', models.CharField(blank=True, max_length=255, null=True)),
-                ('right_value', models.CharField(blank=True, max_length=255, null=True)),
-                ('warning_value', models.CharField(blank=True, max_length=255, null=True)),
-                ('error_message', models.TextField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("start_time", models.DateTimeField(null=True)),
+                ("end_time", models.DateTimeField(null=True)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("NEW", "New"),
+                            ("RUNNING", "Running"),
+                            ("FINISHED", "Finished"),
+                            ("ERROR", "Error"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "result",
+                    models.CharField(
+                        choices=[
+                            ("SUCCESS", "Success"),
+                            ("WARNING", "Warning"),
+                            ("FAILED", "Failed"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                ("left_value", models.CharField(blank=True, max_length=255, null=True)),
+                (
+                    "right_value",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                (
+                    "warning_value",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                ("error_message", models.TextField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
-            options={
-                'ordering': ('-pk',),
-            },
+            options={"ordering": ("-pk",)},
         ),
         migrations.CreateModel(
-            name='Datacheck',
+            name="Datacheck",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(max_length=20, unique=True)),
-                ('description', models.TextField(blank=True, null=True)),
-                ('weight', models.IntegerField(default=0)),
-                ('left_type', models.IntegerField(choices=[(0, 'SQL query'), (1, 'SQL expression'), (2, 'Number'), (3, 'String'), (4, 'Date'), (5, 'Python expression')])),
-                ('left_logic', models.TextField()),
-                ('relation', models.IntegerField(choices=[(0, '='), (1, '!='), (2, '>'), (3, '<'), (4, '>='), (5, '<=')])),
-                ('right_type', models.IntegerField(choices=[(0, 'SQL query'), (1, 'SQL expression'), (2, 'Number'), (3, 'String'), (4, 'Date'), (5, 'Python expression')])),
-                ('right_logic', models.TextField()),
-                ('supports_warning', models.BooleanField(default=False)),
-                ('warning_relation', models.IntegerField(blank=True, choices=[(0, '='), (1, '!='), (2, '>'), (3, '<'), (4, '>='), (5, '<=')], null=True)),
-                ('warning_type', models.IntegerField(blank=True, choices=[(0, 'SQL query'), (1, 'SQL expression'), (2, 'Number'), (3, 'String'), (4, 'Date'), (5, 'Python expression')], null=True)),
-                ('warning_logic', models.TextField(blank=True, null=True)),
-                ('group', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='checks.CheckGroup')),
-                ('left_system', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='left_system', to='systems.System')),
-                ('right_system', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='right_system', to='systems.System')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("code", models.CharField(max_length=20, unique=True)),
+                ("description", models.TextField(blank=True, null=True)),
+                ("weight", models.IntegerField(default=0)),
+                (
+                    "left_type",
+                    models.IntegerField(
+                        choices=[
+                            (0, "SQL query"),
+                            (1, "SQL expression"),
+                            (2, "Number"),
+                            (3, "String"),
+                            (4, "Date"),
+                            (5, "Python expression"),
+                        ]
+                    ),
+                ),
+                ("left_logic", models.TextField()),
+                (
+                    "relation",
+                    models.IntegerField(
+                        choices=[
+                            (0, "="),
+                            (1, "!="),
+                            (2, ">"),
+                            (3, "<"),
+                            (4, ">="),
+                            (5, "<="),
+                        ]
+                    ),
+                ),
+                (
+                    "right_type",
+                    models.IntegerField(
+                        choices=[
+                            (0, "SQL query"),
+                            (1, "SQL expression"),
+                            (2, "Number"),
+                            (3, "String"),
+                            (4, "Date"),
+                            (5, "Python expression"),
+                        ]
+                    ),
+                ),
+                ("right_logic", models.TextField()),
+                ("supports_warning", models.BooleanField(default=False)),
+                (
+                    "warning_relation",
+                    models.IntegerField(
+                        blank=True,
+                        choices=[
+                            (0, "="),
+                            (1, "!="),
+                            (2, ">"),
+                            (3, "<"),
+                            (4, ">="),
+                            (5, "<="),
+                        ],
+                        null=True,
+                    ),
+                ),
+                (
+                    "warning_type",
+                    models.IntegerField(
+                        blank=True,
+                        choices=[
+                            (0, "SQL query"),
+                            (1, "SQL expression"),
+                            (2, "Number"),
+                            (3, "String"),
+                            (4, "Date"),
+                            (5, "Python expression"),
+                        ],
+                        null=True,
+                    ),
+                ),
+                ("warning_logic", models.TextField(blank=True, null=True)),
+                (
+                    "group",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="checks.CheckGroup",
+                    ),
+                ),
+                (
+                    "left_system",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="left_system",
+                        to="systems.System",
+                    ),
+                ),
+                (
+                    "right_system",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="right_system",
+                        to="systems.System",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='EnvironmentStatus',
+            name="EnvironmentStatus",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('last_start_time', models.DateTimeField()),
-                ('last_end_time', models.DateTimeField()),
-                ('status', models.CharField(choices=[('NEW', 'New'), ('RUNNING', 'Running'), ('FINISHED', 'Finished'), ('ERROR', 'Error')], max_length=20)),
-                ('result', models.CharField(choices=[('SUCCESS', 'Success'), ('WARNING', 'Warning'), ('FAILED', 'Failed')], max_length=20)),
-                ('datacheck', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='checks.Datacheck')),
-                ('environment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='systems.Environment')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("last_start_time", models.DateTimeField()),
+                ("last_end_time", models.DateTimeField()),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("NEW", "New"),
+                            ("RUNNING", "Running"),
+                            ("FINISHED", "Finished"),
+                            ("ERROR", "Error"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "result",
+                    models.CharField(
+                        choices=[
+                            ("SUCCESS", "Success"),
+                            ("WARNING", "Warning"),
+                            ("FAILED", "Failed"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "datacheck",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="checks.Datacheck",
+                    ),
+                ),
+                (
+                    "environment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="systems.Environment",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='checkrun',
-            name='datacheck',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='checks.Datacheck'),
+            model_name="checkrun",
+            name="datacheck",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="checks.Datacheck"
+            ),
         ),
         migrations.AddField(
-            model_name='checkrun',
-            name='environment',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='systems.Environment'),
+            model_name="checkrun",
+            name="environment",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="systems.Environment"
+            ),
         ),
         migrations.AddField(
-            model_name='checkrun',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL),
+            model_name="checkrun",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]

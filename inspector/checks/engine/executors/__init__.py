@@ -7,26 +7,20 @@ from ....systems.models import Instance
 
 CONFIG = {
     APPLICATIONS.POSTGRES: {
-        'executor.module': 'sql_executor',
-        'executor.class': 'SQLExecutor',
-        'params': {
-            'connection_string': 'postgres+psycopg2://{0}:{1}@{2}:{3}/{4}'
-        }
+        "executor.module": "sql_executor",
+        "executor.class": "SQLExecutor",
+        "params": {"connection_string": "postgres+psycopg2://{0}:{1}@{2}:{3}/{4}"},
     },
     APPLICATIONS.REDSHIFT: {
-        'executor.module': 'sql_executor',
-        'executor.class': 'SQLExecutor',
-        'params': {
-            'connection_string': 'redshift+psycopg2://{0}:{1}@{2}:{3}/{4}'
-        }
+        "executor.module": "sql_executor",
+        "executor.class": "SQLExecutor",
+        "params": {"connection_string": "redshift+psycopg2://{0}:{1}@{2}:{3}/{4}"},
     },
     APPLICATIONS.MYSQL: {
-        'executor.module': 'sql_executor',
-        'executor.class': 'SQLExecutor',
-        'params': {
-            'connection_string': 'mysql://{0}:{1}@{2}:{3}/{4}'
-        }
-    }
+        "executor.module": "sql_executor",
+        "executor.class": "SQLExecutor",
+        "params": {"connection_string": "mysql://{0}:{1}@{2}:{3}/{4}"},
+    },
 }
 
 

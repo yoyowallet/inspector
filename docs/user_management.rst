@@ -33,4 +33,3 @@ To enable these, run the following command:
 .. code-block:: bash
 
     python manage.py default_auth_groups
-

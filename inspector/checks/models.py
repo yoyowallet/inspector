@@ -14,13 +14,13 @@ class CheckGroup(models.Model):
         return self.name
 
     class Meta:
-        ordering = ('-pk',)
+        ordering = ("-pk",)
 
     def __unicode__(self):
-        return u'%s' % self.pk
+        return "%s" % self.pk
 
     def get_url(self, action):
-        return reverse(f'checks_checkgroup_{action}', args=(self.pk,))
+        return reverse(f"checks_checkgroup_{action}", args=(self.pk,))
 
     def get_name(self):
         return self.name
@@ -29,14 +29,23 @@ class CheckGroup(models.Model):
 class Datacheck(models.Model):
     code = models.CharField(max_length=20, unique=True)
     description = models.TextField(null=True, blank=True)
-    group = models.ForeignKey(CheckGroup, on_delete=models.SET_NULL, null=True, blank=True)
+    group = models.ForeignKey(
+        CheckGroup, on_delete=models.SET_NULL, null=True, blank=True
+    )
     weight = models.IntegerField(default=0)
-    left_system = models.ForeignKey(System, on_delete=models.CASCADE, related_name='left_system')
+    left_system = models.ForeignKey(
+        System, on_delete=models.CASCADE, related_name="left_system"
+    )
     left_type = models.IntegerField(choices=CHECK_TYPES)
     left_logic = models.TextField()
     relation = models.IntegerField(choices=RELATIONS)
-    right_system = models.ForeignKey(System, on_delete=models.CASCADE, related_name='right_system',
-                                     null=True, blank=True)
+    right_system = models.ForeignKey(
+        System,
+        on_delete=models.CASCADE,
+        related_name="right_system",
+        null=True,
+        blank=True,
+    )
     right_type = models.IntegerField(choices=CHECK_TYPES)
     right_logic = models.TextField()
     supports_warning = models.BooleanField(default=False)
@@ -48,13 +57,13 @@ class Datacheck(models.Model):
         return self.code
 
     class Meta:
-        ordering = ('-pk',)
+        ordering = ("-pk",)
 
     def __unicode__(self):
-        return u'%s' % self.pk
+        return "%s" % self.pk
 
     def get_url(self, action):
-        return reverse(f'checks_datacheck_{action}', args=(self.pk,))
+        return reverse(f"checks_datacheck_{action}", args=(self.pk,))
 
     def get_name(self):
         return self.code
@@ -75,13 +84,13 @@ class CheckRun(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ('-pk',)
+        ordering = ("-pk",)
 
     def __unicode__(self):
-        return u'%s' % self.pk
+        return "%s" % self.pk
 
     def get_url(self, action):
-        return reverse(f'checks_checkrun_{action}', args=(self.pk,))
+        return reverse(f"checks_checkrun_{action}", args=(self.pk,))
 
 
 class EnvironmentStatus(models.Model):

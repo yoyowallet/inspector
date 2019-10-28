@@ -9,49 +9,77 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Environment',
+            name="Environment",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, null=True, unique=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, null=True, unique=True)),
             ],
-            options={
-                'ordering': ('-pk',),
-            },
+            options={"ordering": ("-pk",)},
         ),
         migrations.CreateModel(
-            name='Instance',
+            name="Instance",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('host', models.CharField(max_length=100)),
-                ('port', models.IntegerField()),
-                ('database_or_schema', models.CharField(max_length=100)),
-                ('login', models.CharField(max_length=100)),
-                ('password', encrypted_model_fields.fields.EncryptedCharField()),
-                ('environment', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='systems.Environment')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("host", models.CharField(max_length=100)),
+                ("port", models.IntegerField()),
+                ("database_or_schema", models.CharField(max_length=100)),
+                ("login", models.CharField(max_length=100)),
+                ("password", encrypted_model_fields.fields.EncryptedCharField()),
+                (
+                    "environment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="systems.Environment",
+                    ),
+                ),
             ],
-            options={
-                'ordering': ('-pk',),
-            },
+            options={"ordering": ("-pk",)},
         ),
         migrations.CreateModel(
-            name='System',
+            name="System",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, null=True, unique=True)),
-                ('application', models.IntegerField(choices=[(0, 'Postgresql'), (1, 'Redshift')])),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, null=True, unique=True)),
+                (
+                    "application",
+                    models.IntegerField(choices=[(0, "Postgresql"), (1, "Redshift")]),
+                ),
             ],
-            options={
-                'ordering': ('-pk',),
-            },
+            options={"ordering": ("-pk",)},
         ),
         migrations.AddField(
-            model_name='instance',
-            name='system',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='systems.System'),
+            model_name="instance",
+            name="system",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="systems.System"
+            ),
         ),
     ]

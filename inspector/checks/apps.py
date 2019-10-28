@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class ChecksConfig(AppConfig):
-    name = 'inspector.checks'
+    name = "inspector.checks"

@@ -3,14 +3,16 @@ With these settings, tests run faster.
 """
 
 from .base import *  # noqa
-from .base import env
 
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = False
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
-SECRET_KEY = env("DJANGO_SECRET_KEY", default="gwTrsJIIQVVNSiTMX3RHKhApa5J2uWO2kiKPaA9k0uJNFdWEXKbnEkEj7iSHVsBn")
+SECRET_KEY = env(
+    "DJANGO_SECRET_KEY",
+    default="gwTrsJIIQVVNSiTMX3RHKhApa5J2uWO2kiKPaA9k0uJNFdWEXKbnEkEj7iSHVsBn",
+)
 # https://docs.djangoproject.com/en/dev/ref/settings/#test-runner
 TEST_RUNNER = "django.test.runner.DiscoverRunner"
 
@@ -19,7 +21,8 @@ TEST_RUNNER = "django.test.runner.DiscoverRunner"
 # https://docs.djangoproject.com/en/dev/ref/settings/#caches
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache", "LOCATION": ""
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "",
     }
 }
 

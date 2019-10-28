@@ -67,107 +67,97 @@ def create_instance(**kwargs):
 
 
 class SystemViewTest(unittest.TestCase):
-    '''
+    """
     Tests for System
-    '''
+    """
 
     def setUp(self):
         self.client = Client()
         self.test_user = TestUser()
-        self.client.login(username='test', password='test')
+        self.client.login(username="test", password="test")
 
     def tearDown(self):
         self.test_user.delete()
 
     def test_list_system(self):
-        self.test_user.add_permission(System, 'view_system')
-        url = reverse('systems_system_list')
+        self.test_user.add_permission(System, "view_system")
+        url = reverse("systems_system_list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_create_system(self):
-        self.test_user.add_permission(System, 'add_system')
-        url = reverse('systems_system_create')
-        data = {
-            "name": "name",
-            "application": "application",
-        }
+        self.test_user.add_permission(System, "add_system")
+        url = reverse("systems_system_create")
+        data = {"name": "name", "application": "application"}
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 200)
 
     def test_update_system(self):
-        self.test_user.add_permission(System, 'change_system')
+        self.test_user.add_permission(System, "change_system")
         system = create_system()
-        data = {
-            "name": "name",
-            "application": "application",
-        }
-        url = reverse('systems_system_update', args=[system.pk, ])
+        data = {"name": "name", "application": "application"}
+        url = reverse("systems_system_update", args=[system.pk])
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 200)
 
 
 class EnvironmentViewTest(unittest.TestCase):
-    '''
+    """
     Tests for Environment
-    '''
+    """
 
     def setUp(self):
         self.client = Client()
         self.test_user = TestUser()
-        self.client.login(username='test', password='test')
+        self.client.login(username="test", password="test")
 
     def tearDown(self):
         self.test_user.delete()
 
     def test_list_environment(self):
-        self.test_user.add_permission(Environment, 'view_environment')
-        url = reverse('systems_environment_list')
+        self.test_user.add_permission(Environment, "view_environment")
+        url = reverse("systems_environment_list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_create_environment(self):
-        self.test_user.add_permission(Environment, 'add_environment')
-        url = reverse('systems_environment_create')
-        data = {
-            "name": "environment-{}".format(RANDOMS.pop()),
-        }
+        self.test_user.add_permission(Environment, "add_environment")
+        url = reverse("systems_environment_create")
+        data = {"name": "environment-{}".format(RANDOMS.pop())}
         response = self.client.post(url, data=data)
         self.assertEqual(response.status_code, 302)
 
     def test_update_environment(self):
-        self.test_user.add_permission(Environment, 'change_environment')
+        self.test_user.add_permission(Environment, "change_environment")
         environment = create_environment()
-        data = {
-            "name": "environment-{}".format(RANDOMS.pop()),
-        }
-        url = reverse('systems_environment_update', args=[environment.pk, ])
+        data = {"name": "environment-{}".format(RANDOMS.pop())}
+        url = reverse("systems_environment_update", args=[environment.pk])
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)
 
 
 class InstanceViewTest(unittest.TestCase):
-    '''
+    """
     Tests for Instance
-    '''
+    """
 
     def setUp(self):
         self.client = Client()
         self.test_user = TestUser()
-        self.client.login(username='test', password='test')
+        self.client.login(username="test", password="test")
 
     def tearDown(self):
         self.test_user.delete()
 
     def test_list_instance(self):
-        self.test_user.add_permission(Instance, 'view_instance')
-        url = reverse('systems_instance_list')
+        self.test_user.add_permission(Instance, "view_instance")
+        url = reverse("systems_instance_list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_create_instance(self):
-        self.test_user.add_permission(Instance, 'add_instance')
-        url = reverse('systems_instance_create')
+        self.test_user.add_permission(Instance, "add_instance")
+        url = reverse("systems_instance_create")
         data = {
             "host": "host",
             "port": 1000,
@@ -181,14 +171,14 @@ class InstanceViewTest(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_detail_instance(self):
-        self.test_user.add_permission(Instance, 'view_instance')
+        self.test_user.add_permission(Instance, "view_instance")
         instance = create_instance()
-        url = reverse('systems_instance_detail', args=[instance.pk, ])
+        url = reverse("systems_instance_detail", args=[instance.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_update_instance(self):
-        self.test_user.add_permission(Instance, 'change_instance')
+        self.test_user.add_permission(Instance, "change_instance")
         instance = create_instance()
         data = {
             "host": "host",
@@ -199,6 +189,6 @@ class InstanceViewTest(unittest.TestCase):
             "system": create_system().pk,
             "environment": create_environment().pk,
         }
-        url = reverse('systems_instance_update', args=[instance.pk, ])
+        url = reverse("systems_instance_update", args=[instance.pk])
         response = self.client.post(url, data)
         self.assertEqual(response.status_code, 302)

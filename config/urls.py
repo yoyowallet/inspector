@@ -10,19 +10,14 @@ urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
-    path(
-        "users/",
-        include("inspector.users.urls", namespace="users"),
-    ),
+    path("users/", include("inspector.users.urls", namespace="users")),
     # override of standard urls
     path("", include("inspector.base.urls")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path("", include("inspector.checks.urls")),
     path("", include("inspector.systems.urls")),
-] + static(
-    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
-)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

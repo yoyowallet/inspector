@@ -15,7 +15,6 @@ logger = logging.getLogger(__name__)
 
 
 class CheckProcessor:
-
     def __init__(self, checkrun_id: int):
         self.checkrun: CheckRun = CheckRun.objects.get(id=checkrun_id)
         self.datacheck: Datacheck = self.checkrun.datacheck
@@ -28,26 +27,24 @@ class CheckProcessor:
 
         try:
             self.left_executor = self.get_executor(
-                system=self.datacheck.left_system,
-                check_type=self.datacheck.left_type
+                system=self.datacheck.left_system, check_type=self.datacheck.left_type
             )
         except CheckExecutorException as exc:
             errors.append(repr(exc))
 
         try:
             self.right_executor = self.get_executor(
-                system=self.datacheck.right_system,
-                check_type=self.datacheck.right_type
+                system=self.datacheck.right_system, check_type=self.datacheck.right_type
             )
         except CheckExecutorException as exc:
             errors.append(repr(exc))
 
         if errors:
-            self.checkrun.error_message = '\n'.join(errors)
+            self.checkrun.error_message = "\n".join(errors)
             self.checkrun.status = STATUSES.ERROR
             status = False
         else:
-            logger.info('Starting check -  %s', self.datacheck.code)
+            logger.info("Starting check -  %s", self.datacheck.code)
             self.checkrun.status = STATUSES.RUNNING
             self.checkrun.start_time = dt.now(pytz.utc)
             status = True
@@ -56,14 +53,14 @@ class CheckProcessor:
 
         return status
 
-    def get_executor(self,
-                     system: System,
-                     check_type) -> CheckExecutor:
+    def get_executor(self, system: System, check_type) -> CheckExecutor:
         if system is None:
             return PythonExecutor(instance=None, check_type=self.datacheck.right_type)
 
         instance = self.get_instance(system=system)
-        executor = self.get_executor_for_instance(instance=instance, check_type=check_type)
+        executor = self.get_executor_for_instance(
+            instance=instance, check_type=check_type
+        )
         try:
             executor.test_connection()
         except Exception as exc:
@@ -73,7 +70,9 @@ class CheckProcessor:
 
     def get_instance(self, system: System) -> Instance:
         try:
-            instance = Instance.objects.get(environment=self.checkrun.environment, system=system)
+            instance = Instance.objects.get(
+                environment=self.checkrun.environment, system=system
+            )
         except Instance.DoesNotExist:
             raise InstanceNotFound(system, self.checkrun.environment)
 
@@ -83,9 +82,13 @@ class CheckProcessor:
     def get_executor_for_instance(instance: Instance, check_type) -> CheckExecutor:
 
         config = CONFIG[instance.system.application]
-        executor_module = import_module(f'inspector.checks.engine.executors.{config["executor.module"]}')
-        executor_class = getattr(executor_module, config['executor.class'])
-        return executor_class(instance=instance, check_type=check_type, **config['params'])
+        executor_module = import_module(
+            f'inspector.checks.engine.executors.{config["executor.module"]}'
+        )
+        executor_class = getattr(executor_module, config["executor.class"])
+        return executor_class(
+            instance=instance, check_type=check_type, **config["params"]
+        )
 
     def execute_checks(self):
 
@@ -117,7 +120,9 @@ class CheckProcessor:
 
             if result is None and self.datacheck.supports_warning and status:
                 try:
-                    warning_value = self.right_executor.execute(self.datacheck.warning_logic)
+                    warning_value = self.right_executor.execute(
+                        self.datacheck.warning_logic
+                    )
                     self.checkrun.warning_value = str(warning_value)
                 except Exception as exc:
                     errors.append(str(exc))
@@ -130,22 +135,21 @@ class CheckProcessor:
             self.checkrun.result = result
             self.checkrun.end_time = end_time
         else:
-            self.checkrun.error_message = '\n'.join(errors)
+            self.checkrun.error_message = "\n".join(errors)
             self.checkrun.status = STATUSES.ERROR
 
         self.checkrun.save()
 
         try:
             environment_status: EnvironmentStatus = EnvironmentStatus.objects.get(
-                environment=self.checkrun.environment,
-                datacheck=self.checkrun.datacheck
+                environment=self.checkrun.environment, datacheck=self.checkrun.datacheck
             )
             environment_status.user = self.checkrun.user
         except EnvironmentStatus.DoesNotExist:
             environment_status: EnvironmentStatus = EnvironmentStatus(
                 environment=self.checkrun.environment,
                 datacheck=self.checkrun.datacheck,
-                user=self.checkrun.user
+                user=self.checkrun.user,
             )
 
         environment_status.result = result
@@ -161,7 +165,6 @@ class CheckProcessor:
 
 
 class CheckComparator:
-
     def __init__(self, datacheck: Datacheck):
         self.datacheck = datacheck
 

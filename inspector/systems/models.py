@@ -13,13 +13,13 @@ class System(models.Model):
         return self.name
 
     class Meta:
-        ordering = ('-pk',)
+        ordering = ("-pk",)
 
     def __unicode__(self):
-        return u'%s' % self.pk
+        return "%s" % self.pk
 
     def get_url(self, action):
-        return reverse(f'systems_system_{action}', args=(self.pk,))
+        return reverse(f"systems_system_{action}", args=(self.pk,))
 
     def get_name(self):
         return self.name
@@ -32,13 +32,13 @@ class Environment(models.Model):
         return self.name
 
     class Meta:
-        ordering = ('-pk',)
+        ordering = ("-pk",)
 
     def __unicode__(self):
-        return u'%s' % self.pk
+        return "%s" % self.pk
 
     def get_url(self, action):
-        return reverse(f'systems_environment_{action}', args=(self.pk,))
+        return reverse(f"systems_environment_{action}", args=(self.pk,))
 
     def get_name(self):
         return self.name
@@ -55,16 +55,16 @@ class Instance(models.Model):
     unique_together = ((system, environment),)
 
     class Meta:
-        ordering = ('-pk',)
+        ordering = ("-pk",)
 
     def __unicode__(self):
-        return u'%s' % self.pk
+        return "%s" % self.pk
 
     def get_url(self, action):
-        return reverse(f'systems_instance_{action}', args=(self.pk,))
+        return reverse(f"systems_instance_{action}", args=(self.pk,))
 
     def get_absolute_url(self):
-        self.get_url('update')
+        self.get_url("update")
 
     def get_name(self):
-        return f'{self.system.name} / {self.environment.name} '
+        return f"{self.system.name} / {self.environment.name} "

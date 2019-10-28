@@ -5,18 +5,21 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('checks', '0001_initial'),
-    ]
+    dependencies = [("checks", "0001_initial")]
 
     operations = [
-        migrations.AlterModelOptions(
-            name='datacheck',
-            options={'ordering': ('-pk',)},
-        ),
+        migrations.AlterModelOptions(name="datacheck", options={"ordering": ("-pk",)}),
         migrations.AlterField(
-            model_name='checkrun',
-            name='result',
-            field=models.CharField(choices=[('SUCCESS', 'Success'), ('WARNING', 'Warning'), ('FAILED', 'Failed')], max_length=20, null=True),
+            model_name="checkrun",
+            name="result",
+            field=models.CharField(
+                choices=[
+                    ("SUCCESS", "Success"),
+                    ("WARNING", "Warning"),
+                    ("FAILED", "Failed"),
+                ],
+                max_length=20,
+                null=True,
+            ),
         ),
     ]

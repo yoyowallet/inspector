@@ -5,14 +5,14 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('systems', '0001_initial'),
-    ]
+    dependencies = [("systems", "0001_initial")]
 
     operations = [
         migrations.AlterField(
-            model_name='system',
-            name='application',
-            field=models.IntegerField(choices=[(0, 'Postgresql'), (1, 'Redshift'), (2, 'MySQL')]),
-        ),
+            model_name="system",
+            name="application",
+            field=models.IntegerField(
+                choices=[(0, "Postgresql"), (1, "Redshift"), (2, "MySQL")]
+            ),
+        )
     ]

@@ -41,15 +41,18 @@ class EnvironmentStatusViewSet(viewsets.ModelViewSet):
 
 
 class DatacheckRunPermission(AuthPermission):
-    perms = 'checks.add_checkrun'
+    perms = "checks.add_checkrun"
 
 
 class RunCheck(CreateAPIView):
     """
     Run a single check in and environment
     """
-    authentication_classes = (authentication.TokenAuthentication,
-                              authentication.SessionAuthentication)
+
+    authentication_classes = (
+        authentication.TokenAuthentication,
+        authentication.SessionAuthentication,
+    )
     permission_classes = (DatacheckRunPermission,)
     serializer_class = serializers.CheckRunCreateSerializer
 
@@ -58,19 +61,21 @@ class RunCheck(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         try:
             checkrun_id = CheckRunService.create_check_run_api(
-                serializer['check_code'].value,
-                serializer['environment'].value,
-                request.user)
-        except (models.Datacheck.DoesNotExist,
-                models.Environment.DoesNotExist) as exc:
+                serializer["check_code"].value,
+                serializer["environment"].value,
+                request.user,
+            )
+        except (models.Datacheck.DoesNotExist, models.Environment.DoesNotExist) as exc:
             return Response(str(exc), status=400)
 
-        return Response({'checkrun_id': checkrun_id}, status=status.HTTP_200_OK)
+        return Response({"checkrun_id": checkrun_id}, status=status.HTTP_200_OK)
 
 
 class RunCheckGroup(CreateAPIView):
-    authentication_classes = (authentication.TokenAuthentication,
-                              authentication.SessionAuthentication)
+    authentication_classes = (
+        authentication.TokenAuthentication,
+        authentication.SessionAuthentication,
+    )
     permission_classes = (DatacheckRunPermission,)
     serializer_class = serializers.CheckGroupRunCreateSerializer
 
@@ -79,12 +84,13 @@ class RunCheckGroup(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         try:
             CheckRunService.run_check_group_api(
-                serializer['checkgroup_name'].value,
-                serializer['environment'].value,
-                request.user)
-        except (models.CheckGroup.DoesNotExist,
-                models.Environment.DoesNotExist) as exc:
+                serializer["checkgroup_name"].value,
+                serializer["environment"].value,
+                request.user,
+            )
+        except (models.CheckGroup.DoesNotExist, models.Environment.DoesNotExist) as exc:
             return Response(str(exc), status=400)
 
-        return Response({serializer['checkgroup_name'].value: 'success'},
-                        status=status.HTTP_200_OK)
+        return Response(
+            {serializer["checkgroup_name"].value: "success"}, status=status.HTTP_200_OK
+        )
