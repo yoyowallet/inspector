@@ -6,4 +6,5 @@ workflows:
     jobs:
       - docker/publish:
           dockerfile: compose/master/inspector/Dockerfile
-          image: $DOCKER_IMAGE_NAME:$CIRCLE_BRANCH
+          image: $DOCKER_IMAGE_NAME
+          tag: $CIRCLE_BRANCH
