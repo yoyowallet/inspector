@@ -1,15 +1,9 @@
-version: 2
-jobs:
-  build:
-    machine: true
-    steps:
-      - checkout
-      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-
-      - run:
-          name: build image
-          command: docker build -t $DOCKER_IMAGE_NAME:$CIRCLE_BRANCH -f compose/master/inspector/Dockerfile .
-
-      - run:
-          name: push image
-          command: docker push $DOCKER_IMAGE_NAME:$CIRCLE_BRANCH
+orbs:
+  docker: circleci/docker@0.5.17
+version: 2.1
+workflows:
+  build-and-publish-docker-image:
+    jobs:
+      - docker/publish:
+          dockerfile: compose/master/inspector/Dockerfile
+          image: $DOCKER_IMAGE_NAME/$CIRCLE_BRANCH
