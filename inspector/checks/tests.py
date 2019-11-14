@@ -1,4 +1,4 @@
-import unittest
+from django.test import TestCase
 from random import shuffle
 
 from django.contrib.auth import get_user_model
@@ -103,7 +103,7 @@ def create_environmentstatus(**kwargs):
     return EnvironmentStatus.objects.create(**defaults)
 
 
-class CheckGroupViewTest(unittest.TestCase):
+class CheckGroupViewTest(TestCase):
     """
     Tests for CheckGroup
     """
@@ -144,7 +144,7 @@ class CheckGroupViewTest(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
 
 
-class DatacheckViewTest(unittest.TestCase):
+class DatacheckViewTest(TestCase):
     """
     Tests for Datacheck
     """
@@ -216,7 +216,7 @@ class DatacheckViewTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class CheckRunViewTest(unittest.TestCase):
+class CheckRunViewTest(TestCase):
     """
     Tests for CheckRun
     """
@@ -252,7 +252,7 @@ class CheckRunViewTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class EnvironmentStatusViewTest(unittest.TestCase):
+class EnvironmentStatusViewTest(TestCase):
     """
     Tests for EnvironmentStatus
     """

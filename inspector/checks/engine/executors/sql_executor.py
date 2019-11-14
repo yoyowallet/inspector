@@ -12,11 +12,11 @@ class SQLExecutor(CheckExecutor):
         super().__init__(*args, **kwargs)
         self.engine = create_engine(
             self.connection_string.format(
-                self.instance.login,
-                self.instance.password,
-                self.instance.host,
-                self.instance.port,
-                self.instance.database_or_schema,
+                login=self.instance.login,
+                password=self.instance.password,
+                host=self.instance.host,
+                port=self.instance.port,
+                db=self.instance.db,
             )
         )
 

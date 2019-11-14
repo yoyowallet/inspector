@@ -32,11 +32,16 @@ class InstanceForm(forms.ModelForm):
             "environment",
             "host",
             "port",
-            "database_or_schema",
+            "db",
+            "schema",
             "login",
             "password",
+            "extra_json",
         ]
-        widgets = {"password": forms.PasswordInput()}
+        widgets = {
+            "password": forms.PasswordInput(),
+            "extra_json": forms.Textarea({"cols": 40, "rows": 3}),
+        }
 
     helper = FormHelper()
     helper.layout = Layout(
@@ -46,14 +51,22 @@ class InstanceForm(forms.ModelForm):
             css_class="form-row",
         ),
         Row(
-            Column("host", css_class="form-group col-md-8 mb-0"),
-            Column("port", css_class="form-group col-md-1 mb-0"),
-            Column("database_or_schema", css_class="form-group col-md-3 mb-0"),
+            Column("host", css_class="form-group col-md-10 mb-0"),
+            Column("port", css_class="form-group col-md-2 mb-0"),
+            css_class="form-row",
+        ),
+        Row(
+            Column("db", css_class="form-group col-md-6 mb-0"),
+            Column("schema", css_class="form-group col-md-6 mb-0"),
             css_class="form-row",
         ),
         Row(
             Column("login", css_class="form-group col-md-6 mb-0"),
             Column("password", css_class="form-group col-md-6 mb-0"),
+            css_class="form-row",
+        ),
+        Row(
+            Column("extra_json", css_class="form-group col-md-12 mb-0"),
             css_class="form-row",
         ),
         Submit("submit", "Submit", css_class="btn-sm"),

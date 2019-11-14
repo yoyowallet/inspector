@@ -42,8 +42,16 @@ class InstanceAdminForm(forms.ModelForm):
 
 class InstanceAdmin(admin.ModelAdmin):
     form = InstanceAdminForm
-    list_display = ["host", "port", "database_or_schema", "login", "password"]
-    readonly_fields = ["host", "port", "database_or_schema", "login", "password"]
+    list_display = ["host", "port", "db", "schema", "login", "password", "extra_json"]
+    readonly_fields = [
+        "host",
+        "port",
+        "db",
+        "schema",
+        "login",
+        "password",
+        "extra_json",
+    ]
 
 
 admin.site.register(Instance, InstanceAdmin)

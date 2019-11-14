@@ -1,10 +1,9 @@
-import unittest
 from random import shuffle
 
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.test import Client
+from django.test import Client, TestCase
 from django.urls import reverse
 
 from .constants import APPLICATIONS
@@ -55,7 +54,7 @@ def create_instance(**kwargs):
     defaults = {}
     defaults["host"] = "host"
     defaults["port"] = 100
-    defaults["database_or_schema"] = "database_or_schema"
+    defaults["db"] = "database"
     defaults["login"] = "login"
     defaults["password"] = "password"
     defaults.update(**kwargs)
@@ -66,7 +65,7 @@ def create_instance(**kwargs):
     return Instance.objects.create(**defaults)
 
 
-class SystemViewTest(unittest.TestCase):
+class SystemViewTest(TestCase):
     """
     Tests for System
     """
@@ -75,12 +74,14 @@ class SystemViewTest(unittest.TestCase):
         self.client = Client()
         self.test_user = TestUser()
         self.client.login(username="test", password="test")
+        self.system = None
 
     def tearDown(self):
         self.test_user.delete()
 
     def test_list_system(self):
         self.test_user.add_permission(System, "view_system")
+        create_system()
         url = reverse("systems_system_list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -101,7 +102,7 @@ class SystemViewTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class EnvironmentViewTest(unittest.TestCase):
+class EnvironmentViewTest(TestCase):
     """
     Tests for Environment
     """
@@ -136,7 +137,7 @@ class EnvironmentViewTest(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
 
 
-class InstanceViewTest(unittest.TestCase):
+class InstanceViewTest(TestCase):
     """
     Tests for Instance
     """
@@ -161,7 +162,7 @@ class InstanceViewTest(unittest.TestCase):
         data = {
             "host": "host",
             "port": 1000,
-            "database_or_schema": "database_or_schema",
+            "db": "database",
             "login": "login",
             "password": "password",
             "system": create_system().pk,
@@ -172,8 +173,9 @@ class InstanceViewTest(unittest.TestCase):
 
     def test_detail_instance(self):
         self.test_user.add_permission(Instance, "view_instance")
-        instance = create_instance()
-        url = reverse("systems_instance_detail", args=[instance.pk])
+        self.system = create_system()
+        self.instance = create_instance(system=self.system)
+        url = reverse("systems_instance_detail", args=[self.instance.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -183,7 +185,7 @@ class InstanceViewTest(unittest.TestCase):
         data = {
             "host": "host",
             "port": 2000,
-            "database_or_schema": "database_or_schema",
+            "db": "database",
             "login": "login",
             "password": "password",
             "system": create_system().pk,

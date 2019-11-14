@@ -47,11 +47,13 @@ class Environment(models.Model):
 class Instance(models.Model):
     system = models.ForeignKey(System, on_delete=models.PROTECT)
     environment = models.ForeignKey(Environment, on_delete=models.PROTECT)
-    host = models.CharField(max_length=100)
-    port = models.IntegerField()
-    database_or_schema = models.CharField(max_length=100)
-    login = models.CharField(max_length=100)
-    password = EncryptedCharField(max_length=100)
+    host = models.CharField(max_length=100, null=True, blank=True)
+    port = models.IntegerField(null=True, blank=True)
+    db = models.CharField(max_length=100, null=True, blank=True)
+    schema = models.CharField(max_length=100, null=True, blank=True)
+    login = models.CharField(max_length=100, null=True, blank=True)
+    password = EncryptedCharField(max_length=100, null=True, blank=True)
+    extra_json = models.TextField(null=True, blank=True)
     unique_together = ((system, environment),)
 
     class Meta:
