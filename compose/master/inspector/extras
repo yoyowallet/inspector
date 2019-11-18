@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -n "${EXTRA_PACKAGES}" ]; then
+  apk add ${EXTRA_PACKAGES}
+fi
+
+if [ -n "${EXTRA_REQUIREMENTS}" ]; then
+  pip install --no-cache-dir -r /requirements/${EXTRA_REQUIREMENTS}
+fi
